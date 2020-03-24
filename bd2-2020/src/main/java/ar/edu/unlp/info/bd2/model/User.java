@@ -1,18 +1,18 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
-	
+	private Long id;
 	private String email;
 	private String password;
 	private String username;
 	private String name;
 	private Date dateOfBirth;
-	
-	
+	private List<Order> orders;
+
 	public User(String email, String password, String username, String name, Date dateOfBirth) {
-		super();
 		this.email = email;
 		this.password = password;
 		this.username = username;
@@ -20,6 +20,9 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public User() {
+		
+	}
 	
 	public String getEmail() {
 		return email;
@@ -60,6 +63,20 @@ public class User {
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
-	
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
 }
