@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class User {
 		this.username = username;
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
+		this.orders = new ArrayList<Order>();
 	}
 
 	public User() {

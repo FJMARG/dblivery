@@ -1,26 +1,31 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
-	private long id;
+	private Long id;
 	private String name;
-	private long price;
 	private List<Price> prices;
 	private Supplier supplier;
-	private long weight;
+	private Float weight;
+//	el precio actual del producto es el ultimo agregado  a la coleccion
+	
+	
 	public Product() {
 		
 	}
-	public Product(long id, String name, long price, List<Price> prices, Supplier supplier, long weight) {
+	
+	public Product(String name, Float price, Supplier supplier, Float weight) {
 		super();
-		this.id = id;
 		this.name = name;
-		this.price = price;
-		this.prices = prices;
+		this.prices = new ArrayList<Price>();
 		this.supplier = supplier;
 		this.weight = weight;
+//		actualizo el precio
+		this.updatePrice(price);
 	}
+	
 	public long getId() {
 		return id;
 	}
@@ -33,28 +38,35 @@ public class Product {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public long getPrice() {
-		return price;
-	}
-	public void setPrice(long price) {
-		this.price = price;
-	}
+	
 	public List<Price> getPrices() {
 		return prices;
 	}
 	public void setPrices(List<Price> prices) {
 		this.prices = prices;
 	}
+	
+	public Float getPrice() {
+		return this.prices.get(this.prices.size()-1).getPrice();
+	}
+	
 	public Supplier getSupplier() {
 		return supplier;
 	}
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
-	public long getWeight() {
+	public Float getWeight() {
 		return weight;
 	}
-	public void setWeight(long weight) {
+	public void setWeight(Float weight) {
 		this.weight = weight;
+	}
+	
+// METODO PARA SETEAR EL PRECIO (AGREGA A LA COLECCION PRICES Y LO SETEA COMO PRECIO ACTUAL)
+	public void updatePrice( Float price ) {
+		Price p = new Price( price );
+		this.prices.add(p);
+		
 	}
 }

@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Supplier {
@@ -13,16 +14,14 @@ public class Supplier {
 	public Supplier() {
 		
 	}
-	public Supplier(long id, String name, String cuil, String address, double coordX, double coordY,
-			List<Product> products) {
+	public Supplier(String name, String cuil, String address, double coordX, double coordY) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.cuil = cuil;
 		this.address = address;
 		this.coordX = coordX;
 		this.coordY = coordY;
-		this.products = products;
+		this.products = new ArrayList<Product>();
 	}
 	public long getId() {
 		return id;
@@ -62,9 +61,6 @@ public class Supplier {
 	}
 	public List<Product> getProducts() {
 		return products;
-	}
-	public void setProducts(List<Product> products) {
-		this.products = products;
 	}
 	
 	

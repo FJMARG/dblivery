@@ -4,6 +4,7 @@ public class Sent extends OrderStatus {
 	public Sent() {
 		super("Sent",(byte)2);
 	}
+	
 	public boolean deliver(Order o) {
 		o.setStatus(new Delivered());
 		return true;

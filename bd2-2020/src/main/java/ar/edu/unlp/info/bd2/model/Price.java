@@ -3,23 +3,18 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.Date;
 
 public class Price {
-	private long id;
-	private float price;
-	private Date date;
-	public Price(long id, float price, Date date) {
+	private Long id;
+	private Float price;
+	private Date startDate;
+	private Date endDate;
+	
+	public Price(float price) {
 		super();
-		this.id = id;
 		this.price = price;
-		this.date = date;
+		this.startDate = new Date();
 	}
 	public Price() {
 		
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
 	}
 	public float getPrice() {
 		return price;
@@ -27,11 +22,27 @@ public class Price {
 	public void setPrice(float price) {
 		this.price = price;
 	}
-	public Date getDate() {
-		return date;
+	public Date getStartDate() {
+		return startDate;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+	public Long getId() {
+		return id;
+	}
+	
 	
 }
