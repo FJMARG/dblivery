@@ -2,7 +2,10 @@ package ar.edu.unlp.info.bd2.model;
 
 public class Cancelled extends OrderStatus {
 	public Cancelled() {
-		super("Cancelled",(byte)2);
+	}
+	
+	public String getStatus() {
+		return "Cancelled";
 	}
 	public boolean deliver(Order o) {
 		return false;

@@ -3,10 +3,23 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Product {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
+	private String name;	
+	@OneToMany
 	private List<Price> prices;
+	@ManyToOne(optional=false)
 	private Supplier supplier;
 	private Float weight;
 //	el precio actual del producto es el ultimo agregado  a la coleccion

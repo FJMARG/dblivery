@@ -4,16 +4,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Type;
+
+@Entity
 public class Order {
 	
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private List<OrderStatus> status;
-	private User client;
-	private List<ProductOrder> products;
+	@OneToMany
+	private List<OrderStatus> status;	
+	@ManyToOne
+	private User client;	
+	@OneToMany
+	private List<ProductOrder> products;	
 	private double coordX;
 	private double coordY;
 	private String address;
+	@Type(type="date")
 	private Date date;
+	@ManyToOne
 	private User deliveryUser;
 
 	public Order(User client, double coordX, double coordY, String address,Date date) {
@@ -36,12 +53,14 @@ public class Order {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public OrderStatus getStatus() {
-		return this.status.get( this.status.size() - 1);
+	public List<OrderStatus> getStatus() {
+		return this.status;
 	}
+	
 	public void setStatus(OrderStatus status) {
 		this.status.add(status);
 	}
+	
 	public User getClient() {
 		return client;
 	}
@@ -85,13 +104,13 @@ public class Order {
 	//--- Metodos State ---
 	
 	public boolean deliver() {
-		return this.getStatus().deliver(this);
+		return this.getStatus().get( this.status.size() - 1).deliver(this);
 	}
 	public boolean send() {
-		return this.getStatus().send(this);
+		return this.getStatus().get( this.status.size() - 1).send(this);
 	}
 	public boolean cancel() {
-		return this.getStatus().deliver(this);
+		return this.getStatus().get( this.status.size() - 1).deliver(this);
 	}
 	
 }

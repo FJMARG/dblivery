@@ -2,7 +2,10 @@ package ar.edu.unlp.info.bd2.model;
 
 public class Pending extends OrderStatus {
 	public Pending() {
-		super("Pending",(byte)1);
+	}
+	
+	public String getStatus() {
+		return "Pending";
 	}
 	public boolean deliver(Order o) {
 		return false;

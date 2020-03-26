@@ -4,14 +4,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Type;
+
+@Entity
 public class User {
+	
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String email;
 	private String password;
 	private String username;
 	private String name;
+	
+	@Type(type="date")
 	private Date dateOfBirth;
+	
+//	las ordenes de los clientes
+	@OneToMany(mappedBy="client")
 	private List<Order> orders;
+	
+//	las ordenes de los repartidores
+	@OneToMany(mappedBy="deliveryUser")
+	private List<Order> deliverOrders;
 
 	public User(String email, String password, String username, String name, Date dateOfBirth) {
 		this.email = email;
@@ -20,6 +41,7 @@ public class User {
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
 		this.orders = new ArrayList<Order>();
+		this.deliverOrders = new ArrayList<Order>();
 	}
 
 	public User() {
@@ -80,5 +102,13 @@ public class User {
 
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
+	}
+
+	public List<Order> getDeliverOrders() {
+		return deliverOrders;
+	}
+
+	public void setDeliverOrders(List<Order> deliverOrders) {
+		this.deliverOrders = deliverOrders;
 	}
 }

@@ -1,26 +1,18 @@
 package ar.edu.unlp.info.bd2.model;
 
-public abstract class OrderStatus {
-	// No lleva id al no ser parte del modelo?
-	private String status;
-	private byte size;
-	// En los test case (por ejemplo, linea 169) se le envia el mensaje
-	// size al estado. Lo unico que se me ocurrio fue esto pero suena muy
-	// HardCoded. OrderStatus tendra una coleccion adentro y
-	// guardara todos los estados por los que va pasando dicha orden?.
-	
-	public OrderStatus(String status, byte size) {
-		super();
-		this.status = status;
-		this.size = size;
-	}
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-	public byte size() {
-		return size;
-	}
-	public String getStatus() {
-		return this.status;
-	}
+@Entity
+public abstract class OrderStatus {
+	
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	public abstract String getStatus();
 	
 	public abstract boolean deliver(Order o);
 	
