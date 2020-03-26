@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,10 +16,13 @@ public class Price {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(nullable=false)
 	private Float price;
 	@Type(type="date")
+	@Column(nullable=false)
 	private Date startDate;
 	@Type(type="date")
+	@Column(nullable=false)
 	private Date endDate;
 	
 	public Price(float price) {

@@ -1,36 +1,51 @@
 package ar.edu.unlp.info.bd2.model;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 
 @Entity
+@Table(name="Orders")
 public class Order {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@OneToMany
-	private List<OrderStatus> status;	
-	@ManyToOne
-	private User client;	
-	@OneToMany
-	private List<ProductOrder> products;	
+	private Long id;	
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinTable(	name="Order_OrderStatus",
+				joinColumns=@JoinColumn(name="order_id",referencedColumnName="id"),
+				inverseJoinColumns=@JoinColumn(name="status_id",referencedColumnName="id"))
+	private List<OrderStatus> status;		
+	@OneToMany(mappedBy ="order")
+	private List<ProductOrder> products;
+	@Column(nullable=false)
 	private double coordX;
+	@Column(nullable=false)
 	private double coordY;
+	@Column(nullable=false)
 	private String address;
 	@Type(type="date")
+	@Column(nullable=false)
 	private Date date;
-	@ManyToOne
+	@ManyToOne(optional=false)
+	private User client;
+	@ManyToOne(optional=true)
 	private User deliveryUser;
 
 	public Order(User client, double coordX, double coordY, String address,Date date) {

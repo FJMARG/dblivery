@@ -2,11 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 public class Sent extends OrderStatus {
 	public Sent() {
-		
-	}
-	
-	public String getStatus() {
-		return "Sent";
+		this.setStatus("Sent");
 	}
 	
 	public boolean deliver(Order o) {
