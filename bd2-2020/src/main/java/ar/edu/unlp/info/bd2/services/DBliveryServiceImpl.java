@@ -22,23 +22,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 		this.repository = repository;
 	}
 
-	@Override
-	public boolean canCancel(Long order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean canFinish(Long id) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean canDeliver(Long order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
@@ -89,23 +72,53 @@ public class DBliveryServiceImpl implements DBliveryService {
 	}
 
 	@Override
-	public Optional<Order> getOrderById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	public Optional<Order> getOrderById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public Order addProduct(Long order, Long quantity, Product product) throws DBliveryException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public OrderStatus getActualStatus(Long order) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public List<Product> getProductByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public boolean canCancel(Long order) throws DBliveryException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canFinish(Long id) throws DBliveryException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean canDeliver(Long order) throws DBliveryException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	@Override
 	public Order deliverOrder(Long order, User deliveryUser) throws DBliveryException {
 		// TODO Auto-generated method stub
@@ -124,16 +137,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return null;
 	}
 
-	@Override
-	public OrderStatus getActualStatus(Long order) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Product> getProductByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }
