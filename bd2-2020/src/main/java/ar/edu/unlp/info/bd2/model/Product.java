@@ -1,10 +1,13 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,13 +21,17 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(nullable=false)
 	private String name;	
-	@OneToMany
+	
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	@JoinColumn(name="product_id")
 	private List<Price> prices;
+	
 	@ManyToOne(optional=false)
 	private Supplier supplier;
+	
 	@Column(nullable=false)
 	private Float weight;
 //	el precio actual del producto es el ultimo agregado  a la coleccion
@@ -40,8 +47,7 @@ public class Product {
 		this.prices = new ArrayList<Price>();
 		this.supplier = supplier;
 		this.weight = weight;
-//		actualizo el precio
-		this.updatePrice(price);
+		this.prices.add(new Price(price, new Date()));
 	}
 	
 	public long getId() {
@@ -82,9 +88,8 @@ public class Product {
 	}
 	
 // METODO PARA SETEAR EL PRECIO (AGREGA A LA COLECCION PRICES Y LO SETEA COMO PRECIO ACTUAL)
-	public void updatePrice( Float price ) {
-		Price p = new Price( price );
-		this.prices.add(p);
-		
+	public void updatePrice( Float price, Date startDate ) {
+		this.prices.get(this.prices.size()-1).setEndDate(startDate);
+		this.prices.add(new Price(price, startDate));
 	}
 }
