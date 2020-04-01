@@ -42,29 +42,7 @@ public class DBliveryRepository {
 		
 		return entity;
 	}
-//	
-//	public <T> void delete(T entity) {
-//		this.getEntityManager().remove(entity);
-//	}
-//
-//	public <T> T deleteById(Long id, Class<T> persistentClass) { 
-//		T entity = this.getEntityManager().find(persistentClass, id);
-//
-//		if (entity != null) {
-//			this.delete(entity);
-//		}	
-//		return entity;
-//	}
-//
-//	public <T> boolean exists(Long id, Class<T> persistentClass) {
-//		T entity = this.getEntityManager().find(persistentClass, id);
-//
-//		if (entity != null) {
-//			return true;
-//		}	
-//		return false;
-//	}
-//	
+
 	public <T> T get(Long id, Class<T> persistentClass) {	
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -76,20 +54,5 @@ public class DBliveryRepository {
 		
 		return entity;
 	}
-//	
-//	
-//	public <T> List<T> getAll(String columnOrder, Class<T> persistentClass) {
-//		
-//		Query query = this.getEntityManager()
-//							.createQuery(" FROM " + persistentClass.getSimpleName()
-//										+" ORDER BY " + columnOrder);
-//		
-//		List<T> resultList = (List<T>)query.getResultList();
-//		
-//		return resultList;
-//	}	
-
-
-
 
 }
