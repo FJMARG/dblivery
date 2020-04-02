@@ -33,6 +33,7 @@ public class Order {
 				inverseJoinColumns=@JoinColumn(name="status_id",referencedColumnName="id"))
 	private List<OrderStatus> status;		
 	@OneToMany(mappedBy ="order")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ProductOrder> products;
 	@Column(nullable=false)
 	private double coordX;

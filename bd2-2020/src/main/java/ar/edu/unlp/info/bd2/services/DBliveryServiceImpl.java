@@ -7,11 +7,7 @@ import java.util.Optional;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.unlp.info.bd2.model.Order;
-import ar.edu.unlp.info.bd2.model.OrderStatus;
-import ar.edu.unlp.info.bd2.model.Product;
-import ar.edu.unlp.info.bd2.model.Supplier;
-import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.repositories.DBliveryException;
 import ar.edu.unlp.info.bd2.repositories.DBliveryRepository;
 
@@ -66,7 +62,16 @@ public class DBliveryServiceImpl implements DBliveryService {
 	
 	@Override
 	public Order addProduct(Long order, Long quantity, Product product) throws DBliveryException {
-		return null;
+		Product p = repository.get(product.getId(), Product.class);
+		Order updatedOrder = repository.get(order, Order.class);
+		
+		if(p != null) {
+			ProductOrder po = new ProductOrder(quantity, p, updatedOrder);
+			po = repository.persist(po);
+			updatedOrder.getProducts().add(po);
+			updatedOrder = repository.update(updatedOrder);
+		}
+		return updatedOrder;
 	}
 	
 	
