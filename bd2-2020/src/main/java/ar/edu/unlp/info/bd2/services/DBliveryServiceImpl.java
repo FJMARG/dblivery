@@ -56,6 +56,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
 		Order newOrder = new Order(client, coordX, coordY, address, dateOfOrder);
+//		busco el estado pending
+		OrderStatus pending = repository.getStatusByName("Pending");
+//		aca le agrego el estado pending a la coleccion de estados de la orden
+//		
 		
 		return repository.persist(newOrder);
 	}
@@ -77,20 +81,20 @@ public class DBliveryServiceImpl implements DBliveryService {
 	
 	@Override
 	public Optional<User> getUserById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		User u = repository.get(id, User.class);
+		return Optional.of(u);
 	}
 
 	@Override
 	public Optional<User> getUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		User u = repository.getUserByEmail(email);
+		return Optional.of(u);
 	}
 
 	@Override
 	public Optional<User> getUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		User u = repository.getUserByUsername(username);
+		return Optional.of(u);
 	}
 
 	@Override

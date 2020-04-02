@@ -1,5 +1,8 @@
 package ar.edu.unlp.info.bd2.model;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 public class Sent extends OrderStatus {
 	public Sent() {
 		this.setStatus("Sent");

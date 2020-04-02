@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Product {
@@ -27,6 +28,7 @@ public class Product {
 	
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	@JoinColumn(name="product_id")
+	@OrderBy("startDate")
 	private List<Price> prices;
 	
 	@ManyToOne(optional=false)

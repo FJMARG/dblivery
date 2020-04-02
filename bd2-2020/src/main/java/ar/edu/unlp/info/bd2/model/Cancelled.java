@@ -1,5 +1,8 @@
 package ar.edu.unlp.info.bd2.model;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 public class Cancelled extends OrderStatus {
 	public Cancelled() {
 		this.setStatus("Cancelled");

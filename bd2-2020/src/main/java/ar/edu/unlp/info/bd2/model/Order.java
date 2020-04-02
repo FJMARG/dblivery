@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -25,13 +27,15 @@ public class Order {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;	
+	private Long id;
+	
 	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(	name="Order_OrderStatus",
 				joinColumns=@JoinColumn(name="order_id",referencedColumnName="id"),
 				inverseJoinColumns=@JoinColumn(name="status_id",referencedColumnName="id"))
-	private List<OrderStatus> status;		
+	private List<OrderStatus> status;	
+	
 	@OneToMany(mappedBy ="order")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ProductOrder> products;

@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.model;
 
+
 public class Pending extends OrderStatus {
 	public Pending() {
 		this.setStatus("Pending");
