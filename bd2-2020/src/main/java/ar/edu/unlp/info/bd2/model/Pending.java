@@ -1,10 +1,11 @@
 package ar.edu.unlp.info.bd2.model;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
+@Entity
+@DiscriminatorValue("Pending")
 public class Pending extends OrderStatus {
-	public Pending() {
-		this.setStatus("Pending");
-	}
 	public boolean deliver(Order o) {
 		return false;
 	}
@@ -17,5 +18,9 @@ public class Pending extends OrderStatus {
 	public boolean cancel(Order o) {
 		o.setStatus(new Cancelled());
 		return true;
+	}
+	@Override
+	public String getStatus() {
+		return "Pending";
 	}
 }

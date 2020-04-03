@@ -2,11 +2,9 @@ package ar.edu.unlp.info.bd2.model;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
+@Entity
+@DiscriminatorValue("Sent")
 public class Sent extends OrderStatus {
-	public Sent() {
-		this.setStatus("Sent");
-	}
 	
 	public boolean deliver(Order o) {
 		o.setStatus(new Delivered());
@@ -17,5 +15,9 @@ public class Sent extends OrderStatus {
 	}
 	public boolean cancel(Order o) {
 		return false;
+	}
+	@Override
+	public String getStatus() {
+		return "Sent";
 	}
 }
