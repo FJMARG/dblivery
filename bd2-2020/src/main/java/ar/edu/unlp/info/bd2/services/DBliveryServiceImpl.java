@@ -57,11 +57,21 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
 		Order newOrder = new Order(client, coordX, coordY, address, dateOfOrder);
 //		busco el estado pending
-		OrderStatus pending = repository.getStatusByName("Pending");
+		OrderStatus pending = this.createStatusIfNoExist("Pending");
+		
 //		aca le agrego el estado pending a la coleccion de estados de la orden
 //		
-		
+		newOrder.setStatus(pending);
 		return repository.persist(newOrder);
+	}
+	
+	public OrderStatus createStatusIfNoExist(String name) {
+		OrderStatus o = repository.getStatusByName(name);
+		if (o == null) {
+			OrderStatus  temp = new Pending();
+			o = repository.persist(temp);
+		}
+		return o;
 	}
 	
 	@Override
@@ -69,12 +79,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 		Product p = repository.get(product.getId(), Product.class);
 		Order updatedOrder = repository.get(order, Order.class);
 		
-		if(p != null) {
-			ProductOrder po = new ProductOrder(quantity, p, updatedOrder);
-			po = repository.persist(po);
-			updatedOrder.getProducts().add(po);
-			updatedOrder = repository.update(updatedOrder);
-		}
+		ProductOrder po = new ProductOrder(quantity, p, updatedOrder);
+		po = repository.persist(po);
+		updatedOrder.getProducts().add(po);
+		updatedOrder = repository.update(updatedOrder);
+	
 		return updatedOrder;
 	}
 	
