@@ -70,8 +70,12 @@ public class DBliveryRepository {
 		
 		Query query = em.createQuery("FROM OrderStatus WHERE status = '" + status + "'");
 		
-		OrderStatus result = (OrderStatus) query.getSingleResult();
+		OrderStatus result;
 		
+		if (query.getResultList().isEmpty()) // FIX
+			result = null;
+		else
+			result = (OrderStatus) query.getSingleResult();
 		
 		em.getTransaction().commit();
 		em.close();
