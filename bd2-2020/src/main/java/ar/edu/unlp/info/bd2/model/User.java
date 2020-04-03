@@ -116,4 +116,24 @@ public class User {
 	public void setDeliverOrders(List<Order> deliverOrders) {
 		this.deliverOrders = deliverOrders;
 	}
+	
+	// Metodos redefinidos.
+	
+	@Override
+    public int hashCode() {
+        return this.getId().intValue();
+    }
+ 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) // Verifico si soy yo mismo
+            return true;
+        if (obj == null) // Verifico si es nulo
+            return false;
+        if (getClass() != obj.getClass()) // Verifico si no pertenece a la clase
+            return false;
+        User o = (User) obj;  // Es un objeto usuario, entonces casteo.
+        return this.getId().equals(o.getId()); // Comparo id's, si coinciden, son iguales.
+    }
+	
 }
