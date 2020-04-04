@@ -20,4 +20,8 @@ public class Delivered extends OrderStatus {
 	public String getStatus() {
 		return "Delivered";
 	}
+	@Override
+	public boolean canDeliver(Order o) {
+		return false;
+	}
 }

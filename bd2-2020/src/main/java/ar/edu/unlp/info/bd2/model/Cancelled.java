@@ -18,4 +18,8 @@ public class Cancelled extends OrderStatus {
 	public String getStatus() {
 		return "Cancelled";
 	}
+	@Override
+	public boolean canDeliver(Order o) {
+		return false;
+	}
 }

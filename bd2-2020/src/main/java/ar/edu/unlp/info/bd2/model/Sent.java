@@ -20,4 +20,8 @@ public class Sent extends OrderStatus {
 	public String getStatus() {
 		return "Sent";
 	}
+	@Override
+	public boolean canDeliver(Order o) {
+		return false;
+	}
 }

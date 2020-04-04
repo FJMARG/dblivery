@@ -14,8 +14,10 @@ public class ProductOrder {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(nullable=false)
 	private Long quantity;
+	
 	@ManyToOne(optional=false)
 	private Order order;
 	

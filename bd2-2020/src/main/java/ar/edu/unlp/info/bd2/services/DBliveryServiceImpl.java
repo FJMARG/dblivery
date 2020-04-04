@@ -71,18 +71,17 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
 		Order newOrder = new Order(client, coordX, coordY, address, dateOfOrder);
 //		busco el estado pending
-		OrderStatus pending = this.createStatusIfNoExist("Pending");
+		OrderStatus pending = this.createStatusIfNotExist(new Pending());
 		
 //		
 		newOrder.setStatus(pending);
 		return repository.persist(newOrder);
 	}
 	
-	public OrderStatus createStatusIfNoExist(String name) {
-		OrderStatus o = repository.getStatusByName(name);
-		if (o == null) {
-			OrderStatus  temp = new Pending();
-			o = repository.persist(temp);
+	public OrderStatus createStatusIfNotExist(OrderStatus status) {
+		OrderStatus o = repository.getStatusByName(status.getStatus());
+		if (o == null) {;
+			o = repository.persist(status);
 		}
 		return o;
 	}
@@ -98,9 +97,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 		ProductOrder po = new ProductOrder(quantity, p, updatedOrder);
 		po = repository.persist(po);
 		updatedOrder.getProducts().add(po);
-		updatedOrder = repository.update(updatedOrder);
-	
-		return updatedOrder;
+		
+		return repository.update(updatedOrder);
 	}
 	
 	
@@ -160,14 +158,30 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public boolean canDeliver(Long order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		return orderDB.get().canDeliver();
 	}
 	
 	@Override
 	public Order deliverOrder(Long order, User deliveryUser) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Order orderDB = repository.get(order, Order.class);
+		User userDB   = repository.get(deliveryUser.getId(), User.class);
+		
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		
+		if(userDB == null)
+			throw new DBliveryException("El usuario asignado no existe");
+		
+		if( !orderDB.canDeliver() )
+			throw new DBliveryException("The order can't be delivered");
+		
+		orderDB.send();
+		orderDB.setDeliveryUser(userDB);
+		this.createStatusIfNotExist(orderDB.getActualStatus());
+		return repository.update(orderDB);
 	}
 
 	@Override
