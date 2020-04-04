@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.repositories;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.unlp.info.bd2.model.OrderStatus;
 import ar.edu.unlp.info.bd2.model.Pending;
+import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.User;
 
 public class DBliveryRepository {
@@ -87,12 +89,15 @@ public class DBliveryRepository {
 	public User getUserByUsername(String username) {	
 		EntityManager em = this.sessionFactory.createEntityManager();
 		em.getTransaction().begin();
-		
+		User result;
 		Query query = em.createQuery("FROM User WHERE username = '" + username + "'");
 		
-		User result = (User) query.getSingleResult();
-		
-		
+		try{
+			result = (User) query.getSingleResult();
+		}catch( Exception e) {
+			result = null;
+		}
+				
 		em.getTransaction().commit();
 		em.close();
 		
@@ -112,6 +117,46 @@ public class DBliveryRepository {
 		em.close();
 		
 		return result;
+	}
+	
+//	Product
+	public List<Product> getProductsByName(String name) {
+		
+		EntityManager em = this.sessionFactory.createEntityManager();
+		em.getTransaction().begin();
+		ArrayList<Product> list = new ArrayList();
+		
+		Query query = em.createQuery("FROM Product WHERE name LIKE '%" + name + "%'");
+		
+		list = (ArrayList<Product>) query.getResultList();
+		
+		
+		em.getTransaction().commit();
+		em.close();
+		
+		return list;
+		
+	}
+	
+public Product getProductByName(String name) {
+		
+		EntityManager em = this.sessionFactory.createEntityManager();
+		em.getTransaction().begin();
+		Product product; 
+		
+		Query query = em.createQuery("FROM Product WHERE name = '" + name + "'");
+		
+		try {
+			product = (Product) query.getSingleResult();
+		}catch( Exception e ) {
+			product = null;
+		}
+			
+		em.getTransaction().commit();
+		em.close();
+		
+		return product;
+		
 	}
 
 }

@@ -24,9 +24,15 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
-		Product newProduct = new Product(name, price, supplier, weight);
+		Product product = repository.getProductByName(name);
+		if( product == null) {
+			Product newProduct = new Product(name, price, supplier, weight);
+			
+			return repository.persist(newProduct);
+		}else {
+			return product;
+		}
 		
-		return repository.persist(newProduct);
 	}
 		
 
@@ -39,6 +45,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
+		User user = repository.getUserByUsername(username);
+		if (user != null) {
+//			ya existe un usuario con ese username, lo devuelvo
+			return user;
+		}
 		User newUser = new User(email, password, username, name, dateOfBirth);
 		
 		return repository.persist(newUser);
@@ -47,6 +58,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	public Product updateProductPrice(Long id, Float price, Date startDate) throws DBliveryException {
 		Product product = repository.get(id, Product.class);
+		if (product == null) {
+			throw new DBliveryException("El producto solicitado no existe");
+		}
 		
 		product.updatePrice(price, startDate);
 		
@@ -59,7 +73,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 //		busco el estado pending
 		OrderStatus pending = this.createStatusIfNoExist("Pending");
 		
-//		aca le agrego el estado pending a la coleccion de estados de la orden
 //		
 		newOrder.setStatus(pending);
 		return repository.persist(newOrder);
@@ -78,6 +91,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Order addProduct(Long order, Long quantity, Product product) throws DBliveryException {
 		Product p = repository.get(product.getId(), Product.class);
 		Order updatedOrder = repository.get(order, Order.class);
+		if (updatedOrder == null) {
+			throw new DBliveryException("El pedido solicitado no existe");
+		}
 		
 		ProductOrder po = new ProductOrder(quantity, p, updatedOrder);
 		po = repository.persist(po);
@@ -108,14 +124,14 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Optional<Product> getProductById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Product product = repository.get(id, Product.class);
+		return Optional.of(product);
 	}
 
 	@Override
 	public Optional<Order> getOrderById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Order order = repository.get(id, Order.class);
+		return Optional.of(order);
 	}
 	
 	@Override
@@ -126,8 +142,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public List<Product> getProductByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> productLsist = repository.getProductsByName(name);
+		return productLsist;
 	}
 	
 	@Override

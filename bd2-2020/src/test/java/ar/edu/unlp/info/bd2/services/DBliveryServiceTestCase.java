@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +38,8 @@ public class DBliveryServiceTestCase {
     @Autowired
     DBliveryService service;
 
-    @Test
+//  anotacion temporal porque no anda el rollback
+    @BeforeClass
     public void testCreateProduct() {
         Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
         assertNotNull(s1.getId());
@@ -213,19 +215,18 @@ public class DBliveryServiceTestCase {
     		assertEquals(u7.getId(), u1.getId());
     	}
     }
-//    
-//    @Ignore
-//    @Test
-//    public void testGetProduct() {
-//    	Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
-//        assertNotNull(s1.getId());
-//    	assertEquals("Burger King",s1.getName());
-//        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
-//    	Product p2 = this.service.createProduct("Combo Tostado de Campo", Float.valueOf(2210.2F), Float.valueOf(2.2F), s1);
-//    	Product p3 = this.service.createProduct("Combo Stacker ATR triple", Float.valueOf(1210F), Float.valueOf(1.8F), s1);
-//    	assertEquals(this.service.getProductByName("Combo Stacker ATR").size(),2);
-//    	assertEquals(this.service.getProductByName("Combo Tostado de Campo").size(),1);
-//    	assertEquals(this.service.getProductByName("triple").size(),1);
-//    	
-//    }
+
+    @Test
+    public void testGetProduct() {
+    	Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
+        assertNotNull(s1.getId());
+    	assertEquals("Burger King",s1.getName());
+        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
+    	Product p2 = this.service.createProduct("Combo Tostado de Campo", Float.valueOf(2210.2F), Float.valueOf(2.2F), s1);
+    	Product p3 = this.service.createProduct("Combo Stacker ATR triple", Float.valueOf(1210F), Float.valueOf(1.8F), s1);
+    	assertEquals(this.service.getProductByName("Combo Stacker ATR").size(),2);
+    	assertEquals(this.service.getProductByName("Combo Tostado de Campo").size(),1);
+    	assertEquals(this.service.getProductByName("triple").size(),1);
+    	
+    }
 }
