@@ -32,8 +32,8 @@ public class HibernateConfiguration {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/bd2_grupo" + this.getGroupNumber() + "?useSSL=false");
-        dataSource.setUsername("usuario");
-        dataSource.setPassword("123456");
+        dataSource.setUsername("grupo21");
+        dataSource.setPassword("1234");
 
         return dataSource;
     }
