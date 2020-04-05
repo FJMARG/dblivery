@@ -19,41 +19,46 @@ public class DBliveryRepository {
 	@Autowired
 	SessionFactory sessionFactory;
 	
+	private EntityManager entityManager;
+	
 	public DBliveryRepository() {}
 
+	public EntityManager getEntityManager() {
+		if (this.entityManager == null)
+			this.entityManager = this.sessionFactory.createEntityManager();
+		return this.entityManager;
+	}
+	
 	public <T> T persist(T entity) {
 		
-		EntityManager em = this.sessionFactory.createEntityManager();
+		EntityManager em = this.getEntityManager();
 		em.getTransaction().begin();
 		
 		em.persist(entity);
 		
 		em.getTransaction().commit();
-		em.close();
 		
 		return entity;
 	}
 	
 	public <T> T update(T entity) {
-		EntityManager em = this.sessionFactory.createEntityManager();
+		EntityManager em = this.getEntityManager();
 		em.getTransaction().begin();
 		
 		em.merge(entity);
 		
 		em.getTransaction().commit();
-		em.close();
 		
 		return entity;
 	}
 
 	public <T> T get(Long id, Class<T> persistentClass) {	
-		EntityManager em = this.sessionFactory.createEntityManager();
+		EntityManager em = this.getEntityManager();
 		em.getTransaction().begin();
 		
 		T entity = em.find(persistentClass, id);
 		
 		em.getTransaction().commit();
-		em.close();
 		
 		return entity;
 	}
@@ -64,7 +69,7 @@ public class DBliveryRepository {
 	
 //	Order Status
 	public OrderStatus getStatusByName(String status) {	
-		EntityManager em = this.sessionFactory.createEntityManager();
+		EntityManager em = this.getEntityManager();
 		Query query = em.createQuery("FROM OrderStatus WHERE status = '" + status + "'");
 		
 		OrderStatus result;
@@ -76,14 +81,13 @@ public class DBliveryRepository {
 			result = (OrderStatus) query.getSingleResult();
 		
 		em.getTransaction().commit();
-		em.close();
 		
 		return result;
 	}
 	
 //	User
 	public User getUserByUsername(String username) {	
-		EntityManager em = this.sessionFactory.createEntityManager();
+		EntityManager em = this.getEntityManager();
 		Query query = em.createQuery("FROM User WHERE username = '" + username + "'");
 		User result;
 		
@@ -95,13 +99,12 @@ public class DBliveryRepository {
 		}
 				
 		em.getTransaction().commit();
-		em.close();
 		
 		return result;
 	}
 	
 	public User getUserByEmail(String email) {	
-		EntityManager em = this.sessionFactory.createEntityManager();
+		EntityManager em = this.getEntityManager();
 		Query query = em.createQuery("FROM User WHERE email = '" + email + "'");
 		
 		em.getTransaction().begin();
@@ -109,7 +112,6 @@ public class DBliveryRepository {
 		User result = (User) query.getSingleResult();
 	
 		em.getTransaction().commit();
-		em.close();
 		
 		return result;
 	}
@@ -117,7 +119,7 @@ public class DBliveryRepository {
 //	Product
 	public List<Product> getProductsByName(String name) {
 		
-		EntityManager em = this.sessionFactory.createEntityManager();
+		EntityManager em = this.getEntityManager();
 		Query query = em.createQuery("FROM Product WHERE name LIKE '%" + name + "%'");
 		
 		ArrayList<Product> list = new ArrayList<Product>();
@@ -127,7 +129,6 @@ public class DBliveryRepository {
 		list = (ArrayList<Product>) query.getResultList();
 		
 		em.getTransaction().commit();	
-		em.close();
 		
 		return list;
 		
@@ -135,7 +136,7 @@ public class DBliveryRepository {
 	
 public Product getProductByName(String name) {
 		
-		EntityManager em = this.sessionFactory.createEntityManager();
+		EntityManager em = this.getEntityManager();
 		Query query = em.createQuery("FROM Product WHERE name = '" + name + "'");
 		
 		Product product;
@@ -147,7 +148,6 @@ public Product getProductByName(String name) {
 			product = null;
 		}
 		em.getTransaction().commit();
-		em.close();
 		
 		return product;
 		
