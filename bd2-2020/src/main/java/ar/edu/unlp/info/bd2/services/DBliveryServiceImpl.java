@@ -4,9 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.repositories.DBliveryException;
 import ar.edu.unlp.info.bd2.repositories.DBliveryRepository;
@@ -80,9 +77,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 	
 	public OrderStatus createStatusIfNotExist(OrderStatus status) {
 		OrderStatus o = repository.getStatusByName(status.getStatus());
-		if (o == null) {;
+		if (o == null) 
 			o = repository.persist(status);
-		}
+		
 		return o;
 	}
 	
@@ -134,26 +131,35 @@ public class DBliveryServiceImpl implements DBliveryService {
 	
 	@Override
 	public OrderStatus getActualStatus(Long order) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if(orderDB == null) 
+			return null;
+		
+		return orderDB.get().getActualStatus();
 	}
 
 	@Override
 	public List<Product> getProductByName(String name) {
-		List<Product> productLsist = repository.getProductsByName(name);
-		return productLsist;
+		List<Product> productList = repository.getProductsByName(name);
+		return productList;
 	}
 	
 	@Override
 	public boolean canCancel(Long order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		
+		return orderDB.get().canCancel();
 	}
 
 	@Override
 	public boolean canFinish(Long id) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
+		Optional<Order> orderDB = this.getOrderById(id);
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		
+		return orderDB.get().canFinish();
 	}
 
 	@Override
@@ -161,6 +167,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		Optional<Order> orderDB = this.getOrderById(order);
 		if(orderDB == null) 
 			throw new DBliveryException("El pedido solicitado no existe");
+		
 		return orderDB.get().canDeliver();
 	}
 	
@@ -178,22 +185,44 @@ public class DBliveryServiceImpl implements DBliveryService {
 		if( !orderDB.canDeliver() )
 			throw new DBliveryException("The order can't be delivered");
 		
-		orderDB.send();
+		OrderStatus sent = this.createStatusIfNotExist(new Sent());
+		
+		orderDB.setStatus(sent);
 		orderDB.setDeliveryUser(userDB);
-		this.createStatusIfNotExist(orderDB.getActualStatus());
+		
 		return repository.update(orderDB);
 	}
 
 	@Override
 	public Order cancelOrder(Long order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Order orderDB = repository.get(order, Order.class);
+		
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		
+		if( !orderDB.canCancel() )
+			throw new DBliveryException("The order can't be cancelled");
+		
+		OrderStatus cancelled = this.createStatusIfNotExist(new Cancelled());
+		orderDB.setStatus(cancelled);
+		
+		return repository.update(orderDB);
 	}
 
 	@Override
 	public Order finishOrder(Long order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Order orderDB = repository.get(order, Order.class);
+		
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		
+		if( !orderDB.canFinish() )
+			throw new DBliveryException("The order can't be finished");
+		
+		OrderStatus delivered = this.createStatusIfNotExist(new Delivered());
+		orderDB.setStatus(delivered);
+		
+		return repository.update(orderDB);
 	}
 
 	

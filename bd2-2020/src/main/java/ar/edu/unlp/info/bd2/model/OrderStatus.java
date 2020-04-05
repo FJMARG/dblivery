@@ -22,11 +22,9 @@ public abstract class OrderStatus {
 	public abstract String getStatus();
 	
 	public abstract boolean canDeliver(Order o);
+		
+	public abstract boolean canCancel(Order o);
 	
-	public abstract boolean deliver(Order o);
-	
-	public abstract boolean send(Order o);
-	
-	public abstract boolean cancel(Order o);
+	public abstract boolean canFinish(Order o);	
 	
 }

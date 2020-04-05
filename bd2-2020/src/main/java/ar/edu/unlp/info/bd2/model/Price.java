@@ -36,33 +36,41 @@ public class Price {
 		this.price = price;
 		this.startDate = startDate;
 	}
-	public Price() {
-		
-	}
+	
+	public Price() { }
+	
 	public float getPrice() {
 		return price;
 	}
+	
 	public void setPrice(float price) {
 		this.price = price;
 	}
+	
 	public Date getStartDate() {
 		return startDate;
 	}
+	
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+	
 	public Date getEndDate() {
 		return endDate;
 	}
+	
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public void setPrice(Float price) {
 		this.price = price;
 	}
+	
 	public Long getId() {
 		return id;
 	}

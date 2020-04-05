@@ -21,21 +21,28 @@ public class User {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(nullable=false)
 	private String email;
+	
 	@Column(nullable=false)
 	private String password;
+	
 	@Column(nullable=false)
 	private String username;
+	
 	@Column(nullable=false)
 	private String name;	
+	
 	@Type(type="date")
 	@Column(nullable=false)
 	private Date dateOfBirth;	
-//	las ordenes de los clientes
+
+	//las ordenes de los clientes
 	@OneToMany(mappedBy="client")
 	private List<Order> orders;	
-//	las ordenes de los repartidores
+
+	//las ordenes de los repartidores
 	@OneToMany(mappedBy="deliveryUser")
 	private List<Order> deliverOrders;
 
@@ -49,9 +56,7 @@ public class User {
 		this.deliverOrders = new ArrayList<Order>();
 	}
 
-	public User() {
-		
-	}
+	public User() { }
 	
 	public String getEmail() {
 		return email;

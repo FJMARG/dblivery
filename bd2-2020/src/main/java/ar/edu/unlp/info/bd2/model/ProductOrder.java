@@ -31,19 +31,20 @@ public class ProductOrder {
 		this.order = order;
 	}
 	
-	public ProductOrder() {
-		
-	}
+	public ProductOrder() {	}
 	
 	public Long getQuantity() {
 		return quantity;
 	}
+	
 	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
+	
 	public Product getProduct() {
 		return product;
 	}
+	
 	public void setProduct(Product product) {
 		this.product = product;
 	}
