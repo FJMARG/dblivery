@@ -1,0 +1,4 @@
+CREATE DATABASE bd2_grupo21;
+CREATE USER 'grupo21'@'localhost' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON bd2_grupo21.* TO 'grupo21'@'localhost';
+FLUSH PRIVILEGES;
