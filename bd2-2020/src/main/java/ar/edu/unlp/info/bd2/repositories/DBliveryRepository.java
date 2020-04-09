@@ -134,7 +134,7 @@ public class DBliveryRepository {
 		
 	}
 	
-public Product getProductByName(String name) {
+	public Product getProductByName(String name) {
 		
 		EntityManager em = this.getEntityManager();
 		Query query = em.createQuery("FROM Product WHERE name = '" + name + "'");
@@ -151,6 +151,24 @@ public Product getProductByName(String name) {
 		
 		return product;
 		
+	}
+	
+	public ArrayList<Product> getTop10MoreExpensiveProducts(){
+		EntityManager em = this.getEntityManager();
+		ArrayList<Product> list = new ArrayList<Product>();
+		
+		Query query = em.createQuery("SELECT prod FROM Product as prod "
+										+ "JOIN prod.prices as pri "
+										+ "WHERE pri.endDate is null "
+										+ "ORDER BY pri.price DESC").setFirstResult(0).setMaxResults(10);
+		
+		em.getTransaction().begin();
+		
+		list = (ArrayList<Product>) query.getResultList();
+		
+		em.getTransaction().commit();	
+		
+		return list;
 	}
 
 }

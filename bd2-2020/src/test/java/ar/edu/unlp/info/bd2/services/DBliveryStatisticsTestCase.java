@@ -27,23 +27,23 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class, DBInitializerConfig.class }, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DBliveryStatisticsTestCase {
 
-//    @Autowired
-//    DBInitializer initializer;
-//
-//    @Autowired
-//    DBliveryService service;
-//    
-//    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//
-//    @BeforeAll
-//    public void prepareDB() throws Exception {
-//        this.initializer.prepareDB();
-//    }
-//    
+    @Autowired
+    DBInitializer initializer;
+
+    @Autowired
+    DBliveryService service;
+    
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+    @BeforeAll
+    public void prepareDB() throws Exception {
+        this.initializer.prepareDB();
+    }
+    
 //    @Test
 //    public void testGetAllOrdersMadeByUser() {
 //    	assertEquals(5,this.service.getAllOrdersMadeByUser("rubnpastor265").size());
@@ -63,12 +63,13 @@ public class DBliveryStatisticsTestCase {
 //    	this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
 //    }
 //    
-//    @Test
-//    public void testGetTop10MoreExpensiveProducts() {
-//    	List<Product> products = this.service.getTop10MoreExpensiveProducts();
-//    	assertEquals(10,products.size());
+    @Test
+    public void testGetTop10MoreExpensiveProducts() {
+    	List<Product> products = this.service.getTop10MoreExpensiveProducts();
+    	assertEquals(10,products.size());
 //    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Sándwich de bondiola de cerdo completo","Lomo al roquefort","Tortilla a la española","Choripán","Bondiola al oporto"));
-//    }
+    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Pizza especial","Lomo al roquefort","Tortilla a la española","Choripán","Bondiola al oporto"));
+    }
 //    
 //    @Test
 //    public void testGetTop6UsersMoreOrders() {
@@ -208,17 +209,22 @@ public class DBliveryStatisticsTestCase {
 //    }
 //    
 //    
-//    
-//    private <T> void assertListEquality(List<T> list1, List<T> list2) {
-//        if (list1.size() != list2.size()) {
-//          Assert.fail("Lists have different size");
-//        }
-//
-//        for (T objectInList1 : list1) {
-//          if (!list2.contains(objectInList1)) {
-//            Assert.fail(objectInList1 + " is not present in list2");
-//          }
-//        }
-//      }
+    
+    private <T> void assertListEquality(List<T> list1, List<T> list2) {
+        if (list1.size() != list2.size()) {
+          Assert.fail("Lists have different size");
+        }
+        
+        for (T objectInList1 : list1) {
+            System.out.print("nombre producto: ");
+            System.out.println(objectInList1);
+        }
+
+        for (T objectInList1 : list1) {
+          if (!list2.contains(objectInList1)) {
+            Assert.fail(objectInList1 + " is not present in list2");
+          }
+        }
+      }
     
 }

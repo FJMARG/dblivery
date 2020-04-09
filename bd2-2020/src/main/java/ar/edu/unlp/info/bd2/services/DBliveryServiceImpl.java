@@ -38,7 +38,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 		Product product = repository.getProductByName(name);
 		if( product == null) {
 			Product newProduct = new Product(name, price, supplier, weight);
-			
 			return repository.persist(newProduct);
 		}else {
 			return product;
@@ -317,8 +316,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public List<Product> getTop10MoreExpensiveProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> productList = this.repository.getTop10MoreExpensiveProducts();
+		return productList;
 	}
 
 
