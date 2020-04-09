@@ -71,6 +71,11 @@ public class Order {
 	
 	public Order() { }
 	
+	public Float getAmount() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -156,6 +161,8 @@ public class Order {
 	public boolean canFinish() {
 		return this.getActualStatus().canFinish(this);
 	}
+
+	
 	
 
 }

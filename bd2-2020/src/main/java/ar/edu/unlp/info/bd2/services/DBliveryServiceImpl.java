@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.services;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,19 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
+		Product product = repository.getProductByName(name);
+		if( product == null) {
+			Product newProduct = new Product(name, price, supplier, weight);
+			
+			return repository.persist(newProduct);
+		}else {
+			return product;
+		}
+		
+	}
+	
+	@Override
+	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date sdf) {
 		Product product = repository.getProductByName(name);
 		if( product == null) {
 			Product newProduct = new Product(name, price, supplier, weight);
@@ -192,9 +206,47 @@ public class DBliveryServiceImpl implements DBliveryService {
 		
 		return repository.update(orderDB);
 	}
+	
+	@Override
+	public Order deliverOrder(Long order, User deliveryUser, Date sdf) throws DBliveryException {
+		Order orderDB = repository.get(order, Order.class);
+		User userDB   = repository.get(deliveryUser.getId(), User.class);
+		
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		
+		if(userDB == null)
+			throw new DBliveryException("El usuario asignado no existe");
+		
+		if( !orderDB.canDeliver() )
+			throw new DBliveryException("The order can't be delivered");
+		
+		OrderStatus sent = this.createStatusIfNotExist(new Sent());
+		
+		orderDB.setStatus(sent);
+		orderDB.setDeliveryUser(userDB);
+		
+		return repository.update(orderDB);
+	}
 
 	@Override
 	public Order cancelOrder(Long order) throws DBliveryException {
+		Order orderDB = repository.get(order, Order.class);
+		
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		
+		if( !orderDB.canCancel() )
+			throw new DBliveryException("The order can't be cancelled");
+		
+		OrderStatus cancelled = this.createStatusIfNotExist(new Cancelled());
+		orderDB.setStatus(cancelled);
+		
+		return repository.update(orderDB);
+	}
+	
+	@Override
+	public Order cancelOrder(Long order, Date sdf) throws DBliveryException {
 		Order orderDB = repository.get(order, Order.class);
 		
 		if(orderDB == null) 
@@ -224,6 +276,185 @@ public class DBliveryServiceImpl implements DBliveryService {
 		
 		return repository.update(orderDB);
 	}
+	
+	@Override
+	public Order finishOrder(Long order, Date sdf) throws DBliveryException {
+		Order orderDB = repository.get(order, Order.class);
+		
+		if(orderDB == null) 
+			throw new DBliveryException("El pedido solicitado no existe");
+		
+		if( !orderDB.canFinish() )
+			throw new DBliveryException("The order can't be finished");
+		
+		OrderStatus delivered = this.createStatusIfNotExist(new Delivered());
+		orderDB.setStatus(delivered);
+		
+		return repository.update(orderDB);
+	}
+
+
+	@Override
+	public List<Order> getAllOrdersMadeByUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<User> getUsersSpendingMoreThan(Float amount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Supplier> getTopNSuppliersInSentOrders(int n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Product> getTop10MoreExpensiveProducts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<User> getTop6UsersMoreOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getCancelledOrdersInPeriod(Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getPendingOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getSentOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getDeliveredOrdersForUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getSentMoreOneHour() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getDeliveredOrdersSameDay() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<User> get5LessDeliveryUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Product getBestSellingProduct() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Product> getProductsOnePrice() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Product> getProductIncreaseMoreThan100() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Supplier getSupplierLessExpensiveProduct() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Supplier> getSuppliersDoNotSellOn(Date day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Product> getSoldProductsOn(Date day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getOrdersCompleteMorethanOneDay() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Object[]> getProductsWithPriceAt(Date day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Product> getProductsNotSold() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Order> getOrderWithMoreQuantityOfProducts(Date day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 	
 

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface DBliveryService {
+public interface DBliveryService extends DBliveryStatisticsService{
     
 	/**
 	 *  Crea y devuelve un nuevo Producto.
@@ -18,6 +18,7 @@ public interface DBliveryService {
 	 * @return el producto creado
 	 */
 	Product createProduct(String name, Float price, Float weight, Supplier supplier);
+	Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date);
 
 	/**
 	 * Crea y retorna un nuevo Productor
@@ -115,6 +116,7 @@ public interface DBliveryService {
 	 * @throws DBliveryException en caso de no existir el pedido, que el pedido no se encuentre en estado Pending o sí no contiene productos.
 	 */
 	Order deliverOrder(Long order, User deliveryUser) throws DBliveryException;
+	Order deliverOrder(Long order, User deliveryUser, Date date) throws DBliveryException;
 
 	/**
 	 * Cancela un pedido
@@ -123,6 +125,7 @@ public interface DBliveryService {
 	 * @throws DBliveryException en caso de no existir el pedido o si el pedido no esta en estado pending
 	 */
 	Order cancelOrder(Long order) throws DBliveryException;
+	Order cancelOrder(Long order, Date date) throws DBliveryException;
 
 	/**
 	 * Registra la entrega de un pedido.
@@ -131,6 +134,7 @@ public interface DBliveryService {
 	 * @throws DBliveryException en caso que no exista el pedido o si el mismo no esta en estado Send
 	 */
 	Order finishOrder(Long order) throws DBliveryException;
+	Order finishOrder(Long order, Date date) throws DBliveryException;
 	
 	/**
 	 * verifica si un pedido se puede cancelar, para lo cual debe estar en estado pending
@@ -169,4 +173,5 @@ public interface DBliveryService {
 	 * @return Lista de productos
 	 */
 	List<Product> getProductByName(String name);
+
 }
