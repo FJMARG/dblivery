@@ -127,11 +127,11 @@ public class DBliveryStatisticsTestCase {
 //    	this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("luzpascual621","carlasantana949","juantorres331","rubnpastor499","mariorubio577"));
 //    }
 //    
-//    @Test
-//    public void testGetBestSellingProduct() {
-//    	Product product = this.service.getBestSellingProduct();
-//    	assertEquals("Pizza napolitana",product.getName());
-//    }
+    @Test
+    public void testGetBestSellingProduct() {
+    	Product product = this.service.getBestSellingProduct();
+    	assertEquals("Pizza napolitana",product.getName());
+    }
 //    
 //    @Test
 //    public void testGetProductsOnePrice() {

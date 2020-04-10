@@ -37,7 +37,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date sdf) {
 		Product product = repository.getProductByName(name);
 		if( product == null) {
-			Product newProduct = new Product(name, price, supplier, weight);
+			Product newProduct = new Product(name, price, supplier, weight, sdf);
 			return repository.persist(newProduct);
 		}else {
 			return product;
@@ -386,8 +386,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Product getBestSellingProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		Product p = this.repository.getBestSellingProduct();
+		return p;
 	}
 
 
