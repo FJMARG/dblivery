@@ -211,6 +211,27 @@ public class DBliveryRepository {
 		
 	}
 	
+	public List<Product> getProductsNotSold(){
+		EntityManager em = this.getEntityManager();
+		List<Product> list = new ArrayList<Product>();
+
+		Query query = em.createQuery("SELECT prod FROM Product as prod "
+										+ "WHERE prod NOT IN "
+										+ "(SELECT DISTINCT p FROM ProductOrder as po  "
+										+ "JOIN po.product as p "
+										+ "JOIN po.order as o "
+										+ "JOIN o.status as s "
+										+ "WHERE s != 'Cancelled') ");
+		
+		em.getTransaction().begin();
+		
+		list = (ArrayList<Product>) query.getResultList();
+		
+		em.getTransaction().commit();	
+		return list;
+		
+	}
+	
 //	la queri hql corresponde a la sql con quantity sin chequear estado
 	public Product getBestSellingProduct() {
 		EntityManager em = this.getEntityManager();

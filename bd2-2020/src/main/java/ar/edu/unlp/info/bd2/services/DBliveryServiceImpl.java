@@ -443,8 +443,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public List<Product> getProductsNotSold() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> list = this.repository.getProductsNotSold();
+		return list;
 	}
 
 

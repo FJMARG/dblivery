@@ -41,7 +41,7 @@ public class DBliveryStatisticsTestCase {
 
     @BeforeAll
     public void prepareDB() throws Exception {
-//        this.initializer.prepareDB();
+        this.initializer.prepareDB();
     }
     
 //    @Test
@@ -132,12 +132,12 @@ public class DBliveryStatisticsTestCase {
 //    	Product product = this.service.getBestSellingProduct();
 //    	assertEquals("Pizza napolitana",product.getName());
 //    }
-////    
-//    @Test
-//    public void testGetProductsOnePrice() {
-//    	List<Product> products = this.service.getProductsOnePrice();
-//    	assertEquals(27, products.size());
-//    }
+//    
+    @Test
+    public void testGetProductsOnePrice() {
+    	List<Product> products = this.service.getProductsOnePrice();
+    	assertEquals(27, products.size());
+    }
 //    
 //    @Test
 //    public void testGetProductIncreaseMoreThan100() {
@@ -182,12 +182,12 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(227.0F, prices.get(98)[1]);
 //    }
 //    
-//    @Test
-//    public void testGetProductsNotSold() {
-//    	List<Product> products = this.service.getProductsNotSold();
-//    	assertEquals(5,products.size());
-//    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Bastoncitos de mozzarella a la milanesa","Milanesa Suiza","Sándwich de lomo completo","Tarta de pollo (2 porc.)","Lomo a la mostaza con papas noisette"));
-//    }
+    @Test
+    public void testGetProductsNotSold() {
+    	List<Product> products = this.service.getProductsNotSold();
+    	assertEquals(5,products.size());
+    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Bastoncitos de mozzarella a la milanesa","Milanesa Suiza","Sándwich de lomo completo","Tarta de pollo (2 porc.)","Lomo a la mostaza con papas noisette"));
+    }
 //    
 //    @Test
 //    public void testGetOrderWithMoreQuantityOfProducts() throws ParseException {
