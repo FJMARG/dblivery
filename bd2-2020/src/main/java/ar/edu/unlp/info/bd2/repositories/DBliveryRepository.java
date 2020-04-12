@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.repositories;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -186,6 +187,26 @@ public class DBliveryRepository {
 		
 		em.getTransaction().commit();	
 		
+		return list;
+		
+	}
+	
+	public List<Product> getSoldProductsOn( Date day ){
+		EntityManager em = this.getEntityManager();
+		List<Product> list = new ArrayList<Product>();
+		java.sql.Date dbdate = new java.sql.Date(day.getYear(), day.getMonth(), day.getDate());
+		
+		System.out.println(dbdate);
+		Query query = em.createQuery("SELECT prod FROM Order as o "
+										+ "JOIN o.products as po "
+										+ "JOIN po.product as prod "
+										+ "WHERE o.date = '" + dbdate + "'");
+		
+		em.getTransaction().begin();
+		
+		list = (ArrayList<Product>) query.getResultList();
+		
+		em.getTransaction().commit();	
 		return list;
 		
 	}

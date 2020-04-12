@@ -63,13 +63,13 @@ public class DBliveryStatisticsTestCase {
 //    	this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
 //    }
 //    
-    @Test
-    public void testGetTop10MoreExpensiveProducts() {
-    	List<Product> products = this.service.getTop10MoreExpensiveProducts();
-    	assertEquals(10,products.size());
-//    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Sándwich de bondiola de cerdo completo","Lomo al roquefort","Tortilla a la española","Choripán","Bondiola al oporto"));
-    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Pizza especial","Lomo al roquefort","Tortilla a la española","Choripán","Bondiola al oporto"));
-    }
+//    @Test
+//    public void testGetTop10MoreExpensiveProducts() {
+//    	List<Product> products = this.service.getTop10MoreExpensiveProducts();
+//    	assertEquals(10,products.size());
+////    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Sándwich de bondiola de cerdo completo","Lomo al roquefort","Tortilla a la española","Choripán","Bondiola al oporto"));
+//    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Pizza especial","Lomo al roquefort","Tortilla a la española","Choripán","Bondiola al oporto"));
+//    }
 //    
 //    @Test
 //    public void testGetTop6UsersMoreOrders() {
@@ -133,11 +133,11 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals("Pizza napolitana",product.getName());
 //    }
 ////    
-    @Test
-    public void testGetProductsOnePrice() {
-    	List<Product> products = this.service.getProductsOnePrice();
-    	assertEquals(27, products.size());
-    }
+//    @Test
+//    public void testGetProductsOnePrice() {
+//    	List<Product> products = this.service.getProductsOnePrice();
+//    	assertEquals(27, products.size());
+//    }
 //    
 //    @Test
 //    public void testGetProductIncreaseMoreThan100() {
@@ -158,12 +158,12 @@ public class DBliveryStatisticsTestCase {
 //    	this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria","Pancho Crazy","Kentucky","La Bodeguita","Foodie Special Burger","Lo de Carlos","Burger Bar"));
 //    }
 //    
-//    @Test
-//    public void testGetSoldProductsOn() throws ParseException {
-//    	List<Product> products = this.service.getSoldProductsOn(sdf.parse("28/2/2010"));
-//    	assertEquals(4, products.size());
-//    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Filet de merluza a la romana","Bife de chorizo grillado","Milanesa americana","Ensalada de hojas verdes y queso"));
-//    }
+    @Test
+    public void testGetSoldProductsOn() throws ParseException {
+    	List<Product> products = this.service.getSoldProductsOn(sdf.parse("28/2/2010"));
+    	assertEquals(4, products.size());
+    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Filet de merluza a la romana","Bife de chorizo grillado","Milanesa americana","Ensalada de hojas verdes y queso"));
+    }
 //    
 //    @Test
 //    public void testGetOrdersCompleteMorethanOneDay() {
