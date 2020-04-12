@@ -106,7 +106,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		
 		ProductOrder po = new ProductOrder(quantity, p, updatedOrder);
 		po = repository.persist(po);
-		updatedOrder.getProducts().add(po);
+		updatedOrder.addProductOrder(po);
 		
 		return repository.update(updatedOrder);
 	}
@@ -295,15 +295,20 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public List<Order> getAllOrdersMadeByUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Optional<User> userDB = this.getUserByUsername(username);
+		
+		if( userDB == null) {
+			return null;
+		}
+		
+		return repository.getAllOrdersMadeByUser(userDB.get());
 	}
 
 
 	@Override
 	public List<User> getUsersSpendingMoreThan(Float amount) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.getUsersSpendingMoreThan(amount);
 	}
 
 

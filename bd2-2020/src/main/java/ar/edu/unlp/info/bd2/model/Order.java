@@ -48,6 +48,9 @@ public class Order {
 	@Column(nullable=false)
 	private String address;
 	
+	@Column(nullable=false)
+	private Float amount;
+	
 	@Type(type="date")
 	@Column(nullable=false)
 	private Date date;
@@ -58,6 +61,7 @@ public class Order {
 	@ManyToOne(optional=true)
 	private User deliveryUser;
 
+
 	public Order(User client, double coordX, double coordY, String address,Date date) {
 		super();
 		this.status = new ArrayList<OrderStatus>();
@@ -67,13 +71,17 @@ public class Order {
 		this.address = address;
 		this.date = date;
 		this.products = new ArrayList<ProductOrder>();
+		this.amount = 0F;
 	}	
 	
 	public Order() { }
 	
 	public Float getAmount() {
-		// TODO Auto-generated method stub
-		return null;
+//		Float amount = 0F;
+//		for (ProductOrder productOrder : this.getProducts()) {
+//			amount += productOrder.getProduct().getPrice() * productOrder.getQuantity();
+//		}
+		return amount;
 	}
 	
 	public long getId() {
@@ -146,6 +154,11 @@ public class Order {
 	
 	public void setDeliveryUser(User deliveryUser) {
 		this.deliveryUser = deliveryUser;
+	}
+	
+	public void addProductOrder(ProductOrder productOrder) {
+		this.products.add(productOrder);
+		this.amount += productOrder.getProduct().getPrice() * productOrder.getQuantity();
 	}
 	
 	//--- Metodos State ---

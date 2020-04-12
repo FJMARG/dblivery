@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.repositories;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -10,6 +11,7 @@ import javax.persistence.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.OrderStatus;
 import ar.edu.unlp.info.bd2.model.Pending;
 import ar.edu.unlp.info.bd2.model.Product;
@@ -153,6 +155,44 @@ public class DBliveryRepository {
 		return product;
 		
 	}
+	
+	
+	public List<Order> getAllOrdersMadeByUser(User user) {
+		EntityManager em = this.getEntityManager();
+		Query query = em.createQuery("FROM Order o WHERE o.client.id = " + user.getId() );
+		
+		ArrayList<Order> list = new ArrayList<Order>();
+		
+		em.getTransaction().begin();
+		
+		list = (ArrayList<Order>) query.getResultList();
+		
+		em.getTransaction().commit();
+		
+		return list;
+	}
+	
+	
+	public List<User> getUsersSpendingMoreThan(Float amount) {
+		EntityManager em = this.getEntityManager();
+		
+		Query query = em.createQuery("SELECT u FROM User AS u "
+									+"JOIN u.orders AS o "
+									+"JOIN o.status AS os "
+									+"WHERE os.id = 2 "
+									+"GROUP BY u.id, o.id "
+									+"HAVING SUM(o.amount) > " + amount);
+
+		ArrayList<User> list = new ArrayList<User>();
+		em.getTransaction().begin();
+		
+		list = (ArrayList<User>) query.getResultList();
+		
+		em.getTransaction().commit();
+		
+		return list;
+	}
+	
 	
 	public ArrayList<Product> getTop10MoreExpensiveProducts(){
 		EntityManager em = this.getEntityManager();
