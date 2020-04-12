@@ -393,8 +393,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public List<Product> getProductsOnePrice() {
+		List<Product> list = this.repository.getProductsOnePrice();
 		// TODO Auto-generated method stub
-		return null;
+		return list;
 	}
 
 

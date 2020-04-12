@@ -41,7 +41,7 @@ public class DBliveryStatisticsTestCase {
 
     @BeforeAll
     public void prepareDB() throws Exception {
-        this.initializer.prepareDB();
+//        this.initializer.prepareDB();
     }
     
 //    @Test
@@ -127,17 +127,17 @@ public class DBliveryStatisticsTestCase {
 //    	this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("luzpascual621","carlasantana949","juantorres331","rubnpastor499","mariorubio577"));
 //    }
 //    
-    @Test
-    public void testGetBestSellingProduct() {
-    	Product product = this.service.getBestSellingProduct();
-    	assertEquals("Pizza napolitana",product.getName());
-    }
-//    
 //    @Test
-//    public void testGetProductsOnePrice() {
-//    	List<Product> products = this.service.getProductsOnePrice();
-//    	assertEquals(27, products.size());
+//    public void testGetBestSellingProduct() {
+//    	Product product = this.service.getBestSellingProduct();
+//    	assertEquals("Pizza napolitana",product.getName());
 //    }
+////    
+    @Test
+    public void testGetProductsOnePrice() {
+    	List<Product> products = this.service.getProductsOnePrice();
+    	assertEquals(27, products.size());
+    }
 //    
 //    @Test
 //    public void testGetProductIncreaseMoreThan100() {

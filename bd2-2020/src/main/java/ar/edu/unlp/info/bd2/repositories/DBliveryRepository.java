@@ -171,6 +171,25 @@ public class DBliveryRepository {
 		return list;
 	}
 	
+	public List<Product> getProductsOnePrice(){
+		EntityManager em = this.getEntityManager();
+		List<Product> list = new ArrayList<Product>();
+		
+		Query query = em.createQuery("SELECT prod FROM Product as prod "
+										+ "JOIN prod.prices as pr "
+										+ "GROUP BY prod "
+										+ "HAVING COUNT(*) = 1");
+		
+		em.getTransaction().begin();
+		
+		list = (ArrayList<Product>) query.getResultList();
+		
+		em.getTransaction().commit();	
+		
+		return list;
+		
+	}
+	
 //	la queri hql corresponde a la sql con quantity sin chequear estado
 	public Product getBestSellingProduct() {
 		EntityManager em = this.getEntityManager();
