@@ -25,6 +25,14 @@ public class Sent extends OrderStatus {
 	public boolean canFinish(Order o) {
 		return true;
 	}
+	
+	@Override
+	public boolean canChangeToStatus(OrderStatus s) {
+		if(s.getStatus() == "Delivered") {
+			return true;
+		}
+		return false;
+	}
 
 	
 }

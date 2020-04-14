@@ -28,4 +28,9 @@ public class Delivered extends OrderStatus {
 		return false;
 	}
 
+	@Override
+	public boolean canChangeToStatus(OrderStatus s) {
+		return false;
+	}
+
 }

@@ -81,9 +81,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
 		Order newOrder = new Order(client, coordX, coordY, address, dateOfOrder);
 //		busco el estado pending
-		OrderStatus pending = this.createStatusIfNotExist(new Pending());
-		
-//		
+		OrderStatus pending = this.createStatusIfNotExist(new Pending());	
 		newOrder.setStatus(pending);
 		return repository.persist(newOrder);
 	}

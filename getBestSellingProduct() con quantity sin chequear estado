@@ -1,0 +1,5 @@
+select sum(po.quantity) as total, p.name 
+from Product p inner join 
+ProductOrder po on p.id = po.product_id g
+roup by p.id, p.name 
+order by total desc

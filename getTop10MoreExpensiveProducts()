@@ -1,0 +1,1 @@
+select * from Product pr inner join Price p on pr.id = p.product_id where p.endDate is null order by p.price desc

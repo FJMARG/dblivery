@@ -35,6 +35,13 @@ public class Order {
 				inverseJoinColumns=@JoinColumn(name="status_id",referencedColumnName="id"))
 	private List<OrderStatus> status;	
 	
+	@ManyToOne
+	private OrderStatus currentStatus;
+
+	public void setCurrentStatus(OrderStatus currentStatus) {
+		this.currentStatus = currentStatus;
+	}
+
 	@OneToMany(mappedBy ="order")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ProductOrder> products;
@@ -72,6 +79,7 @@ public class Order {
 		this.date = date;
 		this.products = new ArrayList<ProductOrder>();
 		this.amount = 0F;
+		this.currentStatus = null;
 	}	
 	
 	public Order() { }
@@ -97,11 +105,20 @@ public class Order {
 	}
 	
 	public void setStatus(OrderStatus status) {
-		this.status.add(status);
+		if(this.getActualStatus() == null && status.getStatus() == "Pending") {
+			this.status.add(status);
+			this.setCurrentStatus(status);
+		}else {
+			if(this.getActualStatus().canChangeToStatus(status)) {
+				this.status.add(status);
+				this.setCurrentStatus(status);
+			}
+		}
+		
 	}
 	
 	public OrderStatus getActualStatus() {
-		return this.getStatus().get( this.status.size() - 1);
+		return this.currentStatus;
 	}
 	
 	public User getClient() {

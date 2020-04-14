@@ -1,0 +1,8 @@
+select sum(po.quantity) as total, p.name 
+from Product p 
+inner join ProductOrder po on p.id = po.product_id 
+inner join Order_OrderStatus os on po.order_id = os.order_id 
+inner join OrderStatus s on s.id = os.status_id
+where s.status like 'Delivered' 
+group by po.product_id
+order by total desc
