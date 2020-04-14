@@ -188,17 +188,17 @@ public class DBliveryStatisticsTestCase {
     	assertEquals(5,products.size());
     	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Bastoncitos de mozzarella a la milanesa","Milanesa Suiza","Sándwich de lomo completo","Tarta de pollo (2 porc.)","Lomo a la mostaza con papas noisette"));
     }
-//    
-//    @Test
-//    public void testGetOrderWithMoreQuantityOfProducts() throws ParseException {
-//    	List<Order> ord = this.service.getOrderWithMoreQuantityOfProducts(sdf.parse("23/6/2014"));
-//    	assertEquals(1,ord.size());
-//    	Order o = ord.get(0);
-//    	assertEquals("Calle 34 Nº661", o.getAddress());
-//    	assertEquals(2,o.getProducts().size());
-//    	assertEquals(Float.valueOf("1867"), o.getAmount());
-//    }
-//    
+    
+    @Test
+    public void testGetOrderWithMoreQuantityOfProducts() throws ParseException {
+    	List<Order> ord = this.service.getOrderWithMoreQuantityOfProducts(sdf.parse("23/6/2014"));
+    	assertEquals(1,ord.size());
+    	Order o = ord.get(0);
+    	assertEquals("Calle 34 Nº661", o.getAddress());
+    	assertEquals(2,o.getProducts().size());
+    	assertEquals(Float.valueOf("1867"), o.getAmount());
+    }
+    
 //    @Test
 //    public void testOrderAmount() {
 //    	Optional<Order> ord = this.service.getOrderById(Long.getLong("77"));

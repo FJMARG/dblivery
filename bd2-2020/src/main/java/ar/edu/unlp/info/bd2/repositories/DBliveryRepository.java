@@ -1,6 +1,8 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -254,14 +256,16 @@ public class DBliveryRepository {
 	public List<Product> getProductsNotSold(){
 		EntityManager em = this.getEntityManager();
 		List<Product> list = new ArrayList<Product>();
-
-		Query query = em.createQuery("SELECT prod FROM Product as prod "
-										+ "WHERE prod NOT IN "
-										+ "(SELECT DISTINCT p FROM ProductOrder as po  "
-										+ "JOIN po.product as p "
-										+ "JOIN po.order as o "
-										+ "JOIN o.status as s "
-										+ "WHERE s != 'Cancelled') ");
+		
+		String q = "SELECT prod FROM Product as prod "
+				+ "WHERE prod NOT IN "
+				+ "(SELECT DISTINCT p FROM ProductOrder po  "
+				+ "JOIN po.product p "
+				+ "JOIN po.order o "
+				+ "JOIN o.status s "
+				+ "WHERE s.class != Cancelled)";
+		
+		Query query = em.createQuery(q);
 		
 		em.getTransaction().begin();
 		
@@ -290,4 +294,20 @@ public class DBliveryRepository {
 		return p.get(0);
 	}
 
+	public List<Order> getOrdersOrderedByQuantityOfProducts(String day){
+		
+		EntityManager em = this.getEntityManager();
+		
+		String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' GROUP BY o ORDER BY sum(p.quantity) DESC";
+		
+		Query query = em.createQuery(q);
+		
+		em.getTransaction().begin();
+		
+		List<Order> list = query.getResultList();
+		
+		em.getTransaction().commit();	
+		return list;
+	}
+	
 }

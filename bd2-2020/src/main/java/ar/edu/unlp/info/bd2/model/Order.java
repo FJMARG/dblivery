@@ -158,7 +158,7 @@ public class Order {
 	
 	public void addProductOrder(ProductOrder productOrder) {
 		this.products.add(productOrder);
-		this.amount += productOrder.getProduct().getPrice() * productOrder.getQuantity();
+		this.amount += productOrder.getProduct().getPriceAt(this.date) * productOrder.getQuantity();
 	}
 	
 	//--- Metodos State ---

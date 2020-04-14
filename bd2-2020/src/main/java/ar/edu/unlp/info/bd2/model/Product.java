@@ -1,8 +1,10 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+
+import org.joda.time.LocalDateTime;
 
 @Entity
 public class Product {
@@ -81,9 +85,15 @@ public class Product {
 		this.prices = prices;
 	}
 	
-	public Float getPrice() {
-		return this.prices.get(this.prices.size()-1).getPrice();
+	public Float getLastPrice() {
+		Price price = this.prices.stream().sorted((p1,p2)->p2.getStartDate().compareTo(p1.getStartDate())).findFirst().get();
+		return price.getPrice();
 	}
+	
+	public Float getPriceAt(Date f) {
+		Price price = this.prices.stream().filter(p -> f.after(p.getStartDate()) & (f.before(p.getEndDate()))).findFirst().get();
+		return price.getPrice();
+	};
 	
 	public Supplier getSupplier() {
 		return supplier;
@@ -100,7 +110,8 @@ public class Product {
 	
 // METODO PARA SETEAR EL PRECIO (AGREGA A LA COLECCION PRICES Y LO SETEA COMO PRECIO ACTUAL)
 	public void updatePrice( Float price, Date startDate ) {
-		this.prices.get(this.prices.size()-1).setEndDate(startDate);
+		Price lastprice = this.prices.stream().sorted((p1,p2)->p2.getStartDate().compareTo(p1.getStartDate())).findFirst().get();
+		lastprice.setEndDate(startDate);
 		this.prices.add(new Price(price, startDate));
 	}
 }

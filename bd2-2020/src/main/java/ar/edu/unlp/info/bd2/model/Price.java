@@ -35,6 +35,7 @@ public class Price {
 		super();
 		this.price = price;
 		this.startDate = startDate;
+		this.endDate = new Date(92233720368547L);
 	}
 	
 	public Price() { }
