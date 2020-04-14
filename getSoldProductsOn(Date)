@@ -1,0 +1,1 @@
+Select o.id, p.name from Orders o inner join ProductOrder pr on o.id = pr.order_id inner join Product p on p.id = pr.product_id where o.date = '2010/2/28'

@@ -1,0 +1,1 @@
+select p.id from Product p inner join Price pr on pr.product_id = p.id group by p.id having count(*) = 1

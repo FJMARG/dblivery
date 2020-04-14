@@ -29,5 +29,12 @@ public class Pending extends OrderStatus {
 		return false;
 	}
 
+	@Override
+	public boolean canChangeToStatus(OrderStatus s) {
+		if((s.getStatus() == "Sent") ||  (s.getStatus() == "Cancelled")) {
+			return true;
+		}
+		return false;
+	}
 	
 }

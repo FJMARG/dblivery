@@ -1,0 +1,1 @@
+select count(*) as total, p.name from Product p inner join ProductOrder po on p.id = po.product_id group by p.id, p.name order by total desc

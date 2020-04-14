@@ -26,5 +26,13 @@ public class Cancelled extends OrderStatus {
 		return false;
 	}
 
+	@Override
+	public boolean canChangeToStatus(OrderStatus s) {
+		if(s.getStatus() == "Pending") {
+			return true;
+		}
+		return false;
+	}
+
 	
 }

@@ -1,0 +1,7 @@
+select prod.name from Product prod 
+where prod.id not in 
+	(Select p.product_id from ProductOrder p 
+	inner join Orders o on o.id = p.order_id 
+	inner join Order_OrderStatus os on os.order_id = o.id 
+	inner join OrderStatus s on s.id = os.status_id 
+	where (s.status != 'Cancelled'))

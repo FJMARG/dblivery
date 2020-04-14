@@ -27,4 +27,6 @@ public abstract class OrderStatus {
 	
 	public abstract boolean canFinish(Order o);	
 	
+	public abstract boolean canChangeToStatus(OrderStatus s);	
+	
 }
