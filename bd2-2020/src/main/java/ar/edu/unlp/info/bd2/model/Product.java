@@ -84,9 +84,11 @@ public class Product {
 	public void setPrices(List<Price> prices) {
 		this.prices = prices;
 	}
-	
+	public Float getPrice() {
+		return this.getLastPrice();
+	}
 	public Float getLastPrice() {
-		Price price = this.prices.stream().sorted((p1,p2)->p2.getStartDate().compareTo(p1.getStartDate())).findFirst().get();
+		Price price = this.prices.stream().sorted((p1,p2)->p1.getStartDate().compareTo(p2.getStartDate())).findFirst().get();
 		return price.getPrice();
 	}
 	

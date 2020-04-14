@@ -41,7 +41,7 @@ public class DBliveryStatisticsTestCase {
 
     @BeforeAll
     public void prepareDB() throws Exception {
-//        this.initializer.prepareDB();
+        this.initializer.prepareDB();
     }
     
 //    @Test
