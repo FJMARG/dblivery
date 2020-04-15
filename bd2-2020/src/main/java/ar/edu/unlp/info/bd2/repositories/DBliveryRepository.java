@@ -308,4 +308,16 @@ public class DBliveryRepository {
 		return list;
 	}
 	
+	public List<Object[]> getProductsWithPriceAt(String day) {
+		
+		EntityManager em = this.getEntityManager();
+		String q = "SELECT p,  pr.price FROM Product p JOIN p.prices pr WHERE '"+day+"' BETWEEN pr.startDate AND pr.endDate";
+		Query query = em.createQuery(q);
+		em.getTransaction().begin();
+		List<Object[]> list = query.getResultList();
+		em.getTransaction().commit();	
+		return list;
+	
+	}
+	
 }

@@ -31,18 +31,18 @@ import java.util.stream.Collectors;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DBliveryStatisticsTestCase {
 
-    @Autowired
-    DBInitializer initializer;
+  //  @Autowired
+ //   DBInitializer initializer;
 
     @Autowired
     DBliveryService service;
     
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    @BeforeAll
-    public void prepareDB() throws Exception {
-//        this.initializer.prepareDB();
-    }
+  //  @BeforeAll
+  //  public void prepareDB() throws Exception {
+  //      this.initializer.prepareDB();
+  // }
     
 //    @Test
 //    public void testGetAllOrdersMadeByUser() {
@@ -169,17 +169,17 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(99, this.service.getOrdersCompleteMorethanOneDay().size());
 //    }
 //    
-//    @Test
-//    public void testGetProductsWithPriceAt() throws ParseException {
-//    	List<Object[]> prices = this.service.getProductsWithPriceAt(sdf.parse("28/2/2013"));
-//    	assertEquals(110, prices.size());
-//    	assertEquals("Papas fritas a la provenzal", ((Product)prices.get(0)[0]).getName());
-//    	assertEquals(426.0F, prices.get(0)[1]);
-//    	assertEquals("Lomo a la mostaza con papas noisette", ((Product)prices.get(109)[0]).getName());
-//    	assertEquals(459.0F, prices.get(109)[1]);
-//    	assertEquals("Lomo a las cuatro pimientas", ((Product)prices.get(98)[0]).getName());
-//    	assertEquals(227.0F, prices.get(98)[1]);
-//    }
+    @Test
+    public void testGetProductsWithPriceAt() throws ParseException {
+    	List<Object[]> prices = this.service.getProductsWithPriceAt(sdf.parse("28/2/2013"));
+    	assertEquals(110, prices.size());
+    	assertEquals("Papas fritas a la provenzal", ((Product)prices.get(0)[0]).getName());
+    	assertEquals(426.0F, prices.get(0)[1]);
+    	assertEquals("Lomo a la mostaza con papas noisette", ((Product)prices.get(109)[0]).getName());
+    	assertEquals(459.0F, prices.get(109)[1]);
+    	assertEquals("Lomo a las cuatro pimientas", ((Product)prices.get(98)[0]).getName());
+    	assertEquals(227.0F, prices.get(98)[1]);
+    }
 //    
 //    @Test
 //    public void testGetProductsNotSold() {

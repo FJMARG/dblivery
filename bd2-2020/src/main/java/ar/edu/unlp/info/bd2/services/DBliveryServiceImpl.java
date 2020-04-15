@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.services;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -440,8 +441,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public List<Object[]> getProductsWithPriceAt(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return this.repository.getProductsWithPriceAt(sdf.format(day));
 	}
 
 
@@ -455,9 +456,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	public List<Order> getOrderWithMoreQuantityOfProducts(Date day) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		List<Order> res = new ArrayList<Order>();
-		res.add(this.repository.getOrdersOrderedByQuantityOfProducts(sdf.format(day)).get(0));
-		return res;
+		ArrayList<Order> r = new ArrayList<Order>();
+		r.add(this.repository.getOrdersOrderedByQuantityOfProducts(sdf.format(day)).get(0));
+		return r;
 	}
 	
 	
