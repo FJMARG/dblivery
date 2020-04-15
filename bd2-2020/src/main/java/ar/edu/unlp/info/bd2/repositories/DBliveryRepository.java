@@ -202,8 +202,7 @@ public class DBliveryRepository {
 		
 		Query query = em.createQuery("SELECT prod FROM Product as prod "
 										+ "JOIN prod.prices as pri "
-										+ "WHERE pri.endDate is null "
-										+ "ORDER BY pri.price DESC").setFirstResult(0).setMaxResults(10);
+										+ "ORDER BY pri.price DESC").setFirstResult(0).setMaxResults(9);
 		
 		em.getTransaction().begin();
 		
@@ -259,11 +258,10 @@ public class DBliveryRepository {
 		
 		String q = "SELECT prod FROM Product as prod "
 				+ "WHERE prod NOT IN "
-				+ "(SELECT DISTINCT p FROM ProductOrder po  "
+				+ "(SELECT p FROM ProductOrder po  "
 				+ "JOIN po.product p "
 				+ "JOIN po.order o "
-				+ "JOIN o.status s "
-				+ "WHERE s.class != Cancelled)";
+				+ "WHERE o.currentStatus != 3)";
 		
 		Query query = em.createQuery(q);
 		
