@@ -38,7 +38,9 @@ public class Price {
 		this.endDate = new Date(92233720368547L);
 	}
 	
-	public Price() { }
+	public Price() { 
+		
+	}
 	
 	public float getPrice() {
 		return price;

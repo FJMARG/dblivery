@@ -441,8 +441,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public List<Object[]> getProductsWithPriceAt(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return this.repository.getProductsWithPriceAt(sdf.format(day));
 	}
 
 
