@@ -1,21 +1,14 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.OrderStatus;
-import ar.edu.unlp.info.bd2.model.Pending;
 import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.User;
 
@@ -24,47 +17,23 @@ public class DBliveryRepository {
 	@Autowired
 	SessionFactory sessionFactory;
 	
-	private EntityManager entityManager;
-	
 	public DBliveryRepository() {}
-
-	public EntityManager getEntityManager() {
-		if (this.entityManager == null)
-			this.entityManager = this.sessionFactory.createEntityManager();
-		return this.entityManager;
-	}
 	
 	public <T> T persist(T entity) {
-		
-		EntityManager em = this.getEntityManager();
-		em.getTransaction().begin();
-		
-		em.persist(entity);
-		
-		em.getTransaction().commit();
-		
+		Session s = this.sessionFactory.getCurrentSession();
+		s.persist(entity);
 		return entity;
 	}
 	
 	public <T> T update(T entity) {
-		EntityManager em = this.getEntityManager();
-		em.getTransaction().begin();
-		
-		em.merge(entity);
-		
-		em.getTransaction().commit();
-		
+		Session s = this.sessionFactory.getCurrentSession();
+		s.merge(entity);
 		return entity;
 	}
 
 	public <T> T get(Long id, Class<T> persistentClass) {	
-		EntityManager em = this.getEntityManager();
-		em.getTransaction().begin();
-		
-		T entity = em.find(persistentClass, id);
-		
-		em.getTransaction().commit();
-		
+		Session s = this.sessionFactory.getCurrentSession();
+		T entity = s.find(persistentClass, id);	
 		return entity;
 	}
 	
@@ -74,249 +43,162 @@ public class DBliveryRepository {
 	
 //	Order Status
 	public OrderStatus getStatusByName(String status) {	
-		EntityManager em = this.getEntityManager();
-		Query query = em.createQuery("FROM OrderStatus WHERE status = '" + status + "'");
-		
+		Session s = this.sessionFactory.getCurrentSession();
+		Query query = s.createQuery("FROM OrderStatus WHERE status = '" + status + "'");
 		OrderStatus result;
-		
-		em.getTransaction().begin();
 		if (query.getResultList().isEmpty()) // FIX
 			result = null;
 		else
 			result = (OrderStatus) query.getSingleResult();
-		
-		em.getTransaction().commit();
-		
 		return result;
 	}
 	
 //	User
 	public User getUserByUsername(String username) {	
-		EntityManager em = this.getEntityManager();
-		Query query = em.createQuery("FROM User WHERE username = '" + username + "'");
+		Session s = this.sessionFactory.getCurrentSession();
+		Query query = s.createQuery("FROM User WHERE username = '" + username + "'");
 		User result;
-		
-		em.getTransaction().begin();
 		try{
 			result = (User) query.getSingleResult();
 		}catch( Exception e) {
 			result = null;
 		}
-				
-		em.getTransaction().commit();
-		
 		return result;
 	}
 	
 	public User getUserByEmail(String email) {	
-		EntityManager em = this.getEntityManager();
-		Query query = em.createQuery("FROM User WHERE email = '" + email + "'");
-		
-		em.getTransaction().begin();
-		
-		User result = (User) query.getSingleResult();
-	
-		em.getTransaction().commit();
-		
+		Session s = this.sessionFactory.getCurrentSession();
+		Query query = s.createQuery("FROM User WHERE email = '" + email + "'");
+		User result = (User) query.getSingleResult();		
 		return result;
 	}
 	
 //	Product
+	@SuppressWarnings("unchecked")
 	public List<Product> getProductsByName(String name) {
-		
-		EntityManager em = this.getEntityManager();
-		Query query = em.createQuery("FROM Product WHERE name LIKE '%" + name + "%'");
-		
+		Session s = this.sessionFactory.getCurrentSession();
+		Query query = s.createQuery("FROM Product WHERE name LIKE '%" + name + "%'");
 		ArrayList<Product> list = new ArrayList<Product>();
-		
-		em.getTransaction().begin();
-		
 		list = (ArrayList<Product>) query.getResultList();
-		
-		em.getTransaction().commit();	
-		
 		return list;
-		
 	}
 	
 	public Product getProductByName(String name) {
-		
-		EntityManager em = this.getEntityManager();
-		Query query = em.createQuery("FROM Product WHERE name = '" + name + "'");
-		
+		Session s = this.sessionFactory.getCurrentSession();
+		Query query = s.createQuery("FROM Product WHERE name = '" + name + "'");
 		Product product;
-		
-		em.getTransaction().begin();	 
 		try {
 			product = (Product) query.getSingleResult();
 		}catch( Exception e ) {
 			product = null;
 		}
-		em.getTransaction().commit();
-		
 		return product;
-		
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	public List<Order> getAllOrdersMadeByUser(User user) {
-		EntityManager em = this.getEntityManager();
-		Query query = em.createQuery("FROM Order o WHERE o.client.id = " + user.getId() );
-		
+		Session s = this.sessionFactory.getCurrentSession();
+		Query query = s.createQuery("FROM Order o WHERE o.client.id = " + user.getId() );
 		ArrayList<Order> list = new ArrayList<Order>();
-		
-		em.getTransaction().begin();
-		
 		list = (ArrayList<Order>) query.getResultList();
-		
-		em.getTransaction().commit();
-		
 		return list;
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	public List<User> getUsersSpendingMoreThan(Float amount) {
-		EntityManager em = this.getEntityManager();
-		
-		Query query = em.createQuery("SELECT u FROM User AS u "
+		Session s = this.sessionFactory.getCurrentSession();	
+		Query query = s.createQuery("SELECT u FROM User AS u "
 									+"JOIN u.orders AS o "
 									+"JOIN o.status AS os "
 									+"WHERE os.id = 2 "
 									+"GROUP BY u.id, o.id "
 									+"HAVING SUM(o.amount) > " + amount);
-
 		ArrayList<User> list = new ArrayList<User>();
-		em.getTransaction().begin();
-		
 		list = (ArrayList<User>) query.getResultList();
-		
-		em.getTransaction().commit();
-		
 		return list;
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	public ArrayList<Product> getTop10MoreExpensiveProducts(){
-		EntityManager em = this.getEntityManager();
-		ArrayList<Product> list = new ArrayList<Product>();
-		
-		Query query = em.createQuery("SELECT prod FROM Product as prod "
+		Session s = this.sessionFactory.getCurrentSession();
+		ArrayList<Product> list = new ArrayList<Product>();	
+		Query query = s.createQuery("SELECT prod FROM Product as prod "
 										+ "JOIN prod.prices as pri "
 										+ "ORDER BY pri.price DESC").setFirstResult(0).setMaxResults(9);
-		
-		em.getTransaction().begin();
-		
 		list = (ArrayList<Product>) query.getResultList();
-		
-		em.getTransaction().commit();	
-		
 		return list;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Product> getProductsOnePrice(){
-		EntityManager em = this.getEntityManager();
+		Session s = this.sessionFactory.getCurrentSession();
 		List<Product> list = new ArrayList<Product>();
-		
-		Query query = em.createQuery("SELECT prod FROM Product as prod "
+		Query query = s.createQuery("SELECT prod FROM Product as prod "
 										+ "JOIN prod.prices as pr "
 										+ "GROUP BY prod "
 										+ "HAVING COUNT(*) = 1");
-		
-		em.getTransaction().begin();
-		
 		list = (ArrayList<Product>) query.getResultList();
-		
-		em.getTransaction().commit();	
-		
 		return list;
-		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Product> getSoldProductsOn( Date day ){
-		EntityManager em = this.getEntityManager();
+		Session s = this.sessionFactory.getCurrentSession();
 		List<Product> list = new ArrayList<Product>();
+		@SuppressWarnings("deprecation")
 		java.sql.Date dbdate = new java.sql.Date(day.getYear(), day.getMonth(), day.getDate());
-		
 		System.out.println(dbdate);
-		Query query = em.createQuery("SELECT prod FROM Order as o "
+		Query query = s.createQuery("SELECT prod FROM Order as o "
 										+ "JOIN o.products as po "
 										+ "JOIN po.product as prod "
 										+ "WHERE o.date = '" + dbdate + "'");
-		
-		em.getTransaction().begin();
-		
 		list = (ArrayList<Product>) query.getResultList();
-		
-		em.getTransaction().commit();	
 		return list;
-		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Product> getProductsNotSold(){
-		EntityManager em = this.getEntityManager();
+		Session s = this.sessionFactory.getCurrentSession();
 		List<Product> list = new ArrayList<Product>();
-		
 		String q = "SELECT prod FROM Product as prod "
 				+ "WHERE prod NOT IN "
 				+ "(SELECT DISTINCT p FROM Order o "
 				+ "JOIN o.products po "
 				+ "JOIN po.product p)";
-		
-		Query query = em.createQuery(q);
-		
-		em.getTransaction().begin();
-		
-		list = (ArrayList<Product>) query.getResultList();
-		
-		em.getTransaction().commit();	
+		Query query = s.createQuery(q);
+		list = (ArrayList<Product>) query.getResultList();	
 		return list;
-		
 	}
 	
-//	la queri hql corresponde a la sql con quantity sin chequear estado
+	//	la query hql corresponde a la sql con quantity sin chequear estado
+	@SuppressWarnings("unchecked")
 	public Product getBestSellingProduct() {
-		EntityManager em = this.getEntityManager();
+		Session s = this.sessionFactory.getCurrentSession();
 		ArrayList<Product> p = new ArrayList<Product>();
-		Query query = em.createQuery("SELECT p from ProductOrder as po "
+		Query query = s.createQuery("SELECT p from ProductOrder as po "
 									+ "JOIN po.product as p "
 									+ "GROUP BY p "
 									+ "ORDER BY COUNT(po.quantity) DESC");
-		
-		em.getTransaction().begin();
-		
 		p = (ArrayList<Product>) query.getResultList();
-		
-		em.getTransaction().commit();	
-		
 		return p.get(0);
 	}
 
 	public List<Order> getOrdersOrderedByQuantityOfProducts(String day){
-		
-		EntityManager em = this.getEntityManager();
-		
+		Session s = this.sessionFactory.getCurrentSession();
 		String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' GROUP BY o ORDER BY sum(p.quantity) DESC";
-		
-		Query query = em.createQuery(q);
-		
-		em.getTransaction().begin();
-		
+		Query query = s.createQuery(q);
+		@SuppressWarnings("unchecked")
 		List<Order> list = query.getResultList();
-		
-		em.getTransaction().commit();	
 		return list;
 	}
 	
 	public List<Object[]> getProductsWithPriceAt(String day) {
-		
-		EntityManager em = this.getEntityManager();
+		Session s = this.sessionFactory.getCurrentSession();
 		String q = "SELECT p,  pr.price FROM Product p JOIN p.prices pr WHERE '"+day+"' BETWEEN pr.startDate AND pr.endDate";
-		Query query = em.createQuery(q);
-		em.getTransaction().begin();
-		List<Object[]> list = query.getResultList();
-		em.getTransaction().commit();	
+		Query query = s.createQuery(q);
+		@SuppressWarnings("unchecked")
+		List<Object[]> list = query.getResultList();	
 		return list;
-	
 	}
 	
 }
