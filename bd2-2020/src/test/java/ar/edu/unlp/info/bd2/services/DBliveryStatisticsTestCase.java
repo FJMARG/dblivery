@@ -31,18 +31,18 @@ import java.util.stream.Collectors;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DBliveryStatisticsTestCase {
 
-  //  @Autowired
- //   DBInitializer initializer;
+    @Autowired
+    DBInitializer initializer;
 
     @Autowired
     DBliveryService service;
     
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-  //  @BeforeAll
-  //  public void prepareDB() throws Exception {
-  //      this.initializer.prepareDB();
-  // }
+    @BeforeAll
+    public void prepareDB() throws Exception {
+        this.initializer.prepareDB();
+   }
     
 //    @Test
 //    public void testGetAllOrdersMadeByUser() {
@@ -181,13 +181,13 @@ public class DBliveryStatisticsTestCase {
     	assertEquals("Lomo a las cuatro pimientas", ((Product)prices.get(98)[0]).getName());
     	assertEquals(227.0F, prices.get(98)[1]);
     }
-//    
-//    @Test
-//    public void testGetProductsNotSold() {
-//    	List<Product> products = this.service.getProductsNotSold();
-//    	assertEquals(5,products.size());
-//    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Bastoncitos de mozzarella a la milanesa","Milanesa Suiza","Sándwich de lomo completo","Tarta de pollo (2 porc.)","Lomo a la mostaza con papas noisette"));
-//    }
+    
+    @Test
+    public void testGetProductsNotSold() {
+    	List<Product> products = this.service.getProductsNotSold();
+    	assertEquals(5,products.size());
+    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Bastoncitos de mozzarella a la milanesa","Milanesa Suiza","Sándwich de lomo completo","Tarta de pollo (2 porc.)","Lomo a la mostaza con papas noisette"));
+    }
     
     @Test
     public void testGetOrderWithMoreQuantityOfProducts() throws ParseException {
