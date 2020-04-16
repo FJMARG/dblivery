@@ -1,11 +1,8 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-
 import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 
 @Entity
 public class Product {
