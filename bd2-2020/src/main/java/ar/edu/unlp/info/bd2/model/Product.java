@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 @Entity
@@ -85,11 +86,11 @@ public class Product {
 		this.prices = prices;
 	}
 	public Float getPrice() {
-		return this.getLastPrice();
+		return this.getLastPrice().getPrice();
 	}
-	public Float getLastPrice() {
-		Price price = this.prices.stream().sorted((p1,p2)->p1.getStartDate().compareTo(p2.getStartDate())).findFirst().get();
-		return price.getPrice();
+	public Price getLastPrice() {
+		Price price = this.prices.stream().sorted((p1,p2)->p2.getStartDate().compareTo(p1.getStartDate())).findFirst().get();
+		return price;
 	}
 	
 	public Float getPriceAt(Date f) {
@@ -112,8 +113,10 @@ public class Product {
 	
 // METODO PARA SETEAR EL PRECIO (AGREGA A LA COLECCION PRICES Y LO SETEA COMO PRECIO ACTUAL)
 	public void updatePrice( Float price, Date startDate ) {
-		Price lastprice = this.prices.stream().sorted((p1,p2)->p2.getStartDate().compareTo(p1.getStartDate())).findFirst().get();
-		lastprice.setEndDate(startDate);
+		Price lastprice = this.getLastPrice();
+		Date temp = (Date)startDate.clone();
+		temp = LocalDate.fromDateFields(temp).minusDays(1).toDate();
+		lastprice.setEndDate(temp);
 		this.prices.add(new Price(price, startDate));
 	}
 }
