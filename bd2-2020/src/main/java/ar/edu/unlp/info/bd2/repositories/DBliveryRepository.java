@@ -202,8 +202,7 @@ public class DBliveryRepository {
 		
 		Query query = em.createQuery("SELECT prod FROM Product as prod "
 										+ "JOIN prod.prices as pri "
-										+ "WHERE pri.endDate is null "
-										+ "ORDER BY pri.price DESC").setFirstResult(0).setMaxResults(10);
+										+ "ORDER BY pri.price DESC").setFirstResult(0).setMaxResults(9);
 		
 		em.getTransaction().begin();
 		
