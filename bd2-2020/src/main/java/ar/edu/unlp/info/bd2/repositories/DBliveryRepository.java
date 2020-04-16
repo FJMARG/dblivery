@@ -259,11 +259,9 @@ public class DBliveryRepository {
 		
 		String q = "SELECT prod FROM Product as prod "
 				+ "WHERE prod NOT IN "
-				+ "(SELECT DISTINCT p FROM ProductOrder po  "
-				+ "JOIN po.product p "
-				+ "JOIN po.order o "
-				+ "JOIN o.status s "
-				+ "WHERE s.class != Cancelled)";
+				+ "(SELECT DISTINCT p FROM Order o "
+				+ "JOIN o.products po "
+				+ "JOIN po.product p)";
 		
 		Query query = em.createQuery(q);
 		
