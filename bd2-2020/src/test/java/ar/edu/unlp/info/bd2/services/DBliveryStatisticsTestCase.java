@@ -41,28 +41,28 @@ public class DBliveryStatisticsTestCase {
 
     @BeforeAll
     public void prepareDB() throws Exception {
-        this.initializer.prepareDB();
+//        this.initializer.prepareDB();
    }
     
-//    @Test
-//    public void testGetAllOrdersMadeByUser() {
-//    	assertEquals(5,this.service.getAllOrdersMadeByUser("rubnpastor265").size());
-//    }
+    @Test
+    public void testGetAllOrdersMadeByUser() {
+    	assertEquals(5,this.service.getAllOrdersMadeByUser("rubnpastor265").size());
+    }
 //    
-//    @Test
-//    public void testGetUsersSpendingMoreThan() {
-//    	List<User> users = this.service.getUsersSpendingMoreThan(6000F);
-//    	assertEquals(7,users.size());
-//    	this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("alfredomartnez114","paulasez791","eduardomartin114","carlabentez531","nataliocastro278","florenciacastillo698","nataliomartnez928"));
-//    }
+    @Test
+    public void testGetUsersSpendingMoreThan() {
+    	List<User> users = this.service.getUsersSpendingMoreThan(6000F);
+    	assertEquals(7,users.size());
+    	this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("alfredomartnez114","paulasez791","eduardomartin114","carlabentez531","nataliocastro278","florenciacastillo698","nataliomartnez928"));
+    }
     
-//    @Test
-//    public void testGetTopNSuppliers() {
-//    	List<Supplier> suppliers = this.service.getTopNSuppliersInSentOrders(4);
-//    	assertEquals(4,suppliers.size());
-//    	this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
-//    }
-//    
+    @Test
+    public void testGetTopNSuppliers() {
+    	List<Supplier> suppliers = this.service.getTopNSuppliersInSentOrders(4);
+    	assertEquals(4,suppliers.size());
+    	this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
+    }
+    
     @Test
     public void testGetTop10MoreExpensiveProducts() {
     	List<Product> products = this.service.getTop10MoreExpensiveProducts();

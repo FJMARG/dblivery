@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.OrderStatus;
 import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
 
 public class DBliveryRepository {
@@ -40,6 +41,23 @@ public class DBliveryRepository {
 //	##################################################################################
 // 						METODOS PRIVADOS DE CADA CLASE
 //	##################################################################################
+	
+//	Supplier
+	public List<Supplier> getTopNSuppliersInSentOrders( int n ){
+		Session s = this.sessionFactory.getCurrentSession();
+		ArrayList<Supplier> list = new ArrayList<Supplier>();
+		
+		Query query = s.createQuery("SELECT sup FROM Order as o "
+						+ "JOIN o.products as po "
+						+ "JOIN po.product as prod "
+						+ "JOIN prod.supplier as sup "
+						+ "GROUP BY sup "
+						+ "ORDER BY COUNT(*) DESC").setFirstResult(0).setMaxResults(n);
+		
+		list = (ArrayList<Supplier>) query.getResultList();
+		
+		return list;	
+	}
 	
 //	Order Status
 	public OrderStatus getStatusByName(String status) {	
@@ -106,13 +124,12 @@ public class DBliveryRepository {
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getUsersSpendingMoreThan(Float amount) {
+		System.out.println("AMOUNT");
+		System.out.println(amount);
 		Session s = this.sessionFactory.getCurrentSession();	
 		Query query = s.createQuery("SELECT u FROM User AS u "
 									+"JOIN u.orders AS o "
-									+"JOIN o.status AS os "
-									+"WHERE os.id = 2 "
-									+"GROUP BY u.id, o.id "
-									+"HAVING SUM(o.amount) > " + amount);
+									+"WHERE o.amount > " + amount);
 		ArrayList<User> list = new ArrayList<User>();
 		list = (ArrayList<User>) query.getResultList();
 		return list;
