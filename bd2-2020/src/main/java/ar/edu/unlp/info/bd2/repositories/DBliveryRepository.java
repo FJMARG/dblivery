@@ -218,4 +218,30 @@ public class DBliveryRepository {
 		return list;
 	}
 	
+//	Orders
+	
+	public List<Order> getPendingOrders(){
+		Session s = this.sessionFactory.getCurrentSession();
+		ArrayList<Order> orders = new ArrayList<Order>();
+		
+		Query query = s.createQuery("SELECT o from Order as o "
+									+ "JOIN o.currentStatus as s "
+									+ "WHERE s.id = 1");
+		
+		orders = (ArrayList<Order>) query.getResultList();
+		return orders;
+	}
+	
+	public List<Order> getSentOrders(){
+		Session s = this.sessionFactory.getCurrentSession();
+		ArrayList<Order> orders = new ArrayList<Order>();
+		
+		Query query = s.createQuery("SELECT o from Order as o "
+									+ "JOIN o.currentStatus as s "
+									+ "WHERE s.id = 2");
+		
+		orders = (ArrayList<Order>) query.getResultList();
+		return orders;
+	}
+	
 }

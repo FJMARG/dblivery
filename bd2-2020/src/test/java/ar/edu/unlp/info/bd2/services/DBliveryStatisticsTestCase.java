@@ -83,17 +83,17 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(11,orders.size());
 //    }
 //    
-//    @Test
-//    public void testGetPendingOrders() {
-//    	List<Order> orders = this.service.getPendingOrders();
-//    	assertEquals(54,orders.size());
-//    }
-//    
-//    @Test
-//    public void testGetSentOrders() {
-//    	List<Order> orders = this.service.getSentOrders();
-//    	assertEquals(65,orders.size());
-//    }
+    @Test
+    public void testGetPendingOrders() {
+    	List<Order> orders = this.service.getPendingOrders();
+    	assertEquals(54,orders.size());
+    }
+    
+    @Test
+    public void testGetSentOrders() {
+    	List<Order> orders = this.service.getSentOrders();
+    	assertEquals(65,orders.size());
+    }
 //    
 //    @Test
 //    public void testGetDeliveredOrdersInPeriod() throws ParseException {

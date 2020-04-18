@@ -317,15 +317,15 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<Order> getPendingOrders() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> orders = this.repository.getPendingOrders();
+		return orders;
 	}
 
 	@Override
 	@Transactional
 	public List<Order> getSentOrders() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> orders = this.repository.getSentOrders();
+		return orders;
 	}
 
 	@Override
