@@ -91,6 +91,22 @@ public class DBliveryRepository {
 		return result;
 	}
 	
+	public List<User> get5LessDeliveryUsers(){
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT u FROM Order as o "
+									+ "JOIN o.currentStatus as s "
+									+ "JOIN o.deliveryUser as u "
+									+ "WHERE (s.id = 2) or (s.id = 4) "
+									+ "GROUP BY u "
+									+ "ORDER BY count(o) ASC").setFirstResult(0).setMaxResults(5);
+		
+		ArrayList<User> list = new ArrayList<User>();
+		list = (ArrayList<User>) query.getResultList();
+		return list;
+		
+	}
+	
 //	Product
 	@SuppressWarnings("unchecked")
 	public List<Product> getProductsByName(String name) {
@@ -244,4 +260,16 @@ public class DBliveryRepository {
 		return orders;
 	}
 	
+	public List<Order> getDeliveredOrdersForUser(String username) {
+		Session s = this.sessionFactory.getCurrentSession();
+		ArrayList<Order> orders = new ArrayList<Order>();
+		
+		Query query = s.createQuery("SELECT o from Order as o "
+									+ "JOIN o.currentStatus as s "
+									+ "JOIN o.client as u "
+									+ "WHERE s.id = 4 AND u.username LIKE '" + username + "'");
+		
+		orders = (ArrayList<Order>) query.getResultList();
+		return orders;
+	}
 }

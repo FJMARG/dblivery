@@ -1,0 +1,6 @@
+select u.id, u.username from Orders o 
+inner join OrderStatus s on s.id = o.currentStatus_id 
+inner join Users u on o.deliveryUser_id = u.id 
+where s.status = 'Delivered' || s.status = 'Sent' 
+GROUP BY u.id 
+order by count(o.id) asc

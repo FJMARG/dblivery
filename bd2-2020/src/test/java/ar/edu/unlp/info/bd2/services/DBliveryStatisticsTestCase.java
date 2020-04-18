@@ -101,11 +101,11 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(18,orders.size());
 //    }
 //    
-//    @Test
-//    public void testGetDeliveredOrdersForUser() {
-//    	List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
-//    	assertEquals(3,orders.size());
-//    }
+    @Test
+    public void testGetDeliveredOrdersForUser() {
+    	List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
+    	assertEquals(3,orders.size());
+    }
 //    
 //    @Test
 //    public void testGetSentMoreOneHour() {
@@ -119,12 +119,12 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(8,orders.size());
 //    }
 //    
-//    @Test
-//    public void testGet5LessDeliveryUsers() {
-//    	List<User> users = this.service.get5LessDeliveryUsers();
-//    	assertEquals(5,users.size());
-//    	this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("luzpascual621","carlasantana949","juantorres331","rubnpastor499","mariorubio577"));
-//    }
+    @Test
+    public void testGet5LessDeliveryUsers() {
+    	List<User> users = this.service.get5LessDeliveryUsers();
+    	assertEquals(5,users.size());
+    	this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("luzpascual621","carlasantana949","juantorres331","rubnpastor499","mariorubio577"));
+    }
 //    
 //    @Test
 //    public void testGetBestSellingProduct() {

@@ -338,8 +338,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<Order> getDeliveredOrdersForUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> orders = this.repository.getDeliveredOrdersForUser(username);
+		return orders;
 	}
 
 	@Override
@@ -359,8 +359,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<User> get5LessDeliveryUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> users = this.repository.get5LessDeliveryUsers();
+		return users;
 	}
 
 	@Override
