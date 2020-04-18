@@ -272,4 +272,17 @@ public class DBliveryRepository {
 		orders = (ArrayList<Order>) query.getResultList();
 		return orders;
 	}
+	
+//	Supplier
+	public Supplier getSupplierLessExpensiveProduct() {
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT s from Product as p "
+									+ "JOIN p.supplier as s "
+									+ "JOIN p.prices as pri "
+									+ "WHERE pri.price = (SELECT MIN(pr.price) FROM Price as pr)");
+		
+		Supplier supplier = (Supplier) query.getSingleResult();
+		return supplier;
+	}
 }

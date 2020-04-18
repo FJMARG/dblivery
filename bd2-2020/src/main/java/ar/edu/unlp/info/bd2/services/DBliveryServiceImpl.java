@@ -388,8 +388,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public Supplier getSupplierLessExpensiveProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		Supplier supplier = this.repository.getSupplierLessExpensiveProduct();
+		return supplier;
 	}
 
 	@Override

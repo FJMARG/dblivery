@@ -145,10 +145,10 @@ public class DBliveryStatisticsTestCase {
 //    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Sorrentinos de jamón y queso mozzarella","Sándwich de bondiola de cerdo, lechuga y tomate","Papas fritas con cheddar y panceta","Bondiola de cerdo a la riojana","Tabla fritas y fiambre","Ravioles de verdura"));
 //    }
 //
-//    @Test
-//    public void testGetSupplierLessExpensiveProduct() {
-//    	assertEquals("Pancho Crazy", this.service.getSupplierLessExpensiveProduct().getName());
-//    }
+    @Test
+    public void testGetSupplierLessExpensiveProduct() {
+    	assertEquals("Pancho Crazy", this.service.getSupplierLessExpensiveProduct().getName());
+    }
 //    
 //    @Test
 //    public void testGetSuppliersDoNotSellOn() throws ParseException {

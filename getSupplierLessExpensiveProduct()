@@ -1,0 +1,4 @@
+select s.name from Supplier s 
+INNER JOIN Product p on p.supplier_id = s.id 
+INNER JOIN Price pri on pri.product_id = p.id 
+where pri.price = ( SELECT MIN(pr.price) FROM Price pr )
