@@ -41,14 +41,14 @@ public class DBliveryStatisticsTestCase {
 
     @BeforeAll
     public void prepareDB() throws Exception {
-//        this.initializer.prepareDB();
+        this.initializer.prepareDB();
    }
     
     @Test
     public void testGetAllOrdersMadeByUser() {
     	assertEquals(5,this.service.getAllOrdersMadeByUser("rubnpastor265").size());
     }
-//    
+    
     @Test
     public void testGetUsersSpendingMoreThan() {
     	List<User> users = this.service.getUsersSpendingMoreThan(6000F);
@@ -69,7 +69,7 @@ public class DBliveryStatisticsTestCase {
     	assertEquals(9,products.size());
     	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Sándwich de bondiola de cerdo completo","Lomo al roquefort","Tortilla a la española","Choripán"));
     }
-//    
+    
 //    @Test
 //    public void testGetTop6UsersMoreOrders() {
 //    	List<User> users = this.service.getTop6UsersMoreOrders();
@@ -94,7 +94,7 @@ public class DBliveryStatisticsTestCase {
     	List<Order> orders = this.service.getSentOrders();
     	assertEquals(65,orders.size());
     }
-//    
+
 //    @Test
 //    public void testGetDeliveredOrdersInPeriod() throws ParseException {
 //    	List<Order> orders = this.service.getDeliveredOrdersInPeriod(sdf.parse("1/1/2013"),sdf.parse("31/12/2013"));

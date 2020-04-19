@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("Pending")
-public class Pending extends OrderStatus {
+public class Pending extends Status {
 
 	@Override
 	public String getStatus() {
@@ -30,7 +30,7 @@ public class Pending extends OrderStatus {
 	}
 
 	@Override
-	public boolean canChangeToStatus(OrderStatus s) {
+	public boolean canChangeToStatus(Status s) {
 		if((s.getStatus() == "Sent") ||  (s.getStatus() == "Cancelled")) {
 			return true;
 		}

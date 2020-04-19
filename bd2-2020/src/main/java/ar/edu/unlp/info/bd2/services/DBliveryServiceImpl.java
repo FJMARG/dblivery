@@ -80,13 +80,17 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
 		Order newOrder = new Order(client, coordX, coordY, address, dateOfOrder);
 		//busco el estado pending
-		OrderStatus pending = this.createStatusIfNotExist(new Pending());	
-		newOrder.setStatus(pending);
+		Status pending = this.createStatusIfNotExist(new Pending());
+		OrderStatus newOrderStatus = new OrderStatus(dateOfOrder, pending);
+		newOrderStatus = repository.persist(newOrderStatus);
+		newOrder.setStatus(newOrderStatus);
 		return repository.persist(newOrder);
 	}
 	
-	public OrderStatus createStatusIfNotExist(OrderStatus status) {
-		OrderStatus o = repository.getStatusByName(status.getStatus());
+	@Transactional
+	public Status createStatusIfNotExist(Status status) {
+		Status o = repository.getStatusByName(status.getStatus());
+	
 		if (o == null) 
 			o = repository.persist(status);
 		return o;
@@ -195,8 +199,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 			throw new DBliveryException("El usuario asignado no existe");
 		if( !orderDB.canDeliver() )
 			throw new DBliveryException("The order can't be delivered");
-		OrderStatus sent = this.createStatusIfNotExist(new Sent());
-		orderDB.setStatus(sent);
+		Status sent = this.createStatusIfNotExist(new Sent());
+		OrderStatus newOrderStatus = new OrderStatus(sent);
+		newOrderStatus = repository.persist(newOrderStatus);
+		orderDB.setStatus(newOrderStatus);
 		orderDB.setDeliveryUser(userDB);
 		return repository.update(orderDB);
 	}
@@ -212,8 +218,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 			throw new DBliveryException("El usuario asignado no existe");
 		if( !orderDB.canDeliver() )
 			throw new DBliveryException("The order can't be delivered");
-		OrderStatus sent = this.createStatusIfNotExist(new Sent());
-		orderDB.setStatus(sent);
+		Status sent = this.createStatusIfNotExist(new Sent());
+		OrderStatus newOrderStatus = new OrderStatus(sdf, sent);
+		newOrderStatus = repository.persist(newOrderStatus);
+		orderDB.setStatus(newOrderStatus);
 		orderDB.setDeliveryUser(userDB);
 		return repository.update(orderDB);
 	}
@@ -226,8 +234,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 			throw new DBliveryException("El pedido solicitado no existe");
 		if( !orderDB.canCancel() )
 			throw new DBliveryException("The order can't be cancelled");
-		OrderStatus cancelled = this.createStatusIfNotExist(new Cancelled());
-		orderDB.setStatus(cancelled);
+		Status cancelled = this.createStatusIfNotExist(new Cancelled());
+		OrderStatus newOrderStatus = new OrderStatus(cancelled);
+		newOrderStatus = repository.persist(newOrderStatus);
+		orderDB.setStatus(newOrderStatus);
 		return repository.update(orderDB);
 	}
 	
@@ -239,8 +249,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 			throw new DBliveryException("El pedido solicitado no existe");
 		if( !orderDB.canCancel() )
 			throw new DBliveryException("The order can't be cancelled");
-		OrderStatus cancelled = this.createStatusIfNotExist(new Cancelled());
-		orderDB.setStatus(cancelled);
+		Status cancelled = this.createStatusIfNotExist(new Cancelled());
+		OrderStatus newOrderStatus = new OrderStatus(sdf, cancelled);
+		newOrderStatus = repository.persist(newOrderStatus);
+		orderDB.setStatus(newOrderStatus);
 		return repository.update(orderDB);
 	}
 
@@ -252,8 +264,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 			throw new DBliveryException("El pedido solicitado no existe");
 		if( !orderDB.canFinish() )
 			throw new DBliveryException("The order can't be finished");
-		OrderStatus delivered = this.createStatusIfNotExist(new Delivered());
-		orderDB.setStatus(delivered);
+		Status delivered = this.createStatusIfNotExist(new Delivered());
+		OrderStatus newOrderStatus = new OrderStatus(delivered);
+		newOrderStatus = repository.persist(newOrderStatus);
+		orderDB.setStatus(newOrderStatus);
 		return repository.update(orderDB);
 	}
 	
@@ -265,8 +279,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 			throw new DBliveryException("El pedido solicitado no existe");
 		if( !orderDB.canFinish() )
 			throw new DBliveryException("The order can't be finished");
-		OrderStatus delivered = this.createStatusIfNotExist(new Delivered());
-		orderDB.setStatus(delivered);
+		Status delivered = this.createStatusIfNotExist(new Delivered());
+		OrderStatus newOrderStatus = new OrderStatus(sdf, delivered);
+		newOrderStatus = repository.persist(newOrderStatus);
+		orderDB.setStatus(newOrderStatus);
 		return repository.update(orderDB);
 	}
 

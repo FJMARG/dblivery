@@ -26,19 +26,13 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToMany
+	@OneToMany
+	@JoinColumn(name = "order_id")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinTable(	name="Order_OrderStatus",
-				joinColumns=@JoinColumn(name="order_id",referencedColumnName="id"),
-				inverseJoinColumns=@JoinColumn(name="status_id",referencedColumnName="id"))
 	private List<OrderStatus> status;	
 	
 	@ManyToOne
 	private OrderStatus currentStatus;
-
-	public void setCurrentStatus(OrderStatus currentStatus) {
-		this.currentStatus = currentStatus;
-	}
 
 	@OneToMany(mappedBy ="order")
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -83,10 +77,6 @@ public class Order {
 	public Order() { }
 	
 	public Float getAmount() {
-//		Float amount = 0F;
-//		for (ProductOrder productOrder : this.getProducts()) {
-//			amount += productOrder.getProduct().getPrice() * productOrder.getQuantity();
-//		}
 		return amount;
 	}
 	
@@ -98,16 +88,20 @@ public class Order {
 		this.id = id;
 	}
 	
+	public void setCurrentStatus(OrderStatus currentStatus) {
+		this.currentStatus = currentStatus;
+	}
+	
 	public List<OrderStatus> getStatus() {
 		return this.status;
 	}
 	
 	public void setStatus(OrderStatus status) {
-		if(this.getActualStatus() == null && status.getStatus() == "Pending") {
+		if(this.getActualStatus() == null && status.getStatus().getStatus() == "Pending") {
 			this.status.add(status);
 			this.setCurrentStatus(status);
 		}else {
-			if(this.getActualStatus().canChangeToStatus(status)) {
+			if(this.getActualStatus().getStatus().canChangeToStatus(status.getStatus())) {
 				this.status.add(status);
 				this.setCurrentStatus(status);
 			}
@@ -179,15 +173,15 @@ public class Order {
 	//--- Metodos State ---
 	
 	public boolean canDeliver() {
-		return this.getActualStatus().canDeliver(this);
+		return this.getActualStatus().getStatus().canDeliver(this);
 	}
 	
 	public boolean canCancel() {
-		return this.getActualStatus().canCancel(this);
+		return this.getActualStatus().getStatus().canCancel(this);
 	}
 	
 	public boolean canFinish() {
-		return this.getActualStatus().canFinish(this);
+		return this.getActualStatus().getStatus().canFinish(this);
 	}
 
 	

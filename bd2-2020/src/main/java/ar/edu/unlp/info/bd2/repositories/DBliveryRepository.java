@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ar.edu.unlp.info.bd2.model.Order;
-import ar.edu.unlp.info.bd2.model.OrderStatus;
+import ar.edu.unlp.info.bd2.model.Status;
 import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
@@ -60,14 +60,14 @@ public class DBliveryRepository {
 	}
 	
 //	Order Status
-	public OrderStatus getStatusByName(String status) {	
+	public Status getStatusByName(String status) {	
 		Session s = this.sessionFactory.getCurrentSession();
-		Query query = s.createQuery("FROM OrderStatus WHERE status = '" + status + "'");
-		OrderStatus result;
+		Query query = s.createQuery("FROM Status WHERE status = '" + status + "'");
+		Status result;
 		if (query.getResultList().isEmpty()) // FIX
 			result = null;
 		else
-			result = (OrderStatus) query.getSingleResult();
+			result = (Status) query.getSingleResult();
 		return result;
 	}
 	
@@ -95,9 +95,9 @@ public class DBliveryRepository {
 		Session s = this.sessionFactory.getCurrentSession();
 		
 		Query query = s.createQuery("SELECT u FROM Order as o "
-									+ "JOIN o.currentStatus as s "
+									+ "JOIN o.currentStatus as os "
 									+ "JOIN o.deliveryUser as u "
-									+ "WHERE (s.id = 2) or (s.id = 4) "
+									+ "WHERE (os.status.id = 2) or (os.status.id = 4) "
 									+ "GROUP BY u "
 									+ "ORDER BY count(o) ASC").setFirstResult(0).setMaxResults(5);
 		
@@ -241,8 +241,8 @@ public class DBliveryRepository {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		
 		Query query = s.createQuery("SELECT o from Order as o "
-									+ "JOIN o.currentStatus as s "
-									+ "WHERE s.id = 1");
+									+"JOIN o.currentStatus as os "
+									+"WHERE os.status.id = 1");
 		
 		orders = (ArrayList<Order>) query.getResultList();
 		return orders;
@@ -253,8 +253,8 @@ public class DBliveryRepository {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		
 		Query query = s.createQuery("SELECT o from Order as o "
-									+ "JOIN o.currentStatus as s "
-									+ "WHERE s.id = 2");
+									+ "JOIN o.currentStatus as os "
+									+ "WHERE os.status.id = 2");
 		
 		orders = (ArrayList<Order>) query.getResultList();
 		return orders;
@@ -265,9 +265,9 @@ public class DBliveryRepository {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		
 		Query query = s.createQuery("SELECT o from Order as o "
-									+ "JOIN o.currentStatus as s "
+									+ "JOIN o.currentStatus as os "
 									+ "JOIN o.client as u "
-									+ "WHERE s.id = 4 AND u.username LIKE '" + username + "'");
+									+ "WHERE os.status.id = 4 AND u.username LIKE '" + username + "'");
 		
 		orders = (ArrayList<Order>) query.getResultList();
 		return orders;

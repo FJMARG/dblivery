@@ -4,7 +4,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("Cancelled")
-public class Cancelled extends OrderStatus {
+public class Cancelled extends Status {
 
 	@Override
 	public String getStatus() {
@@ -27,7 +27,7 @@ public class Cancelled extends OrderStatus {
 	}
 
 	@Override
-	public boolean canChangeToStatus(OrderStatus s) {
+	public boolean canChangeToStatus(Status s) {
 		if(s.getStatus() == "Pending") {
 			return true;
 		}

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("Delivered")
-public class Delivered extends OrderStatus {
+public class Delivered extends Status {
 
 	@Override
 	public String getStatus() {
@@ -29,7 +29,7 @@ public class Delivered extends OrderStatus {
 	}
 
 	@Override
-	public boolean canChangeToStatus(OrderStatus s) {
+	public boolean canChangeToStatus(Status s) {
 		return false;
 	}
 
