@@ -41,8 +41,8 @@ public class DBliveryStatisticsTestCase {
 
     @BeforeAll
     public void prepareDB() throws Exception {
-        this.initializer.prepareDB();
-   }
+//        this.initializer.prepareDB();
+    }
     
     @Test
     public void testGetAllOrdersMadeByUser() {
@@ -70,19 +70,19 @@ public class DBliveryStatisticsTestCase {
     	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Sándwich de bondiola de cerdo completo","Lomo al roquefort","Tortilla a la española","Choripán"));
     }
     
-//    @Test
-//    public void testGetTop6UsersMoreOrders() {
-//    	List<User> users = this.service.getTop6UsersMoreOrders();
-//    	assertEquals(6,users.size());
-//    	this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("maravega596","maramuoz97","eduardoalonso677","rubnpastor265","nataliocruz598","luzmartnez660"));
-//    }
-//    
-//    @Test
-//    public void testGetCancelledOrdersInPeriod() throws ParseException {
-//    	List<Order> orders = this.service.getCancelledOrdersInPeriod(sdf.parse("1/1/2014"),sdf.parse("31/12/2014"));
-//    	assertEquals(11,orders.size());
-//    }
-//    
+    @Test
+    public void testGetTop6UsersMoreOrders() {
+    	List<User> users = this.service.getTop6UsersMoreOrders();
+    	assertEquals(6,users.size());
+    	this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("maravega596","maramuoz97","eduardoalonso677","rubnpastor265","nataliocruz598","luzmartnez660"));
+    }
+
+    @Test
+    public void testGetCancelledOrdersInPeriod() throws ParseException {
+    	List<Order> orders = this.service.getCancelledOrdersInPeriod(sdf.parse("1/1/2014"),sdf.parse("31/12/2014"));
+    	assertEquals(11,orders.size());
+    }
+    
     @Test
     public void testGetPendingOrders() {
     	List<Order> orders = this.service.getPendingOrders();
@@ -95,12 +95,12 @@ public class DBliveryStatisticsTestCase {
     	assertEquals(65,orders.size());
     }
 
-//    @Test
-//    public void testGetDeliveredOrdersInPeriod() throws ParseException {
-//    	List<Order> orders = this.service.getDeliveredOrdersInPeriod(sdf.parse("1/1/2013"),sdf.parse("31/12/2013"));
-//    	assertEquals(18,orders.size());
-//    }
-//    
+    @Test
+    public void testGetDeliveredOrdersInPeriod() throws ParseException {
+    	List<Order> orders = this.service.getDeliveredOrdersInPeriod(sdf.parse("1/1/2013"),sdf.parse("31/12/2013"));
+    	assertEquals(18,orders.size());
+    }
+    
     @Test
     public void testGetDeliveredOrdersForUser() {
     	List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
@@ -113,12 +113,12 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(123,orders.size());
 //    }
 //    
-//    @Test
-//    public void testGetDeliveredOrdersSameDay() {
-//    	List<Order> orders = this.service.getDeliveredOrdersSameDay();
-//    	assertEquals(8,orders.size());
-//    }
-//    
+    @Test
+    public void testGetDeliveredOrdersSameDay() {
+    	List<Order> orders = this.service.getDeliveredOrdersSameDay();
+    	assertEquals(8,orders.size());
+    }
+    
     @Test
     public void testGet5LessDeliveryUsers() {
     	List<User> users = this.service.get5LessDeliveryUsers();
@@ -163,12 +163,12 @@ public class DBliveryStatisticsTestCase {
     	assertEquals(4, products.size());
     	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Filet de merluza a la romana","Bife de chorizo grillado","Milanesa americana","Ensalada de hojas verdes y queso"));
     }
-//    
-//    @Test
-//    public void testGetOrdersCompleteMorethanOneDay() {
-//    	assertEquals(99, this.service.getOrdersCompleteMorethanOneDay().size());
-//    }
-//    
+    
+    @Test
+    public void testGetOrdersCompleteMorethanOneDay() {
+    	assertEquals(99, this.service.getOrdersCompleteMorethanOneDay().size());
+    }
+
     @Test
     public void testGetProductsWithPriceAt() throws ParseException {
     	List<Object[]> prices = this.service.getProductsWithPriceAt(sdf.parse("28/2/2013"));
@@ -199,16 +199,16 @@ public class DBliveryStatisticsTestCase {
     }
     
 
-//    @Test
-//    public void testOrderAmount() {
-//    	Optional<Order> ord = this.service.getOrderById(Long.getLong("77"));
-//    	if (ord.isPresent()) {
-//    		Order o = ord.get();
-//    		assertEquals(Float.valueOf("2454"),o.getAmount());
-//    	}
-//    }
-//    
-//    
+    @Test
+    public void testOrderAmount() {
+    	Optional<Order> ord = this.service.getOrderById(Long.getLong("77"));// Se envia null
+    	if (ord.isPresent()) {
+    		Order o = ord.get();
+    		assertEquals(Float.valueOf("2454"),o.getAmount());
+    	}
+    }
+    
+    
     
     private <T> void assertListEquality(List<T> list1, List<T> list2) {
         if (list1.size() != list2.size()) {

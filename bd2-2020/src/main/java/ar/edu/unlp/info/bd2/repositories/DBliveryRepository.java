@@ -1,6 +1,7 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
@@ -216,10 +217,10 @@ public class DBliveryRepository {
 		return p.get(0);
 	}
 
-	public List<Order> getOrdersOrderedByQuantityOfProducts(String day){
+	public List<Order> getOrderWithMoreQuantityOfProducts(String day){
 		Session s = this.sessionFactory.getCurrentSession();
 		String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' GROUP BY o ORDER BY sum(p.quantity) DESC";
-		Query query = s.createQuery(q);
+		Query query = s.createQuery(q).setMaxResults(1);
 		@SuppressWarnings("unchecked")
 		List<Order> list = query.getResultList();
 		return list;
@@ -285,4 +286,56 @@ public class DBliveryRepository {
 		Supplier supplier = (Supplier) query.getSingleResult();
 		return supplier;
 	}
+	
+	public List<Order> getOrdersCompleteMorethanOneDay() {
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT s from Order o "
+									+ "JOIN o.status os "
+									+ "JOIN os.status s "
+									+ "WHERE s.class = Pending AND (o.currentStatus.status.class = Delivered) AND (o.currentStatus.date - os.date) >= 1");
+		
+		return query.getResultList();
+	}
+	
+	public List<Order> getDeliveredOrdersSameDay() {
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT s from Order o "
+									+ "JOIN o.status os "
+									+ "JOIN os.status s "
+									+ "WHERE s.class = Pending AND (o.currentStatus.status.class = Delivered) AND (o.currentStatus.date - os.date) = 0");
+		
+		return query.getResultList();
+	}
+	
+	public List<Order> getDeliveredOrdersInPeriod(String startDate, String endDate) {
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT o from Order o "
+									+ "WHERE (o.currentStatus.status.class = Delivered) AND (o.currentStatus.date BETWEEN '"+startDate+"' AND '"+endDate+"')");
+		
+		return query.getResultList();
+	}
+	
+	public List<Order> getCancelledOrdersInPeriod(String startDate, String endDate) {
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT o from Order o "
+									+ "WHERE (o.currentStatus.status.class = Cancelled) AND (o.currentStatus.date BETWEEN '"+startDate+"' AND '"+endDate+"')");
+		
+		return query.getResultList();
+	}
+	
+	public List<User> getTop6UsersMoreOrders() {
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT u FROM User u "
+									+ "JOIN u.orders o "
+									+ "GROUP BY u "
+									+ "ORDER BY count(o.id) DESC").setMaxResults(6);
+		
+		return query.getResultList();
+	}
+	
 }

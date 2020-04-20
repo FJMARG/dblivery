@@ -140,7 +140,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	@Transactional
-	public Optional<Order> getOrderById(Long id) {
+	public Optional<Order> getOrderById(Long id) { // id llega en null desde el test.
 		Order order = repository.get(id, Order.class);
 		return Optional.of(order);
 	}
@@ -319,15 +319,16 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<User> getTop6UsersMoreOrders() {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> users = this.repository.getTop6UsersMoreOrders();
+		return users;
 	}
 
 	@Override
 	@Transactional
 	public List<Order> getCancelledOrdersInPeriod(Date startDate, Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<Order> orders = this.repository.getCancelledOrdersInPeriod(sdf.format(startDate),sdf.format(endDate));
+		return orders;
 	}
 
 	@Override
@@ -346,9 +347,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	@Transactional
-	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) { // Parse Exception?
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<Order> orders = this.repository.getDeliveredOrdersInPeriod(sdf.format(startDate),sdf.format(endDate));
+		return orders;
 	}
 
 	@Override
@@ -368,8 +370,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<Order> getDeliveredOrdersSameDay() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> list = this.repository.getDeliveredOrdersSameDay();
+		return list;
 	}
 
 	@Override
@@ -425,8 +427,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<Order> getOrdersCompleteMorethanOneDay() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> list = this.repository.getOrdersCompleteMorethanOneDay();
+		return list;
 	}
 
 	@Override
@@ -447,9 +449,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Transactional
 	public List<Order> getOrderWithMoreQuantityOfProducts(Date day) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		ArrayList<Order> r = new ArrayList<Order>();
-		r.add(this.repository.getOrdersOrderedByQuantityOfProducts(sdf.format(day)).get(0));
-		return r;
+		return this.repository.getOrderWithMoreQuantityOfProducts(sdf.format(day));
 	}
 
 }
