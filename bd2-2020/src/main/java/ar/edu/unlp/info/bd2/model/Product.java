@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import org.joda.time.LocalDate;
 
@@ -30,6 +31,9 @@ public class Product {
 	@JoinColumn(name="product_id")
 	@OrderBy("startDate")
 	private List<Price> prices;
+	
+	@OneToOne
+	private Price currentPrice;
 	
 	@ManyToOne(optional=false)
 	private Supplier supplier;
@@ -49,7 +53,7 @@ public class Product {
 		this.prices = new ArrayList<Price>();
 		this.supplier = supplier;
 		this.weight = weight;
-		this.prices.add(new Price(price, new Date()));
+		this.updatePrice(price, new Date());
 	}
 	
 	public Product(String name, Float price, Supplier supplier, Float weight, Date date) {
@@ -61,6 +65,15 @@ public class Product {
 		this.prices.add(new Price(price, date));
 	}
 	
+	
+	public Price getCurrentPrice() {
+		return currentPrice;
+	}
+
+	public void setCurrentPrice(Price currentPrice) {
+		this.currentPrice = currentPrice;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -81,11 +94,7 @@ public class Product {
 		this.prices = prices;
 	}
 	public Float getPrice() {
-		return this.getLastPrice().getPrice();
-	}
-	public Price getLastPrice() {
-		Price price = this.prices.stream().sorted((p1,p2)->p2.getStartDate().compareTo(p1.getStartDate())).findFirst().get();
-		return price;
+		return this.getCurrentPrice().getPrice();
 	}
 	
 	public Float getPriceAt(Date f) {
@@ -108,10 +117,12 @@ public class Product {
 	
 // METODO PARA SETEAR EL PRECIO (AGREGA A LA COLECCION PRICES Y LO SETEA COMO PRECIO ACTUAL)
 	public void updatePrice( Float price, Date startDate ) {
-		Price lastprice = this.getLastPrice();
-		Date temp = (Date)startDate.clone();
-		temp = LocalDate.fromDateFields(temp).minusDays(1).toDate();
-		lastprice.setEndDate(temp);
-		this.prices.add(new Price(price, startDate));
+		if ( this.currentPrice != null ) {
+			Date temp = (Date)startDate.clone();
+			temp = LocalDate.fromDateFields(temp).minusDays(1).toDate();
+			this.getCurrentPrice().setEndDate(temp);
+		}
+		this.currentPrice = new Price(price, startDate);
+		this.prices.add(this.currentPrice);
 	}
 }

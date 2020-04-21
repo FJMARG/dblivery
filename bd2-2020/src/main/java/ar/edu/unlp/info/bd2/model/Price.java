@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -19,11 +22,11 @@ public class Price {
 	@Column(nullable=false)
 	private Float price;
 	
-	@Type(type="date")
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)
 	private Date startDate;
 	
-	@Type(type="date")
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date endDate;
 	

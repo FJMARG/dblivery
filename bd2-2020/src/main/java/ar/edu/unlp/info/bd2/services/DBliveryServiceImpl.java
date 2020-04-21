@@ -24,7 +24,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
 		Product product = repository.getProductByName(name);
 		if( product == null) {
-			Product newProduct = new Product(name, price, supplier, weight);			
+			Product newProduct = new Product(name, price, supplier, weight, new Date());			
 			return repository.persist(newProduct);
 		}
 		else {
