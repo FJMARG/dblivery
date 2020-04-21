@@ -221,6 +221,9 @@ public class DBliveryRepository {
 		Session s = this.sessionFactory.getCurrentSession();
 		String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' GROUP BY o ORDER BY sum(p.quantity) DESC";
 		Query query = s.createQuery(q).setMaxResults(1);
+		//String qSum = "(SELECT sum(p.quantity) FROM Order o JOIN o.products p WHERE o.date = '"+day+"')";
+		//String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' AND sum(p.quantity) =  max("+qSum+") GROUP BY o";
+		//Query query = s.createQuery(q);
 		@SuppressWarnings("unchecked")
 		List<Order> list = query.getResultList();
 		return list;
