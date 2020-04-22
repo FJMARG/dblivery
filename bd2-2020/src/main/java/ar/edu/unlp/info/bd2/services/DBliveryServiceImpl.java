@@ -22,27 +22,16 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
-		Product product = repository.getProductByName(name);
-		if( product == null) {
-			Product newProduct = new Product(name, price, supplier, weight, new Date());			
-			return repository.persist(newProduct);
-		}
-		else {
-			return product;
-		}
+		Product newProduct = new Product(name, price, supplier, weight, new Date());			
+		return repository.persist(newProduct);
 	}
 	
 	@Override
 	@Transactional
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date sdf) { // Problema entre test 1 y 2
-		//Product product = repository.getProductByName(name);
-		//if( product == null) {
-			Product newProduct = new Product(name, price, supplier, weight, sdf);
-			return repository.persist(newProduct);
-		//}
-		//else {
-		//	return product;
-		//}
+		Product newProduct = new Product(name, price, supplier, weight, sdf);
+		return repository.persist(newProduct);
+
 	}
 
 	@Override

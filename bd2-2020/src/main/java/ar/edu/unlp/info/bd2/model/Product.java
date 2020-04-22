@@ -62,7 +62,7 @@ public class Product {
 		this.prices = new ArrayList<Price>();
 		this.supplier = supplier;
 		this.weight = weight;
-		this.prices.add(new Price(price, date));
+		this.updatePrice(price, date);
 	}
 	
 	
