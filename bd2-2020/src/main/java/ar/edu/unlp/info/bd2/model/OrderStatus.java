@@ -54,10 +54,14 @@ public class OrderStatus {
 		return date;
 	}
 
-	public Status getStatus() {
-		return status;
+	public String getStatus() {
+		return status.getStatus();
 	}
 
+	public Status getStatusObject() {
+		return status;
+	}
+	
 	public void setStatus(Status status) {
 		this.status = status;
 	}
