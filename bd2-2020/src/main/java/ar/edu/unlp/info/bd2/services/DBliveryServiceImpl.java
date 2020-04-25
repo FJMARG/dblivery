@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.services;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
-		Product newProduct = new Product(name, price, supplier, weight, new Date());			
+		Calendar cal = Calendar.getInstance();
+    	Date orderDate = cal.getTime();
+		Product newProduct = new Product(name, price, supplier, weight, orderDate);			
 		return repository.persist(newProduct);
 	}
 	
@@ -88,15 +91,16 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public Order addProduct(Long order, Long quantity, Product product) throws DBliveryException {
-		Product p = repository.get(product.getId(), Product.class);
 		Order updatedOrder = repository.get(order, Order.class);
 		if (updatedOrder == null) {
 			throw new DBliveryException("El pedido solicitado no existe");
 		}
-		ProductOrder po = new ProductOrder(quantity, p, updatedOrder);
+		ProductOrder po = new ProductOrder(quantity, product, updatedOrder);
 		po = repository.persist(po);
+		System.out.println(po.getId());
 		updatedOrder.addProductOrder(po);
-		return repository.update(updatedOrder);
+		updatedOrder = this.repository.persist(updatedOrder);
+		return updatedOrder;
 	}
 	
 	@Override

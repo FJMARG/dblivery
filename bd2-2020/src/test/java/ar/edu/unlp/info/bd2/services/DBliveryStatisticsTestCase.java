@@ -199,14 +199,14 @@ public class DBliveryStatisticsTestCase {
 //    }
     
 
-//    @Test
-//    public void testOrderAmount() {
-//    	Optional<Order> ord = this.service.getOrderById(Long.valueOf("77"));// Se corrigio de acuerdo al error reportado
-//    	if (ord.isPresent()) {
-//    		Order o = ord.get();
-//    		assertEquals(Float.valueOf("2454"),o.getAmount());
-//    	}
-//    }
+    @Test
+    public void testOrderAmount() {
+    	Optional<Order> ord = this.service.getOrderById(Long.valueOf("77"));// Se corrigio de acuerdo al error reportado
+    	if (ord.isPresent()) {
+    		Order o = ord.get();
+    		assertEquals(Float.valueOf("2454"),o.getAmount());
+    	}
+    }
     
     
     

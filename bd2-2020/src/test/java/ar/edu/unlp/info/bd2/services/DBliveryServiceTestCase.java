@@ -32,7 +32,7 @@ import ar.edu.unlp.info.bd2.repositories.DBliveryException;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class}, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 public class DBliveryServiceTestCase {
 
     @Autowired
@@ -81,6 +81,7 @@ public class DBliveryServiceTestCase {
 //    	Date orderDate = cal.getTime();
 //    	Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
 //    	Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
+//    	System.out.println(p1.getId());
 //    	Calendar cal2 = Calendar.getInstance();
 //    	cal2.set(Calendar.YEAR, 1982);
 //    	cal2.set(Calendar.MONTH, Calendar.MAY);

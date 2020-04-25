@@ -3,6 +3,8 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,14 +49,6 @@ public class Product {
 		
 	}
 	
-	public Product(String name, Float price, Supplier supplier, Float weight) {
-		super();
-		this.name = name;
-		this.prices = new ArrayList<Price>();
-		this.supplier = supplier;
-		this.weight = weight;
-		this.updatePrice(price, new Date());
-	}
 	
 	public Product(String name, Float price, Supplier supplier, Float weight, Date date) {
 		super();
@@ -62,6 +56,7 @@ public class Product {
 		this.prices = new ArrayList<Price>();
 		this.supplier = supplier;
 		this.weight = weight;
+		this.currentPrice = null;
 		this.updatePrice(price, date);
 	}
 	
@@ -98,7 +93,10 @@ public class Product {
 	}
 	
 	public Float getPriceAt(Date f) {
-		Price price = this.prices.stream().filter(p -> f.after(p.getStartDate()) & (f.before(p.getEndDate()))).findFirst().get();
+		Price price = this.prices.stream().filter(p -> f.after(p.getStartDate()) & (f.before(p.getEndDate()))).findFirst().orElse(null);
+		if(price == null) {
+			return null;
+		}
 		return price.getPrice();
 	};
 	

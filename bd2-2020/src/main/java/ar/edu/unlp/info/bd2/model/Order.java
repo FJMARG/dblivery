@@ -2,6 +2,8 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -167,7 +169,18 @@ public class Order {
 	
 	public void addProductOrder(ProductOrder productOrder) {
 		this.products.add(productOrder);
-		this.amount += productOrder.getProduct().getCurrentPrice().getPrice() * productOrder.getQuantity();
+		if (productOrder.getProduct().getPriceAt(this.getDate()) == null) {
+			System.out.print("aca");
+			this.amount += productOrder.getProduct().getCurrentPrice().getPrice() * productOrder.getQuantity();
+		}else {
+			System.out.print("aca no");
+			this.amount += productOrder.getProduct().getPriceAt(this.getDate()) * productOrder.getQuantity();
+		}
+//		if(productOrder.getProduct().getPriceAt(this.getDate())){
+//			this.amount += productOrder.getProduct().getPriceAt(this.getDate()) * productOrder.getQuantity();
+//		}else {
+//			this.amount += productOrder.getProduct().getCurrentPrice().getPrice() * productOrder.getQuantity();
+//		}
 	}
 	
 	//--- Metodos State ---
