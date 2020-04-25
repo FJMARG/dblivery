@@ -352,8 +352,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<Order> getSentMoreOneHour() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repository.getSentMoreOneHour();
 	}
 
 	@Override
@@ -388,7 +387,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<Product> getProductIncreaseMoreThan100() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -402,8 +400,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	@Transactional
 	public List<Supplier> getSuppliersDoNotSellOn(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repository.getSuppliersDoNotSellOn(day);
 	}
 
 	@Override

@@ -1,16 +1,20 @@
 package ar.edu.unlp.info.bd2.repositories;
 
-import java.util.Date;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Query;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import ar.edu.unlp.info.bd2.model.Order;
-import ar.edu.unlp.info.bd2.model.Status;
 import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.Status;
 import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
 
@@ -258,7 +262,7 @@ public class DBliveryRepository {
 		
 		Query query = s.createQuery("SELECT o from Order as o "
 									+ "JOIN o.currentStatus as os "
-									+ "WHERE os.status.id = 2");
+									+ "WHERE os.status = 2");
 		
 		orders = (ArrayList<Order>) query.getResultList();
 		return orders;
@@ -340,5 +344,37 @@ public class DBliveryRepository {
 		
 		return query.getResultList();
 	}
+	
+	
+	public List<Order> getSentMoreOneHour() {
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT o FROM Order AS o "
+									+"JOIN o.status AS os_sent "
+									+"WHERE os_sent.status.class = Sent "
+									+"AND DATEDIFF(os_sent.date, o.date) >= 1");
+		
+		return query.getResultList();
+	}
+
+	
+	public List<Supplier> getSuppliersDoNotSellOn(Date day) {
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		@SuppressWarnings("deprecation")
+		java.sql.Date dbdate = new java.sql.Date(day.getYear(), day.getMonth(), day.getDate());
+		
+		Query query = s.createQuery("FROM Supplier "
+									+"WHERE id NOT IN "
+									+"(SELECT s.id FROM Order AS o "
+									+"JOIN o.products AS po "
+									+"JOIN po.product AS p "
+									+"JOIN p.supplier AS s "
+									+"WHERE o.date = '"+ dbdate +"' )");
+		
+		return query.getResultList();
+	}
+	
+	
 	
 }
