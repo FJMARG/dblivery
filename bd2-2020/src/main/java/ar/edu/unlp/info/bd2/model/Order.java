@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -52,7 +54,7 @@ public class Order {
 	@Column(nullable=false)
 	private Float amount;
 	
-	@Type(type="date")
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)
 	private Date date;
 	
