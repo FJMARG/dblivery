@@ -241,8 +241,11 @@ public class DBliveryRepository {
 
 	public List<Order> getOrderWithMoreQuantityOfProducts(String day){
 		Session s = this.sessionFactory.getCurrentSession();
+		
+		System.out.println("FECHA");
+		System.out.println(day);
 		String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' GROUP BY o ORDER BY sum(p.quantity) DESC";
-		Query query = s.createQuery(q).setMaxResults(1);
+		Query query = s.createQuery(q).setFirstResult(0).setMaxResults(1);
 		//String qSum = "(SELECT sum(p.quantity) FROM Order o JOIN o.products p WHERE o.date = '"+day+"')";
 		//String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' AND sum(p.quantity) =  max("+qSum+") GROUP BY o";
 		//Query query = s.createQuery(q);
