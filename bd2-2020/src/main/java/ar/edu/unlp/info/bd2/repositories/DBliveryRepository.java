@@ -134,6 +134,24 @@ public class DBliveryRepository {
 		return product;
 	}
 	
+	public List<Product> getProductIncreaseMoreThan100(){
+		Session s = this.sessionFactory.getCurrentSession();
+		
+		Query query = s.createQuery("SELECT DISTINCT prod "
+									+ "FROM Product as prod "
+									+ "JOIN prod.prices as pric "
+									+ "WHERE pric.price * 2 <= "
+									+ "(SELECT MAX(pri.price) "
+									+ "FROM Product as p "
+									+ "JOIN p.prices as pri "
+									+ "GROUP BY p "
+									+ "HAVING p = prod)");
+		
+		ArrayList<Product> list = new ArrayList<Product>();
+		list = (ArrayList<Product>) query.getResultList();
+		return list;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Order> getAllOrdersMadeByUser(User user) {
 		Session s = this.sessionFactory.getCurrentSession();

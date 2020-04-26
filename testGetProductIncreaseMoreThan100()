@@ -1,0 +1,8 @@
+select distinct prod.id from Product prod 
+inner join Price pric on pric.product_id = prod.id 
+where pric.price * 2 <=
+	(select max(pri.price) 
+	from Price pri 
+	inner join Product p on p.id=pri.product_id
+	group by p.id
+	having p.id = prod.id)

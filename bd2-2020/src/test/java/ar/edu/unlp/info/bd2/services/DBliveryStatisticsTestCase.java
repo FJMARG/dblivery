@@ -39,11 +39,11 @@ public class DBliveryStatisticsTestCase {
     
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-//    @BeforeAll
-//    public void prepareDB() throws Exception {
+    @BeforeAll
+    public void prepareDB() throws Exception {
 //        this.initializer.prepareDB();
-//    }
-//    
+    }
+    
 //    @Test
 //    public void testGetAllOrdersMadeByUser() {
 //    	assertEquals(5,this.service.getAllOrdersMadeByUser("rubnpastor265").size());
@@ -137,13 +137,13 @@ public class DBliveryStatisticsTestCase {
 //    	List<Product> products = this.service.getProductsOnePrice();
 //    	assertEquals(27, products.size());
 //    }
-//    
-////    @Test
-////    public void testGetProductIncreaseMoreThan100() {
-////    	List<Product> products = this.service.getProductIncreaseMoreThan100();
-////    	assertEquals(6, products.size());
-////    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Sorrentinos de jamón y queso mozzarella","Sándwich de bondiola de cerdo, lechuga y tomate","Papas fritas con cheddar y panceta","Bondiola de cerdo a la riojana","Tabla fritas y fiambre","Ravioles de verdura"));
-////    }
+    
+    @Test
+    public void testGetProductIncreaseMoreThan100() {
+    	List<Product> products = this.service.getProductIncreaseMoreThan100();
+    	assertEquals(6, products.size());
+    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Sorrentinos de jamón y queso mozzarella","Sándwich de bondiola de cerdo, lechuga y tomate","Papas fritas con cheddar y panceta","Bondiola de cerdo a la riojana","Tabla fritas y fiambre","Ravioles de verdura"));
+    }
 //
 //    @Test
 //    public void testGetSupplierLessExpensiveProduct() {
@@ -187,7 +187,7 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(5,products.size());
 //    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Bastoncitos de mozzarella a la milanesa","Milanesa Suiza","Sándwich de lomo completo","Tarta de pollo (2 porc.)","Lomo a la mostaza con papas noisette"));
 //    }
-//    
+    
 //    @Test
 //    public void testGetOrderWithMoreQuantityOfProducts() throws ParseException {
 //    	List<Order> ord = this.service.getOrderWithMoreQuantityOfProducts(sdf.parse("23/6/2014"));
@@ -198,7 +198,7 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(Float.valueOf("1867"), o.getAmount());
 //    }
 //    
-//
+
 //    @Test
 //    public void testOrderAmount() {
 //    	Optional<Order> ord = this.service.getOrderById(Long.valueOf("77"));// Se corrigio de acuerdo al error reportado
@@ -210,21 +210,21 @@ public class DBliveryStatisticsTestCase {
 //    
 //    
 //    
-//    private <T> void assertListEquality(List<T> list1, List<T> list2) {
-//        if (list1.size() != list2.size()) {
-//          Assert.fail("Lists have different size");
-//        }
-//        
-//        for (T objectInList1 : list1) {
-//            System.out.print("nombre producto: ");
-//            System.out.println(objectInList1);
-//        }
-//
-//        for (T objectInList1 : list1) {
-//          if (!list2.contains(objectInList1)) {
-//            Assert.fail(objectInList1 + " is not present in list2");
-//          }
-//        }
-//      }
-//    
+    private <T> void assertListEquality(List<T> list1, List<T> list2) {
+        if (list1.size() != list2.size()) {
+          Assert.fail("Lists have different size");
+        }
+        
+        for (T objectInList1 : list1) {
+            System.out.print("nombre producto: ");
+            System.out.println(objectInList1);
+        }
+
+        for (T objectInList1 : list1) {
+          if (!list2.contains(objectInList1)) {
+            Assert.fail(objectInList1 + " is not present in list2");
+          }
+        }
+      }
+    
 }
