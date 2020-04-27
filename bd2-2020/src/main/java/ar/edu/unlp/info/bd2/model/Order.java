@@ -172,10 +172,8 @@ public class Order {
 	public void addProductOrder(ProductOrder productOrder) {
 		this.products.add(productOrder);
 		if (productOrder.getProduct().getPriceAt(this.getDate()) == null) {
-			System.out.print("aca");
 			this.amount += productOrder.getProduct().getCurrentPrice().getPrice() * productOrder.getQuantity();
 		}else {
-			System.out.print("aca no");
 			this.amount += productOrder.getProduct().getPriceAt(this.getDate()) * productOrder.getQuantity();
 		}
 //		if(productOrder.getProduct().getPriceAt(this.getDate())){

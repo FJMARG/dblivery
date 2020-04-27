@@ -92,14 +92,19 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Transactional
 	public Order addProduct(Long order, Long quantity, Product product) throws DBliveryException {
 		Order updatedOrder = repository.get(order, Order.class);
+		Product productDB  = repository.get(product.getId(), Product.class); 
 		if (updatedOrder == null) {
 			throw new DBliveryException("El pedido solicitado no existe");
 		}
-		ProductOrder po = new ProductOrder(quantity, product, updatedOrder);
+		if (productDB == null) {
+			throw new DBliveryException("El producto no existe");
+		}
+		
+		ProductOrder po = new ProductOrder(quantity, productDB, updatedOrder);
 		po = repository.persist(po);
 		System.out.println(po.getId());
 		updatedOrder.addProductOrder(po);
-		updatedOrder = this.repository.persist(updatedOrder);
+		updatedOrder = this.repository.update(updatedOrder);
 		return updatedOrder;
 	}
 	
