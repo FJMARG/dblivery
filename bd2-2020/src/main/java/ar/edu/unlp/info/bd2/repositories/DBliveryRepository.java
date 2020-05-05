@@ -56,6 +56,8 @@ public class DBliveryRepository {
 						+ "JOIN o.products as po "
 						+ "JOIN po.product as prod "
 						+ "JOIN prod.supplier as sup "
+						+ "JOIN o.status as os "
+						+ "WHERE os.status.class = Sent "
 						+ "GROUP BY sup "
 						+ "ORDER BY COUNT(*) DESC").setFirstResult(0).setMaxResults(n);
 		
@@ -102,7 +104,7 @@ public class DBliveryRepository {
 		Query query = s.createQuery("SELECT u FROM Order as o "
 									+ "JOIN o.currentStatus as os "
 									+ "JOIN o.deliveryUser as u "
-									+ "WHERE (os.status.id = 2) or (os.status.id = 4) "
+									+ "WHERE (os.status.class = Sent) or (os.status.class = Delivered) "
 									+ "GROUP BY u "
 									+ "ORDER BY count(o) ASC").setFirstResult(0).setMaxResults(5);
 		
@@ -179,7 +181,7 @@ public class DBliveryRepository {
 		Session s = this.sessionFactory.getCurrentSession();
 		ArrayList<Product> list = new ArrayList<Product>();	
 		Query query = s.createQuery("SELECT prod FROM Product as prod "
-										+ "JOIN prod.prices as pri "
+										+ "JOIN prod.currentPrice as pri "
 										+ "ORDER BY pri.price DESC").setFirstResult(0).setMaxResults(9);
 		list = (ArrayList<Product>) query.getResultList();
 		return list;
@@ -271,7 +273,7 @@ public class DBliveryRepository {
 		
 		Query query = s.createQuery("SELECT o from Order as o "
 									+"JOIN o.currentStatus as os "
-									+"WHERE os.status.id = 1");
+									+"WHERE os.status.class = Pending");
 		
 		orders = (ArrayList<Order>) query.getResultList();
 		return orders;
@@ -283,7 +285,7 @@ public class DBliveryRepository {
 		
 		Query query = s.createQuery("SELECT o from Order as o "
 									+ "JOIN o.currentStatus as os "
-									+ "WHERE os.status = 2");
+									+ "WHERE os.status.class = Sent");
 		
 		orders = (ArrayList<Order>) query.getResultList();
 		return orders;
@@ -296,7 +298,7 @@ public class DBliveryRepository {
 		Query query = s.createQuery("SELECT o from Order as o "
 									+ "JOIN o.currentStatus as os "
 									+ "JOIN o.client as u "
-									+ "WHERE os.status.id = 4 AND u.username LIKE '" + username + "'");
+									+ "WHERE os.status.class = Delivered AND u.username LIKE '" + username + "'");
 		
 		orders = (ArrayList<Order>) query.getResultList();
 		return orders;
