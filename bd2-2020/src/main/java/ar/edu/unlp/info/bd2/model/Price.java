@@ -7,10 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.Type;
 
 @Entity
 public class Price {
@@ -30,11 +29,15 @@ public class Price {
 	@Column
 	private Date endDate;
 	
-	public Price(float price, Date startDate) {
+	@ManyToOne
+	private Product product;
+	
+	public Price(float price, Date startDate, Product product) {
 		super();
 		this.price = price;
 		this.startDate = startDate;
 		this.endDate = new Date(92233720368547L);
+		this.product = product;
 	}
 	
 	public Price() { 
@@ -75,6 +78,14 @@ public class Price {
 	
 	public Long getId() {
 		return id;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 	
 }

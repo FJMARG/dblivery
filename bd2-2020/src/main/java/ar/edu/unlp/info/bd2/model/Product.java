@@ -29,8 +29,7 @@ public class Product {
 	@Column(nullable=false)
 	private String name;	
 	
-	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-	@JoinColumn(name="product_id")
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy="product")
 	@OrderBy("startDate")
 	private List<Price> prices;
 	
@@ -120,7 +119,7 @@ public class Product {
 			temp = LocalDate.fromDateFields(temp).minusDays(1).toDate();
 			this.getCurrentPrice().setEndDate(temp);
 		}
-		this.currentPrice = new Price(price, startDate);
+		this.currentPrice = new Price(price, startDate, this);
 		this.prices.add(this.currentPrice);
 	}
 }

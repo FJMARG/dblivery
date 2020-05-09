@@ -41,7 +41,7 @@ public class DBliveryStatisticsTestCase {
 
     @BeforeAll
     public void prepareDB() throws Exception {
-//        this.initializer.prepareDB();
+        this.initializer.prepareDB();
     }
     
 //    @Test
@@ -138,12 +138,12 @@ public class DBliveryStatisticsTestCase {
 //    	assertEquals(27, products.size());
 //    }
 //    
-//    @Test
-//    public void testGetProductIncreaseMoreThan100() {
-//    	List<Product> products = this.service.getProductIncreaseMoreThan100();
-//    	assertEquals(6, products.size());
-//    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Sorrentinos de jamón y queso mozzarella","Sándwich de bondiola de cerdo, lechuga y tomate","Papas fritas con cheddar y panceta","Bondiola de cerdo a la riojana","Tabla fritas y fiambre","Ravioles de verdura"));
-//    }
+    @Test
+    public void testGetProductIncreaseMoreThan100() {
+    	List<Product> products = this.service.getProductIncreaseMoreThan100();
+    	assertEquals(6, products.size());
+    	this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Sorrentinos de jamón y queso mozzarella","Sándwich de bondiola de cerdo, lechuga y tomate","Papas fritas con cheddar y panceta","Bondiola de cerdo a la riojana","Tabla fritas y fiambre","Ravioles de verdura"));
+    }
 //
 //    @Test
 //    public void testGetSupplierLessExpensiveProduct() {
