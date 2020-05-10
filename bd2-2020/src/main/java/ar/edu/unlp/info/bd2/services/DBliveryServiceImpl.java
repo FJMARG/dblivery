@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.services;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -445,7 +446,15 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Transactional
 	public List<Order> getOrderWithMoreQuantityOfProducts(Date day) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		return this.repository.getOrderWithMoreQuantityOfProducts(sdf.format(day));
+		List<BigInteger> queryList = this.repository.getOrderWithMoreQuantityOfProducts(sdf.format(day));
+		List<Order> listOfOrders = new ArrayList<Order>();
+		
+		for( BigInteger o: queryList) {
+			listOfOrders.add( this.getOrderById( o.longValue() ).get() );
+		}
+		
+		return listOfOrders;
+		
 	}
 
 }

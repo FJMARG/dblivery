@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.repositories;
 
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -234,23 +235,35 @@ public class DBliveryRepository {
 		Query query = s.createQuery("SELECT p from ProductOrder as po "
 									+ "JOIN po.product as p "
 									+ "GROUP BY p "
-									+ "ORDER BY COUNT(po.quantity) DESC");
+									+ "ORDER BY SUM(po.quantity) DESC");
 		p = (ArrayList<Product>) query.getResultList();
 		return p.get(0);
 	}
 
-	public List<Order> getOrderWithMoreQuantityOfProducts(String day){
+	public List<BigInteger> getOrderWithMoreQuantityOfProducts(String day){
 		Session s = this.sessionFactory.getCurrentSession();
 		
-		System.out.println("FECHA");
-		System.out.println(day);
-		String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' GROUP BY o ORDER BY sum(p.quantity) DESC";
-		Query query = s.createQuery(q).setFirstResult(0).setMaxResults(1);
-		//String qSum = "(SELECT sum(p.quantity) FROM Order o JOIN o.products p WHERE o.date = '"+day+"')";
-		//String q = "SELECT o FROM Order o JOIN o.products p WHERE o.date = '"+day+"' AND sum(p.quantity) =  max("+qSum+") GROUP BY o";
-		//Query query = s.createQuery(q);
+		//HQL NO PERMITE SUBQUERIES EN CLAUSULA FROM
+		String q = "SELECT o.id "
+				+ "FROM Orders o "
+				+ "INNER JOIN ProductOrder po ON o.id = po.order_id "
+				+ "WHERE o.date = '"+day+"' "
+				+ "GROUP BY o.id "
+				+ "HAVING sum(po.quantity) = ("
+					+ "SELECT MAX(aux.suma) "
+					+ "FROM ("
+						+ "SELECT SUM(por.quantity) as suma "
+						+ "FROM Orders ord "
+						+ "INNER JOIN ProductOrder por ON ord.id = por.order_id "
+						+ "WHERE ord.date = '"+day+"' "
+						+ "GROUP BY ord.id "
+					+ ") AS aux "
+				+ ")";
+		
+		Query query = s.createSQLQuery(q);
+		
 		@SuppressWarnings("unchecked")
-		List<Order> list = query.getResultList();
+		List<BigInteger> list = query.getResultList();
 		return list;
 	}
 	
