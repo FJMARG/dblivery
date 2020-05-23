@@ -1,16 +1,18 @@
 package ar.edu.unlp.info.bd2.services;
 
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.BsonDocument;
+import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.springframework.transaction.annotation.Transactional;
-import ar.edu.unlp.info.bd2.model.*;
+
+import ar.edu.unlp.info.bd2.model.Order;
+import ar.edu.unlp.info.bd2.model.OrderStatus;
+import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.Supplier;
+import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.DBliveryException;
 import ar.edu.unlp.info.bd2.repositories.DBliveryMongoRepository;
 
@@ -43,8 +45,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = new User(email, password, username, name, dateOfBirth);		
+		repository.getDb().getCollection("users", User.class).insertOne(user);
+		return user;
 	}
 
 	@Override

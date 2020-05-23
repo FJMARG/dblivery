@@ -4,46 +4,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.types.ObjectId;
 
-import org.hibernate.annotations.Type;
+import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-@Entity
-@Table(name="Users")
-public class User {
+@BsonDiscriminator
+public class User implements PersistentObject{
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@BsonId
+	private ObjectId objectId;
 	
-	@Column(nullable=false)
 	private String email;
 	
-	@Column(nullable=false)
 	private String password;
 	
-	@Column(nullable=false)
 	private String username;
 	
-	@Column(nullable=false)
 	private String name;	
 	
-	@Type(type="date")
-	@Column(nullable=false)
 	private Date dateOfBirth;	
 
 	//las ordenes de los clientes
-	@OneToMany(mappedBy="client")
+	@BsonIgnore
 	private List<Order> orders;	
 
 	//las ordenes de los repartidores
-	@OneToMany(mappedBy="deliveryUser")
+	@BsonIgnore
 	private List<Order> deliverOrders;
 
 	public User(String email, String password, String username, String name, Date dateOfBirth) {
@@ -97,14 +86,6 @@ public class User {
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
 	public List<Order> getOrders() {
 		return orders;
@@ -124,21 +105,31 @@ public class User {
 	
 	// Metodos redefinidos.
 	
-	@Override
-    public int hashCode() {
-        return this.getId().intValue();
-    }
+//	@Override
+//    public int hashCode() {
+//        return Integer.valueOf(this.getId().toString());
+//    }
  
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) // Verifico si soy yo mismo
-            return true;
-        if (obj == null) // Verifico si es nulo
-            return false;
-        if (getClass() != obj.getClass()) // Verifico si no pertenece a la clase
-            return false;
-        User o = (User) obj;  // Es un objeto usuario, entonces casteo.
-        return this.getId().equals(o.getId()); // Comparo id's, si coinciden, son iguales.
-    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (this == obj) // Verifico si soy yo mismo
+//            return true;
+//        if (obj == null) // Verifico si es nulo
+//            return false;
+//        if (getClass() != obj.getClass()) // Verifico si no pertenece a la clase
+//            return false;
+//        User o = (User) obj;  // Es un objeto usuario, entonces casteo.
+//        return this.getId().equals(o.getId()); // Comparo id's, si coinciden, son iguales.
+//    }
+
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		this.objectId = objectId;
+	}
 	
 }
