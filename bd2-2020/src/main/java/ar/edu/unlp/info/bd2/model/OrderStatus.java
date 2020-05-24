@@ -2,30 +2,19 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.types.ObjectId;
+import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-import org.hibernate.annotations.Type;
-
-@Entity
-@Table(name="OrderStatus")
-public class OrderStatus {
-
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+@BsonDiscriminator
+public class OrderStatus implements PersistentObject{
 	
-	@Type(type="date")
-	@Column(nullable=false)
+	@BsonId
+	private ObjectId objectId;
+
 	private Date date;
-	
-	@ManyToOne
+
 	private Status status;
 	
 	public OrderStatus() {}
@@ -42,14 +31,6 @@ public class OrderStatus {
 		this.status = status;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Date getDate() {
 		return date;
 	}
@@ -64,6 +45,17 @@ public class OrderStatus {
 	
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		objectId = objectId;
+		
 	}
 
 	

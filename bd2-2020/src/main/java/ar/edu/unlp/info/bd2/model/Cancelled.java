@@ -1,9 +1,9 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-@Entity
-@DiscriminatorValue("Cancelled")
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.types.ObjectId;
+
+@BsonDiscriminator
 public class Cancelled extends Status {
 
 	@Override
@@ -32,6 +32,16 @@ public class Cancelled extends Status {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		objectId = objectId;
 	}
 
 	

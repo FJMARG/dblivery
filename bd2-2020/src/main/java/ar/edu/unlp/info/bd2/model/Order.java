@@ -2,66 +2,39 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.types.ObjectId;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.Type;
+import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-@Entity
-@Table(name="Orders")
-public class Order {
+@BsonDiscriminator
+public class Order implements PersistentObject{
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@BsonId
+	private ObjectId objectId;
 	
-	@OneToMany
-	@JoinColumn(name = "order_id")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@BsonIgnore
 	private List<OrderStatus> status;	
-	
-	@ManyToOne
+
 	private OrderStatus currentStatus;
 
-	@OneToMany(mappedBy ="order")
-	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ProductOrder> products;
 	
-	@Column(nullable=false)
 	private double coordX;
 	
-	@Column(nullable=false)
 	private double coordY;
 	
-	@Column(nullable=false)
 	private String address;
 	
-	@Column(nullable=false)
 	private Float amount;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
 	private Date date;
 	
-	@ManyToOne(optional=false)
 	private User client;
 	
-	@ManyToOne(optional=true)
 	private User deliveryUser;
 
 
@@ -82,14 +55,6 @@ public class Order {
 	
 	public Float getAmount() {
 		return amount;
-	}
-	
-	public long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
 	}
 	
 	public void setCurrentStatus(OrderStatus currentStatus) {
@@ -195,6 +160,17 @@ public class Order {
 	
 	public boolean canFinish() {
 		return this.getActualStatus().getStatusObject().canFinish(this);
+	}
+
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		objectId = objectId;
+		
 	}
 
 	

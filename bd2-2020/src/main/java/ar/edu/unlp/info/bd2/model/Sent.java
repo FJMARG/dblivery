@@ -1,9 +1,9 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-@Entity
-@DiscriminatorValue("Sent")
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.types.ObjectId;
+
+@BsonDiscriminator
 public class Sent extends Status {
 
 	@Override
@@ -32,6 +32,17 @@ public class Sent extends Status {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		objectId = objectId;
+		
 	}
 
 	

@@ -3,36 +3,30 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.types.ObjectId;
 
-@Entity	
-public class Supplier {
+import ar.edu.unlp.info.bd2.mongo.PersistentObject;
+
+@BsonDiscriminator
+public class Supplier implements PersistentObject{
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	@Column(nullable=false)
+	@BsonId
+	private ObjectId objectId;
+
 	private String name;
 	
-	@Column(nullable=false)
 	private String cuil;
-	
-	@Column(nullable=false)
+
 	private String address;
-	
-	@Column(nullable=false)
+
 	private double coordX;
-	
-	@Column(nullable=false)
+
 	private double coordY;
-	
-	@OneToMany(mappedBy="supplier")
+
+	@BsonIgnore
 	private List<Product> products;
 	
 	public Supplier() {	}
@@ -45,14 +39,6 @@ public class Supplier {
 		this.coordX = coordX;
 		this.coordY = coordY;
 		this.products = new ArrayList<Product>();
-	}
-	
-	public long getId() {
-		return id;
-	}
-	
-	public void setId(long id) {
-		this.id = id;
 	}
 	
 	public String getName() {
@@ -97,6 +83,17 @@ public class Supplier {
 	
 	public List<Product> getProducts() {
 		return products;
+	}
+
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		objectId = objectId;
+		
 	}
 	
 	

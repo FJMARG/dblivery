@@ -2,34 +2,24 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.types.ObjectId;
 
-@Entity
-public class Price {
+import ar.edu.unlp.info.bd2.mongo.PersistentObject;
+
+@BsonDiscriminator
+public class Price implements PersistentObject{
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(nullable=false)
+	@BsonId
+	private ObjectId objectId;
+
 	private Float price;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
+
 	private Date startDate;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column
+
 	private Date endDate;
-	
-	@ManyToOne
+
 	private Product product;
 	
 	public Price(float price, Date startDate, Product product) {
@@ -68,24 +58,26 @@ public class Price {
 		this.endDate = endDate;
 	}
 	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	public void setPrice(Float price) {
 		this.price = price;
 	}
-	
-	public Long getId() {
-		return id;
-	}
-
 	public Product getProduct() {
 		return product;
 	}
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		objectId = objectId;
+		
 	}
 	
 }

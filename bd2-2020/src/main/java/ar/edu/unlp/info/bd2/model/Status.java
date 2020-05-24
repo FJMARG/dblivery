@@ -1,22 +1,16 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.types.ObjectId;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="status",discriminatorType = DiscriminatorType.STRING)
-public abstract class Status {
+import ar.edu.unlp.info.bd2.mongo.PersistentObject;
+
+@BsonDiscriminator
+public abstract class Status implements PersistentObject{
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@BsonId
+	public ObjectId objectId;
 	
 	public abstract String getStatus();
 	

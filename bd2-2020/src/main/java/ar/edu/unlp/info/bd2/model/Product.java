@@ -17,33 +17,32 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.types.ObjectId;
 import org.joda.time.LocalDate;
 
-@Entity
-public class Product {
+import ar.edu.unlp.info.bd2.mongo.PersistentObject;
+
+@BsonDiscriminator
+public class Product implements PersistentObject{
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(nullable=false)
+	@BsonId
+	private ObjectId objectId;
+
 	private String name;	
-	
-	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy="product")
-	@OrderBy("startDate")
+
+	@BsonIgnore
 	private List<Price> prices;
-	
-	@OneToOne
+
 	private Price currentPrice;
-	
-	@ManyToOne(optional=false)
+
 	private Supplier supplier;
 	
-	@Column(nullable=false)
 	private Float weight;
-//	el precio actual del producto es el ultimo agregado  a la coleccion
-	
-	
+		
 	public Product() {
 		
 	}
@@ -66,13 +65,6 @@ public class Product {
 
 	public void setCurrentPrice(Price currentPrice) {
 		this.currentPrice = currentPrice;
-	}
-
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -121,5 +113,18 @@ public class Product {
 		}
 		this.currentPrice = new Price(price, startDate, this);
 		this.prices.add(this.currentPrice);
+	}
+
+
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		objectId = objectId;
+		
 	}
 }

@@ -1,10 +1,9 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.types.ObjectId;
 
-@Entity
-@DiscriminatorValue("Delivered")
+@BsonDiscriminator
 public class Delivered extends Status {
 
 	@Override
@@ -31,6 +30,16 @@ public class Delivered extends Status {
 	@Override
 	public boolean canChangeToStatus(Status s) {
 		return false;
+	}
+	
+	@Override
+	public ObjectId getObjectId() {
+		return objectId;
+	}
+
+	@Override
+	public void setObjectId(ObjectId objectId) {
+		objectId = objectId;
 	}
 
 }
