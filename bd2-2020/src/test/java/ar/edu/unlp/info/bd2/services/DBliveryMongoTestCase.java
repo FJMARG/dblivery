@@ -184,37 +184,37 @@ public class DBliveryMongoTestCase {
 //        assertEquals(3,o4.getStatus().size());
 //        assertEquals(this.service.getActualStatus(o4.getObjectId()).getStatus(),"Delivered");
 //    }
-//
-//    @Test
-//    public void testGetUser() {
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.YEAR, 1982);
-//        cal.set(Calendar.MONTH, Calendar.MAY);
-//        cal.set(Calendar.DAY_OF_MONTH, 17);
-//        Date dob = cal.getTime();
-//        User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
-//        assertNotNull(u1.getObjectId());
-//        assertEquals("hgamarra", u1.getUsername());
-//        Optional<User> u2 = this.service.getUserByUsername("hgamarra");
-//        if (u2.isPresent()) {
-//            User u3 = u2.get();
-//            assertEquals("hgamarra", u3.getUsername());
-//            assertEquals("hugo.gamarra@testmail.com", u3.getEmail());
-//        }
-//        Optional<User> u4 = this.service.getUserByEmail("hugo.gamarra@testmail.com");
-//        if (u4.isPresent()) {
-//            User u5 = u4.get();
-//            assertEquals("hgamarra", u5.getUsername());
-//            assertEquals("hugo.gamarra@testmail.com", u5.getEmail());
-//        }
-//        Optional<User> u6= this.service.getUserById(u1.getObjectId());
-//        if (u6.isPresent()) {
-//            User u7 = u6.get();
-//            assertEquals("hgamarra", u7.getUsername());
-//            assertEquals("hugo.gamarra@testmail.com", u7.getEmail());
-//            assertEquals(u7.getObjectId(), u1.getObjectId());
-//        }
-//    }
+
+    @Test
+    public void testGetUser() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 1982);
+        cal.set(Calendar.MONTH, Calendar.MAY);
+        cal.set(Calendar.DAY_OF_MONTH, 17);
+        Date dob = cal.getTime();
+        User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
+        assertNotNull(u1.getObjectId());
+        assertEquals("hgamarra", u1.getUsername());
+        Optional<User> u2 = this.service.getUserByUsername("hgamarra");
+        if (u2.isPresent()) {
+            User u3 = u2.get();
+            assertEquals("hgamarra", u3.getUsername());
+            assertEquals("hugo.gamarra@testmail.com", u3.getEmail());
+        }
+        Optional<User> u4 = this.service.getUserByEmail("hugo.gamarra@testmail.com");
+        if (u4.isPresent()) {
+            User u5 = u4.get();
+            assertEquals("hgamarra", u5.getUsername());
+            assertEquals("hugo.gamarra@testmail.com", u5.getEmail());
+        }
+        Optional<User> u6= this.service.getUserById(u1.getObjectId());
+        if (u6.isPresent()) {
+            User u7 = u6.get();
+            assertEquals("hgamarra", u7.getUsername());
+            assertEquals("hugo.gamarra@testmail.com", u7.getEmail());
+            assertEquals(u7.getObjectId(), u1.getObjectId());
+        }
+    }
 //
 //    @Test
 //    public void testGetProduct() {

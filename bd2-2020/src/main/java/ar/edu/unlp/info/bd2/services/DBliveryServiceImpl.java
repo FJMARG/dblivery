@@ -39,14 +39,15 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
-		// TODO Auto-generated method stub
+		Supplier supplier = new Supplier(name, cuil, address, coordX, coordY);
+		repository.insertInto("supplier", Supplier.class, supplier);
 		return null;
 	}
 
 	@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
 		User user = new User(email, password, username, name, dateOfBirth);		
-		repository.getDb().getCollection("users", User.class).insertOne(user);
+		repository.insertInto("user", User.class, user);
 		return user;
 	}
 
@@ -58,32 +59,34 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Optional<User> getUserById(ObjectId id) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = (User) this.repository.findById("user", User.class, id);
+		return Optional.of(user);
 	}
 
 	@Override
 	public Optional<User> getUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = this.repository.getUserByField("email", email);
+		return Optional.of(user);
 	}
 
 	@Override
 	public Optional<User> getUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = this.repository.getUserByField("username", username);
+		return Optional.of(user);
 	}
 
 	@Override
 	public Optional<Order> getOrderById(ObjectId id) {
-		// TODO Auto-generated method stub
-		return null;
+		Order order = (Order) this.repository.findById("order", Order.class, id);
+		return Optional.of(order);
 	}
 
 	@Override
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
-		// TODO Auto-generated method stub
-		return null;
+		Order order = new Order(client, coordX, coordY, address, new Date());		
+//		esto está mal xq el cliente es un documento embebido, pero todavia no se como insertarlo
+		repository.insertInto("order", Order.class, order);
+		return order;
 	}
 
 	@Override

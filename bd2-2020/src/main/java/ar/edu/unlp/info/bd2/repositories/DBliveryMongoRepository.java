@@ -6,7 +6,11 @@ import static com.mongodb.client.model.Filters.regex;
 
 import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.mongo.*;
+
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.*;
+import com.sun.xml.txw2.Document;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,6 +49,24 @@ public class DBliveryMongoRepository {
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
         return stream.collect(Collectors.toList());
     }
-  
-
+    
+////////////////////    GENERIC METHODS   ///////////////////////////
+    
+    public void insertInto(String collectionName, Class collectionClass, Object object) {
+    	this.getDb().getCollection(collectionName, collectionClass).insertOne(object);
+    }
+    
+    public PersistentObject findById(String collectionName, Class collectionClass, ObjectId id){
+    	PersistentObject obj = (PersistentObject) this.getDb().getCollection(collectionName, collectionClass).find(eq("_id", id)).first();
+    	return obj;
+    }
+    
+    
+////////////////////    SPECIFIC METHODS   ///////////////////////////
+    
+//  for user
+    public User getUserByField( String field, String value ) {
+    	User user = (User)this.getDb().getCollection("user", User.class).find(eq(field, value)).first();
+    	return user;
+    }
 }
