@@ -41,7 +41,7 @@ public class Cancelled extends Status {
 
 	@Override
 	public void setObjectId(ObjectId objectId) {
-		objectId = objectId;
+		this.objectId = objectId;
 	}
 
 	

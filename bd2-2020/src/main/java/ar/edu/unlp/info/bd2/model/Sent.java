@@ -41,8 +41,7 @@ public class Sent extends Status {
 
 	@Override
 	public void setObjectId(ObjectId objectId) {
-		objectId = objectId;
-		
+		this.objectId = objectId;
 	}
 
 	

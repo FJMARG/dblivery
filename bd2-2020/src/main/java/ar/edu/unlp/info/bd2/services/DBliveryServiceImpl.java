@@ -27,8 +27,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
-		// TODO Auto-generated method stub
-		return null;
+		Product product = new Product(name, price, supplier, weight);
+		repository.insertInto("products", Product.class, product);
+		return product;
 	}
 
 	@Override
@@ -40,14 +41,14 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
 		Supplier supplier = new Supplier(name, cuil, address, coordX, coordY);
-		repository.insertInto("supplier", Supplier.class, supplier);
-		return null;
+		repository.insertInto("suppliers", Supplier.class, supplier);
+		return supplier;
 	}
 
 	@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
 		User user = new User(email, password, username, name, dateOfBirth);		
-		repository.insertInto("user", User.class, user);
+		repository.insertInto("users", User.class, user);
 		return user;
 	}
 
@@ -59,7 +60,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Optional<User> getUserById(ObjectId id) {
-		User user = (User) this.repository.findById("user", User.class, id);
+		User user = (User) this.repository.findById("users", User.class, id);
 		return Optional.of(user);
 	}
 

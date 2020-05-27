@@ -31,7 +31,7 @@ public class DBliveryMongoRepository {
     }
 
     public MongoDatabase getDb() {
-        return this.client.getDatabase("dblivery");
+        return this.client.getDatabase("bd2_grupo21");
     }
 
     public <T extends PersistentObject> List<T> getAssociatedObjects(
@@ -52,10 +52,12 @@ public class DBliveryMongoRepository {
     
 ////////////////////    GENERIC METHODS   ///////////////////////////
     
+    @SuppressWarnings("unchecked")
     public void insertInto(String collectionName, Class collectionClass, Object object) {
     	this.getDb().getCollection(collectionName, collectionClass).insertOne(object);
     }
     
+    @SuppressWarnings("unchecked")
     public PersistentObject findById(String collectionName, Class collectionClass, ObjectId id){
     	PersistentObject obj = (PersistentObject) this.getDb().getCollection(collectionName, collectionClass).find(eq("_id", id)).first();
     	return obj;
@@ -66,7 +68,7 @@ public class DBliveryMongoRepository {
     
 //  for user
     public User getUserByField( String field, String value ) {
-    	User user = (User)this.getDb().getCollection("user", User.class).find(eq(field, value)).first();
+    	User user = (User)this.getDb().getCollection("users", User.class).find(eq(field, value)).first();
     	return user;
     }
 }

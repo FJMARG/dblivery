@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
@@ -19,7 +20,8 @@ public class Price implements PersistentObject{
 	private Date startDate;
 
 	private Date endDate;
-
+	
+	@BsonIgnore
 	private Product product;
 	
 	public Price(float price, Date startDate, Product product) {
@@ -76,8 +78,7 @@ public class Price implements PersistentObject{
 
 	@Override
 	public void setObjectId(ObjectId objectId) {
-		objectId = objectId;
-		
+		this.objectId = objectId;
 	}
 	
 }

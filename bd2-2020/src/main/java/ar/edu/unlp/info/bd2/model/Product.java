@@ -34,7 +34,6 @@ public class Product implements PersistentObject{
 
 	private String name;	
 
-	@BsonIgnore
 	private List<Price> prices;
 
 	private Price currentPrice;
@@ -47,6 +46,15 @@ public class Product implements PersistentObject{
 		
 	}
 	
+	public Product(String name, Float price, Supplier supplier, Float weight) {
+		super();
+		this.name = name;
+		this.prices = new ArrayList<Price>();
+		this.supplier = supplier;
+		this.weight = weight;
+		this.currentPrice = null;
+		this.updatePrice(price, new Date());
+	}
 	
 	public Product(String name, Float price, Supplier supplier, Float weight, Date date) {
 		super();
@@ -124,7 +132,6 @@ public class Product implements PersistentObject{
 
 	@Override
 	public void setObjectId(ObjectId objectId) {
-		objectId = objectId;
-		
+		this.objectId = objectId;
 	}
 }
