@@ -16,11 +16,12 @@ public class Order implements PersistentObject{
 	@BsonId
 	private ObjectId objectId;
 	
-	@BsonIgnore
-	private List<OrderStatus> status;	
-
-	private OrderStatus currentStatus;
-
+//	@BsonIgnore
+//	private List<OrderStatus> status;	
+//
+//	private OrderStatus currentStatus;
+//
+	
 	private List<ProductOrder> products;
 	
 	private double coordX;
@@ -33,14 +34,16 @@ public class Order implements PersistentObject{
 	
 	private Date date;
 	
+	@BsonIgnore
 	private User client;
 	
+	@BsonIgnore
 	private User deliveryUser;
 
 
 	public Order(User client, double coordX, double coordY, String address,Date date) {
 		super();
-		this.status = new ArrayList<OrderStatus>();
+//		this.status = new ArrayList<OrderStatus>();
 		this.client = client;
 		this.coordX = coordX;
 		this.coordY = coordY;
@@ -48,7 +51,7 @@ public class Order implements PersistentObject{
 		this.date = date;
 		this.products = new ArrayList<ProductOrder>();
 		this.amount = 0F;
-		this.currentStatus = null;
+//		this.currentStatus = null;
 	}	
 	
 	public Order() { }
@@ -57,30 +60,30 @@ public class Order implements PersistentObject{
 		return amount;
 	}
 	
-	public void setCurrentStatus(OrderStatus currentStatus) {
-		this.currentStatus = currentStatus;
-	}
-	
-	public List<OrderStatus> getStatus() {
-		return this.status;
-	}
-	
-	public void setStatus(OrderStatus status) {
-		if(this.getActualStatus() == null && status.getStatusObject().getStatus() == "Pending") {
-			this.status.add(status);
-			this.setCurrentStatus(status);
-		}else {
-			if(this.getActualStatus().getStatusObject().canChangeToStatus(status.getStatusObject())) {
-				this.status.add(status);
-				this.setCurrentStatus(status);
-			}
-		}
-		
-	}
-	
-	public OrderStatus getActualStatus() {
-		return this.currentStatus;
-	}
+//	public void setCurrentStatus(OrderStatus currentStatus) {
+//		this.currentStatus = currentStatus;
+//	}
+//	
+//	public List<OrderStatus> getStatus() {
+//		return this.status;
+//	}
+//	
+//	public void setStatus(OrderStatus status) {
+//		if(this.getActualStatus() == null && status.getStatusObject().getStatus() == "Pending") {
+//			this.status.add(status);
+//			this.setCurrentStatus(status);
+//		}else {
+//			if(this.getActualStatus().getStatusObject().canChangeToStatus(status.getStatusObject())) {
+//				this.status.add(status);
+//				this.setCurrentStatus(status);
+//			}
+//		}
+//		
+//	}
+//	
+//	public OrderStatus getActualStatus() {
+//		return this.currentStatus;
+//	}
 	
 	public User getClient() {
 		return client;
@@ -92,6 +95,10 @@ public class Order implements PersistentObject{
 	
 	public List<ProductOrder> getProducts() {
 		return products;
+	}
+	
+	public void setProducts(List<ProductOrder> products) {
+		this.products = products;
 	}
 	
 	public double getCoordX() {
@@ -148,19 +155,19 @@ public class Order implements PersistentObject{
 //		}
 	}
 	
-	//--- Metodos State ---
-	
-	public boolean canDeliver() {
-		return this.getActualStatus().getStatusObject().canDeliver(this);
-	}
-	
-	public boolean canCancel() {
-		return this.getActualStatus().getStatusObject().canCancel(this);
-	}
-	
-	public boolean canFinish() {
-		return this.getActualStatus().getStatusObject().canFinish(this);
-	}
+//	//--- Metodos State ---
+//	
+//	public boolean canDeliver() {
+//		return this.getActualStatus().getStatusObject().canDeliver(this);
+//	}
+//	
+//	public boolean canCancel() {
+//		return this.getActualStatus().getStatusObject().canCancel(this);
+//	}
+//	
+//	public boolean canFinish() {
+//		return this.getActualStatus().getStatusObject().canFinish(this);
+//	}
 
 	@Override
 	public ObjectId getObjectId() {

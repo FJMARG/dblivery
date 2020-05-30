@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.OrderStatus;
 import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.ProductOrder;
 import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.DBliveryException;
@@ -78,22 +79,28 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Optional<Order> getOrderById(ObjectId id) {
-		Order order = (Order) this.repository.findById("order", Order.class, id);
+		Order order = (Order) this.repository.findById("orders", Order.class, id);
 		return Optional.of(order);
 	}
 
 	@Override
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
 		Order order = new Order(client, coordX, coordY, address, new Date());		
-//		esto está mal xq el cliente es un documento embebido, pero todavia no se como insertarlo
-		repository.insertInto("order", Order.class, order);
+		repository.insertOrder(order);
 		return order;
 	}
 
 	@Override
 	public Order addProduct(ObjectId order, Long quantity, Product product) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		ProductOrder po = new ProductOrder(quantity, product, orderDB.get()); 
+		this.repository.insertProductOrder(po);
+//		esto no anda porque en la variable orderDB quedan los products, client, etc en null
+		this.repository.insertOrder(orderDB.get());
+		return orderDB.get();
 	}
 
 	@Override
