@@ -37,8 +37,10 @@ public class DBliveryMongoRepository {
         return this.client.getDatabase("bd2_grupo21");
     }
 
-    public <T extends PersistentObject> List<T> getAssociatedObjects(
-            PersistentObject source, Class<T> objectClass, String association, String destCollection) {
+    public <T extends PersistentObject> List<T> getAssociatedObjects(PersistentObject source, 
+    																 Class<T> objectClass, 
+    																 String association, 
+    																 String destCollection) {
         AggregateIterable<T> iterable =
                 this.getDb()
                         .getCollection(association, objectClass)
@@ -84,14 +86,43 @@ public class DBliveryMongoRepository {
     
 //  for order
     public void insertOrder(Order order) {
-    	this.saveAssociation(order, order.getClient(), "orders_clients");
     	this.getDb().getCollection("orders", Order.class).insertOne(order);
+    	this.saveAssociation(order, order.getClient(), "orders_clients");
+    	if(order.getDeliveryUser() != null) {
+    		this.saveAssociation(order, order.getDeliveryUser(), "orders_deliveryUsers");
+    	}
     	
     }
     
     public void insertProductOrder(ProductOrder productOrder) {
-    	this.saveAssociation(productOrder, productOrder.getProduct(), "productsOrders_products");
     	this.getDb().getCollection("productsOrders", ProductOrder.class).insertOne(productOrder);
+    	this.saveAssociation(productOrder, productOrder.getProduct(), "productsOrders_products");
     }
     
+//    for products   
+    public void insertProduct(Product product) {
+    	this.getDb().getCollection("prices", Price.class).insertOne(product.getActualPrice());
+    	this.getDb().getCollection("products", Product.class).insertOne(product);
+    	this.saveAssociation(product, product.getActualPrice(), "products_prices");
+    	this.saveAssociation(product.getSupplier(), product, "suppliers_products");
+    }
+    
+    public List<Product> getProductsByName( String name ) {
+		AggregateIterable<Product> iterable =
+                this.getDb()
+                        .getCollection("products", Product.class)
+                        .aggregate(
+                                Arrays.asList(
+                                        match(regex("name", name))));
+        Stream<Product> stream =
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
+    }
+    
+    public Product updateProductPrice(Product product) {
+    	this.getDb().getCollection("prices", Price.class).insertOne(product.getActualPrice());
+    	this.saveAssociation(product, product.getActualPrice(), "products_prices");
+    	return product;
+    }
+
 }

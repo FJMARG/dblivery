@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.OrderStatus;
+import ar.edu.unlp.info.bd2.model.Price;
 import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.ProductOrder;
 import ar.edu.unlp.info.bd2.model.Supplier;
@@ -29,7 +31,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
 		Product product = new Product(name, price, supplier, weight);
-		repository.insertInto("products", Product.class, product);
+		repository.insertProduct(product);
 		return product;
 	}
 
@@ -55,8 +57,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Product updateProductPrice(ObjectId id, Float price, Date startDate) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Product product = (Product)this.repository.findById("products", Product.class, id);
+		List<Price> priceList = this.repository.getAssociatedObjects(product, Price.class, "products_prices", "prices");
+		product.setPrices(priceList);
+		product.updatePrice(price, startDate);
+		return this.repository.updateProductPrice(product);
 	}
 
 	@Override
@@ -80,6 +85,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	public Optional<Order> getOrderById(ObjectId id) {
 		Order order = (Order) this.repository.findById("orders", Order.class, id);
+		List<User> clientList = this.repository.getAssociatedObjects(order, User.class, "orders_clients", "users");
+		order.setClient(clientList.get(0));
+		List<User> deliveryUsertList = this.repository.getAssociatedObjects(order, User.class, "orders_deliveryUsers", "users");
+		order.setClient(deliveryUsertList.get(0));
 		return Optional.of(order);
 	}
 
@@ -98,8 +107,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 		
 		ProductOrder po = new ProductOrder(quantity, product, orderDB.get()); 
 		this.repository.insertProductOrder(po);
-//		esto no anda porque en la variable orderDB quedan los products, client, etc en null
-		this.repository.insertOrder(orderDB.get());
 		return orderDB.get();
 	}
 
@@ -165,8 +172,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public List<Product> getProductsByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Product> products = this.repository.getProductsByName(name);
+		return products;
 	}
 
 	

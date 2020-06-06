@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(
         classes = {AppConfig.class, MongoDBConfiguration.class},
         loader = AnnotationConfigContextLoader.class)
-@Rollback(false)
+@Rollback(true)
 public class DBliveryMongoTestCase {
 
     @Autowired
@@ -33,10 +33,10 @@ public class DBliveryMongoTestCase {
     @Autowired
     private DBliveryService service;
 
-//    @BeforeEach
-//    public void setUp() {
-//        this.client.getDatabase("bd2_grupo21").drop();
-//    }
+    @BeforeEach
+    public void setUp() {
+        this.client.getDatabase("bd2_grupo21").drop();
+    }
 
     @Test
     public void testCreateUser() {
@@ -59,20 +59,20 @@ public class DBliveryMongoTestCase {
         assertEquals("Combo Stacker ATR",p1.getName());
         assertEquals(1,p1.getPrices().size());
     }
-//
-//    @Test
-//    public void testUpdateProductPrice() throws DBliveryException {
-//        Calendar cal = Calendar.getInstance();
-//        Date startDate = cal.getTime();
-//        Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
-//        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
-//        assertNotNull(p1.getObjectId());
-//        assertEquals(1,p1.getPrices().size());
-//        Product p2 = this.service.updateProductPrice(p1.getObjectId(),Float.valueOf(3000.0F),startDate);
-//        assertEquals(Float.valueOf(3000.0F),p2.getPrice());
-//        assertEquals(2,p2.getPrices().size());
-//    }
-//
+
+    @Test
+    public void testUpdateProductPrice() throws DBliveryException {
+        Calendar cal = Calendar.getInstance();
+        Date startDate = cal.getTime();
+        Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
+        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
+        assertNotNull(p1.getObjectId());
+        assertEquals(1,p1.getPrices().size());
+        Product p2 = this.service.updateProductPrice(p1.getObjectId(),Float.valueOf(3000.0F),startDate);
+        assertEquals(Float.valueOf(3000.0F),p2.getPrice());
+        assertEquals(2,p2.getPrices().size());
+    }
+
     @Test
     public void testCreateOrder() throws DBliveryException {
         Calendar cal = Calendar.getInstance();
@@ -86,14 +86,14 @@ public class DBliveryMongoTestCase {
         Date dob = cal.getTime();
         User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
         Order o1 = this.service.createOrder(orderDate,"Av. Corrientes 1405 2° B", Float.valueOf(-54.45F), Float.valueOf(-62.22F),u1);
-        Order o2 = this.service.addProduct(o1.getObjectId(), 1L, p1);
+//        Order o2 = this.service.addProduct(o1.getObjectId(), 1L, p1);
 //        Optional<Order> o3 = this.service.getOrderById(o2.getObjectId());
 //        if (!o3.isPresent()) {
 //            throw new DBliveryException("Order doesn't exists");
 //        }
 //        Order ord = o3.get();
 //        assertNotNull(ord.getObjectId());
-//        assertEquals(1,ord.getStatus().size());
+////        assertEquals(1,ord.getStatus().size());
 //        assertEquals(u1.getObjectId(),ord.getClient().getObjectId());
 //        assertEquals(1,ord.getProducts().size());
     }
@@ -215,18 +215,18 @@ public class DBliveryMongoTestCase {
             assertEquals(u7.getObjectId(), u1.getObjectId());
         }
     }
-//
-//    @Test
-//    public void testGetProduct() {
-//        Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
-//        assertNotNull(s1.getObjectId());
-//        assertEquals("Burger King",s1.getName());
-//        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
-//        Product p2 = this.service.createProduct("Combo Tostado de Campo", Float.valueOf(2210.2F), Float.valueOf(2.2F), s1);
-//        Product p3 = this.service.createProduct("Combo Stacker ATR triple", Float.valueOf(1210F), Float.valueOf(1.8F), s1);
-//        assertEquals(this.service.getProductsByName("Combo Stacker ATR").size(),2);
-//        assertEquals(this.service.getProductsByName("Combo Tostado de Campo").size(),1);
-//        assertEquals(this.service.getProductsByName("triple").size(),1);
-//
-//    }
+
+    @Test
+    public void testGetProduct() {
+        Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
+        assertNotNull(s1.getObjectId());
+        assertEquals("Burger King",s1.getName());
+        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
+        Product p2 = this.service.createProduct("Combo Tostado de Campo", Float.valueOf(2210.2F), Float.valueOf(2.2F), s1);
+        Product p3 = this.service.createProduct("Combo Stacker ATR triple", Float.valueOf(1210F), Float.valueOf(1.8F), s1);
+        assertEquals(this.service.getProductsByName("Combo Stacker ATR").size(),2);
+        assertEquals(this.service.getProductsByName("Combo Tostado de Campo").size(),1);
+        assertEquals(this.service.getProductsByName("triple").size(),1);
+
+    }
 }

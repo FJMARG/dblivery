@@ -10,7 +10,6 @@ import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-@BsonDiscriminator
 public class Order implements PersistentObject{
 	
 	@BsonId
@@ -144,7 +143,7 @@ public class Order implements PersistentObject{
 	public void addProductOrder(ProductOrder productOrder) {
 		this.products.add(productOrder);
 		if (productOrder.getProduct().getPriceAt(this.getDate()) == null) {
-			this.amount += productOrder.getProduct().getCurrentPrice().getPrice() * productOrder.getQuantity();
+			this.amount += productOrder.getProduct().getActualPrice().getPrice() * productOrder.getQuantity();
 		}else {
 			this.amount += productOrder.getProduct().getPriceAt(this.getDate()) * productOrder.getQuantity();
 		}

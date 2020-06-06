@@ -10,7 +10,6 @@ import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-@BsonDiscriminator
 public class Supplier implements PersistentObject{
 	
 	@BsonId
@@ -61,6 +60,10 @@ public class Supplier implements PersistentObject{
 		return address;
 	}
 	
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}

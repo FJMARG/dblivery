@@ -1,13 +1,11 @@
 package ar.edu.unlp.info.bd2.model;
 
-import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-@BsonDiscriminator
 public class ProductOrder implements PersistentObject{
 	
 	@BsonId
@@ -26,8 +24,17 @@ public class ProductOrder implements PersistentObject{
 		this.product = product;
 		this.order = order;
 	}
-	
+
 	public ProductOrder() {	}
+	
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 	
 	public Long getQuantity() {
 		return quantity;

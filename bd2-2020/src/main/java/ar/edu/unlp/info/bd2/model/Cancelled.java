@@ -3,7 +3,6 @@ package ar.edu.unlp.info.bd2.model;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.types.ObjectId;
 
-@BsonDiscriminator
 public class Cancelled extends Status {
 
 	@Override

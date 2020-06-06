@@ -7,9 +7,8 @@ import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-@BsonDiscriminator
 public class OrderStatus implements PersistentObject{
-	
+
 	@BsonId
 	private ObjectId objectId;
 
@@ -45,6 +44,10 @@ public class OrderStatus implements PersistentObject{
 	
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	@Override

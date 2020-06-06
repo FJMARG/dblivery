@@ -26,7 +26,6 @@ import org.joda.time.LocalDate;
 
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-@BsonDiscriminator
 public class Product implements PersistentObject{
 	
 	@BsonId
@@ -34,10 +33,12 @@ public class Product implements PersistentObject{
 
 	private String name;	
 
+	@BsonIgnore
 	private List<Price> prices;
 
-	private Price currentPrice;
+	private Price actualPrice;
 
+	@BsonIgnore
 	private Supplier supplier;
 	
 	private Float weight;
@@ -52,7 +53,7 @@ public class Product implements PersistentObject{
 		this.prices = new ArrayList<Price>();
 		this.supplier = supplier;
 		this.weight = weight;
-		this.currentPrice = null;
+		this.actualPrice = null;
 		this.updatePrice(price, new Date());
 	}
 	
@@ -62,17 +63,17 @@ public class Product implements PersistentObject{
 		this.prices = new ArrayList<Price>();
 		this.supplier = supplier;
 		this.weight = weight;
-		this.currentPrice = null;
+		this.actualPrice = null;
 		this.updatePrice(price, date);
 	}
 	
 	
-	public Price getCurrentPrice() {
-		return currentPrice;
+	public Price getActualPrice() {
+		return actualPrice;
 	}
 
-	public void setCurrentPrice(Price currentPrice) {
-		this.currentPrice = currentPrice;
+	public void setActualPrice(Price actualPrice) {
+		this.actualPrice = actualPrice;
 	}
 	public String getName() {
 		return name;
@@ -88,7 +89,7 @@ public class Product implements PersistentObject{
 		this.prices = prices;
 	}
 	public Float getPrice() {
-		return this.getCurrentPrice().getPrice();
+		return this.getActualPrice().getPrice();
 	}
 	
 	public Float getPriceAt(Date f) {
@@ -114,13 +115,13 @@ public class Product implements PersistentObject{
 	
 // METODO PARA SETEAR EL PRECIO (AGREGA A LA COLECCION PRICES Y LO SETEA COMO PRECIO ACTUAL)
 	public void updatePrice( Float price, Date startDate ) {
-		if ( this.currentPrice != null ) {
+		if ( this.actualPrice != null ) {
 			Date temp = (Date)startDate.clone();
 			temp = LocalDate.fromDateFields(temp).minusDays(1).toDate();
-			this.getCurrentPrice().setEndDate(temp);
+			this.getActualPrice().setEndDate(temp);
 		}
-		this.currentPrice = new Price(price, startDate, this);
-		this.prices.add(this.currentPrice);
+		this.actualPrice = new Price(price, startDate, this);
+		this.prices.add(this.actualPrice);
 	}
 
 

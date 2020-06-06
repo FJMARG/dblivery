@@ -9,7 +9,6 @@ import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-@BsonDiscriminator
 public class Price implements PersistentObject{
 	
 	@BsonId
