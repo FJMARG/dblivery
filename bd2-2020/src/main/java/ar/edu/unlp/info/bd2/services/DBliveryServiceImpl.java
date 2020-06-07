@@ -12,6 +12,7 @@ import ar.edu.unlp.info.bd2.model.Pending;
 import ar.edu.unlp.info.bd2.model.Price;
 import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.ProductOrder;
+import ar.edu.unlp.info.bd2.model.Sent;
 import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.DBliveryException;
@@ -113,8 +114,23 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Order deliverOrder(ObjectId order, User deliveryUser) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		Optional<User> userDB = this.getUserById(deliveryUser.getObjectId());
+		if (userDB.isEmpty())
+			throw new DBliveryException("El usuario no existe");
+		
+		if( !orderDB.get().canDeliver() )
+			throw new DBliveryException("The order can't be delivered");
+	
+    	repository.saveAssociation(orderDB.get(), deliveryUser, "orders_deliveryUsers");
+		orderDB.get().changeActualStatus(new OrderStatus(new Sent()));
+		repository.updateOn("orders", Order.class, orderDB.get());
+		
+		orderDB = this.getOrderById(order);
+		return orderDB.isPresent() ? orderDB.get() : null;
 	}
 
 	@Override
@@ -161,8 +177,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public boolean canDeliver(ObjectId order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		return orderDB.get().canDeliver();
 	}
 
 	@Override

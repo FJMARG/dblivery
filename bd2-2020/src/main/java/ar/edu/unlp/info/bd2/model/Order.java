@@ -61,11 +61,11 @@ public class Order implements PersistentObject{
 	}
 	
 	public void changeActualStatus(OrderStatus status) {
-		if(this.getActualStatus() == null && status.getStatus().getStatus() == "Pending") {
+		if(this.getActualStatus() == null && status.getStatus() == "Pending") {
 			this.status.add(status);
 			this.actualStatus = status;
 		}else {
-			if(this.getActualStatus().getStatus().canChangeToStatus(status.getStatus())) {
+			if(this.getActualStatus().getStatusObject().canChangeToStatus(status.getStatusObject())) {
 				this.status.add(status);
 				this.actualStatus = status;
 			}
@@ -163,15 +163,15 @@ public class Order implements PersistentObject{
 //	//--- Metodos State ---
 	
 	public boolean canDeliver() {
-		return this.getActualStatus().getStatus().canDeliver(this);
+		return this.getActualStatus().getStatusObject().canDeliver(this);
 	}
 	
 	public boolean canCancel() {
-		return this.getActualStatus().getStatus().canCancel(this);
+		return this.getActualStatus().getStatusObject().canCancel(this);
 	}
 	
 	public boolean canFinish() {
-		return this.getActualStatus().getStatus().canFinish(this);
+		return this.getActualStatus().getStatusObject().canFinish(this);
 	}
 
 	@Override

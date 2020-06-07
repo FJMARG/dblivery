@@ -104,22 +104,22 @@ public class User implements PersistentObject{
 	
 	// Metodos redefinidos.
 	
-//	@Override
-//    public int hashCode() {
-//        return Integer.valueOf(this.getId().toString());
-//    }
+	@Override
+    public int hashCode() {
+        return Integer.valueOf(this.getObjectId().toString());
+    }
  
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == obj) // Verifico si soy yo mismo
-//            return true;
-//        if (obj == null) // Verifico si es nulo
-//            return false;
-//        if (getClass() != obj.getClass()) // Verifico si no pertenece a la clase
-//            return false;
-//        User o = (User) obj;  // Es un objeto usuario, entonces casteo.
-//        return this.getId().equals(o.getId()); // Comparo id's, si coinciden, son iguales.
-//    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) // Verifico si soy yo mismo
+            return true;
+        if (obj == null) // Verifico si es nulo
+            return false;
+        if (getClass() != obj.getClass()) // Verifico si no pertenece a la clase
+            return false;
+        User o = (User) obj;  // Es un objeto usuario, entonces casteo.
+        return this.getObjectId().equals(o.getObjectId()); // Comparo id's, si coinciden, son iguales.
+    }
 
 	@Override
 	public ObjectId getObjectId() {

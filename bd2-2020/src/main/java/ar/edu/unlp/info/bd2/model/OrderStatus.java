@@ -11,38 +11,38 @@ public class OrderStatus {
 
 	private Date date;
 
-	private Status status;
+	private Status statusObject;
 	
 	public OrderStatus() {}
 
-	public OrderStatus(Status status) {
+	public OrderStatus(Status statusObject) {
 		super();
-		this.status = status;
+		this.statusObject = statusObject;
 		this.date = new Date();
 	}
 
-	public OrderStatus(Date date, Status status) {
+	public OrderStatus(Date date, Status statusObject) {
 		super();
 		this.date = date;
-		this.status = status;
+		this.statusObject = statusObject;
 	}
 
 	public Date getDate() {
 		return date;
 	}
 
-//	public String getStatus() {
-//		return status.getStatus();
-//	}
+	public String getStatus() {
+		return statusObject.getStatus();
+	}
+	
+	public Status getStatusObject() {
+		return statusObject;
+	}
 
-	public Status getStatus() {
-		return status;
+	public void setStatusObject(Status statusObject) {
+		this.statusObject = statusObject;
 	}
-	
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-	
+
 	public void setDate(Date date) {
 		this.date = date;
 	}

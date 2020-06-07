@@ -12,9 +12,7 @@ public class Pending extends Status {
 
 	@Override
 	public boolean canDeliver(Order o) {
-//		if( o.getProducts().size() == 0 )
-//			return false;
-		return true;
+		return !o.getProducts().isEmpty();
 	}
 
 	@Override

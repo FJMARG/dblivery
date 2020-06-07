@@ -98,13 +98,7 @@ public class DBliveryMongoRepository {
     public void insertOrder(Order order) {
     	this.getDb().getCollection("orders", Order.class).insertOne(order);
     	this.saveAssociation(order, order.getClient(), "orders_clients");
-    	if(order.getDeliveryUser() != null) {
-    		this.saveAssociation(order, order.getDeliveryUser(), "orders_deliveryUsers");
-    	}
-    	
     }
-    
-
     
 //    for products   
     public void insertProduct(Product product) {
