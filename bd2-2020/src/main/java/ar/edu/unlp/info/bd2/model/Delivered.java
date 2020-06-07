@@ -30,15 +30,5 @@ public class Delivered extends Status {
 	public boolean canChangeToStatus(Status s) {
 		return false;
 	}
-	
-	@Override
-	public ObjectId getObjectId() {
-		return objectId;
-	}
-
-	@Override
-	public void setObjectId(ObjectId objectId) {
-		this.objectId = objectId;
-	}
 
 }

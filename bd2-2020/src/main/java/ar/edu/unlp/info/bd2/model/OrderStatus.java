@@ -7,10 +7,7 @@ import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-public class OrderStatus implements PersistentObject{
-
-	@BsonId
-	private ObjectId objectId;
+public class OrderStatus {
 
 	private Date date;
 
@@ -34,11 +31,11 @@ public class OrderStatus implements PersistentObject{
 		return date;
 	}
 
-	public String getStatus() {
-		return status.getStatus();
-	}
+//	public String getStatus() {
+//		return status.getStatus();
+//	}
 
-	public Status getStatusObject() {
+	public Status getStatus() {
 		return status;
 	}
 	
@@ -50,15 +47,6 @@ public class OrderStatus implements PersistentObject{
 		this.date = date;
 	}
 
-	@Override
-	public ObjectId getObjectId() {
-		return objectId;
-	}
-
-	@Override
-	public void setObjectId(ObjectId objectId) {
-		this.objectId = objectId;
-	}
 
 	
 }

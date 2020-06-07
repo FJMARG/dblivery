@@ -7,10 +7,7 @@ import org.bson.types.ObjectId;
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
 @BsonDiscriminator
-public abstract class Status implements PersistentObject{
-	
-	@BsonId
-	public ObjectId objectId;
+public abstract class Status {
 	
 	public abstract String getStatus();
 	

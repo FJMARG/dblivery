@@ -1,25 +1,36 @@
 package ar.edu.unlp.info.bd2.repositories;
 
-import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Aggregates.lookup;
+import static com.mongodb.client.model.Aggregates.match;
+import static com.mongodb.client.model.Aggregates.replaceRoot;
+import static com.mongodb.client.model.Aggregates.unwind;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
 
-import ar.edu.unlp.info.bd2.model.*;
-import ar.edu.unlp.info.bd2.mongo.*;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.*;
-import com.mongodb.client.model.Filters;
-import com.sun.xml.txw2.Document;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.bson.BsonDocument;
+import org.bson.BsonElement;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+
+import ar.edu.unlp.info.bd2.model.Order;
+import ar.edu.unlp.info.bd2.model.Price;
+import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.mongo.Association;
+import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
 public class DBliveryMongoRepository {
 
@@ -61,14 +72,13 @@ public class DBliveryMongoRepository {
     public void insertInto(String collectionName, Class collectionClass, Object object) {
     	this.getDb().getCollection(collectionName, collectionClass).insertOne(object);
     }
-    
-//    @SuppressWarnings("unchecked")
-//    public void updateOn(String collectionName, Class collectionClass, PersistentObject object) {
-//    	
-//    	Bson filter = Filters.eq(object.getObjectId());
-//    	this.getDb().getCollection(collectionName, collectionClass).updateOne(filter, set("products"));
-//    }
-//    
+       
+    @SuppressWarnings("unchecked")
+    public PersistentObject updateOn(String collectionName, Class collectionClass, PersistentObject object) {
+    	Bson filter = Filters.eq(object.getObjectId());
+    	return (PersistentObject) this.getDb().getCollection(collectionName, collectionClass).findOneAndReplace(filter, object);
+    }
+
     @SuppressWarnings("unchecked")
     public PersistentObject findById(String collectionName, Class collectionClass, ObjectId id){
     	PersistentObject obj = (PersistentObject) this.getDb().getCollection(collectionName, collectionClass).find(eq("_id", id)).first();
@@ -94,10 +104,7 @@ public class DBliveryMongoRepository {
     	
     }
     
-    public void insertProductOrder(ProductOrder productOrder) {
-    	this.getDb().getCollection("productsOrders", ProductOrder.class).insertOne(productOrder);
-    	this.saveAssociation(productOrder, productOrder.getProduct(), "productsOrders_products");
-    }
+
     
 //    for products   
     public void insertProduct(Product product) {

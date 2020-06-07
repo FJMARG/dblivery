@@ -32,16 +32,7 @@ public class Cancelled extends Status {
 		}
 		return false;
 	}
-	
-	@Override
-	public ObjectId getObjectId() {
-		return objectId;
-	}
 
-	@Override
-	public void setObjectId(ObjectId objectId) {
-		this.objectId = objectId;
-	}
 
 	
 }

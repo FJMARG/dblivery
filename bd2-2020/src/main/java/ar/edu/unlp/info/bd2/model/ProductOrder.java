@@ -6,16 +6,13 @@ import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
-public class ProductOrder implements PersistentObject{
+public class ProductOrder {
 	
-	@BsonId
-	private ObjectId objectId;
-
 	private Long quantity;
 
+	@BsonIgnore
 	private Order order;
 
-	@BsonIgnore
 	private Product product;
 	
 	public ProductOrder(Long quantity, Product product, Order order) {
@@ -52,14 +49,5 @@ public class ProductOrder implements PersistentObject{
 		this.product = product;
 	}
 
-	@Override
-	public ObjectId getObjectId() {
-		return objectId;
-	}
-
-	@Override
-	public void setObjectId(ObjectId objectId) {
-		this.objectId = objectId;
-	}
 
 }
