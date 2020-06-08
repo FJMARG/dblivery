@@ -157,33 +157,33 @@ public class DBliveryMongoTestCase {
         assertEquals(2,o5.getStatus().size());
     }
 
-//    @Test
-//    public void testFinishOrder() throws DBliveryException {
-//        Calendar cal = Calendar.getInstance();
-//        Date orderDate = cal.getTime();
-//        Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
-//        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
-//        Calendar cal2 = Calendar.getInstance();
-//        cal2.set(Calendar.YEAR, 1982);
-//        cal2.set(Calendar.MONTH, Calendar.MAY);
-//        cal2.set(Calendar.DAY_OF_MONTH, 17);
-//        Date dob = cal.getTime();
-//        User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
-//        cal2.set(Calendar.YEAR, 1988);
-//        cal2.set(Calendar.MONTH, Calendar.JUNE);
-//        cal2.set(Calendar.DAY_OF_MONTH, 23);
-//        Date dob2 = cal.getTime();
-//        User u2 = this.service.createUser("delivery@info.unlp.edu.ar", "123456", "delivery", "Delivery", dob2);
-//        Order o1 = this.service.createOrder(orderDate,"Av. Corrientes 1405 2° B", Float.valueOf(-54.45F), Float.valueOf(-62.22F),u1);
-//        Order o2 = this.service.addProduct(o1.getObjectId(), 1L, p1);
-//        assertThrows(DBliveryException.class, () -> this.service.finishOrder(o2.getObjectId()),"The order can't be finished");
-//        Order o3 = this.service.deliverOrder(o2.getObjectId(),u2);
-//        assertTrue(this.service.canFinish(o3.getObjectId()));
-//        Order o4 = this.service.finishOrder(o3.getObjectId());
-//        assertNotNull(o4.getObjectId());
-//        assertEquals(3,o4.getStatus().size());
-//        assertEquals(this.service.getActualStatus(o4.getObjectId()).getStatus(),"Delivered");
-//    }
+    @Test
+    public void testFinishOrder() throws DBliveryException {
+        Calendar cal = Calendar.getInstance();
+        Date orderDate = cal.getTime();
+        Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
+        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.set(Calendar.YEAR, 1982);
+        cal2.set(Calendar.MONTH, Calendar.MAY);
+        cal2.set(Calendar.DAY_OF_MONTH, 17);
+        Date dob = cal.getTime();
+        User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
+        cal2.set(Calendar.YEAR, 1988);
+        cal2.set(Calendar.MONTH, Calendar.JUNE);
+        cal2.set(Calendar.DAY_OF_MONTH, 23);
+        Date dob2 = cal.getTime();
+        User u2 = this.service.createUser("delivery@info.unlp.edu.ar", "123456", "delivery", "Delivery", dob2);
+        Order o1 = this.service.createOrder(orderDate,"Av. Corrientes 1405 2° B", Float.valueOf(-54.45F), Float.valueOf(-62.22F),u1);
+        Order o2 = this.service.addProduct(o1.getObjectId(), 1L, p1);
+        assertThrows(DBliveryException.class, () -> this.service.finishOrder(o2.getObjectId()),"The order can't be finished");
+        Order o3 = this.service.deliverOrder(o2.getObjectId(),u2);
+        assertTrue(this.service.canFinish(o3.getObjectId()));
+        Order o4 = this.service.finishOrder(o3.getObjectId());
+        assertNotNull(o4.getObjectId());
+        assertEquals(3,o4.getStatus().size());
+        assertEquals(this.service.getActualStatus(o4.getObjectId()).getStatus(),"Delivered");
+    }
 
     @Test
     public void testGetUser() {

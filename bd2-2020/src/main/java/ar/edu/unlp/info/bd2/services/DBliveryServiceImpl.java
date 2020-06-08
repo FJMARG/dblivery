@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.model.Cancelled;
+import ar.edu.unlp.info.bd2.model.Delivered;
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.OrderStatus;
 import ar.edu.unlp.info.bd2.model.Pending;
@@ -164,8 +165,18 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Order finishOrder(ObjectId order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		if( !orderDB.get().canFinish() )
+			throw new DBliveryException("The order can't be finished");
+		
+		orderDB.get().changeActualStatus(new OrderStatus(new Delivered()));
+		repository.updateOn("orders", Order.class, orderDB.get());
+		
+		orderDB = this.getOrderById(order);
+		return orderDB.isPresent() ? orderDB.get() : null;
 	}
 
 	@Override
@@ -185,8 +196,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public boolean canFinish(ObjectId id) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
+		Optional<Order> orderDB = this.getOrderById(id);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		return orderDB.get().canFinish();
 	}
 
 	@Override
