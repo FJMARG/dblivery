@@ -128,34 +128,34 @@ public class DBliveryMongoTestCase {
 
 
 
-//    @Test
-//    public void testCancelOrder() throws Exception {
-//        Calendar cal = Calendar.getInstance();
-//        Date orderDate = cal.getTime();
-//        Calendar cal2 = Calendar.getInstance();
-//        cal2.set(Calendar.YEAR, 1982);
-//        cal2.set(Calendar.MONTH, Calendar.MAY);
-//        cal2.set(Calendar.DAY_OF_MONTH, 17);
-//        Date dob = cal.getTime();
-//        User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
-//        Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
-//        Order o1 = this.service.createOrder(orderDate,"Av. Corrientes 1405 2° B", Float.valueOf(-54.45F), Float.valueOf(-62.22F),u1);
-//        assertTrue(this.service.canCancel(o1.getObjectId()));
-//        cal2.set(Calendar.YEAR, 1988);
-//        cal2.set(Calendar.MONTH, Calendar.JUNE);
-//        cal2.set(Calendar.DAY_OF_MONTH, 23);
-//        Date dob2 = cal.getTime();
-//        User u2 = this.service.createUser("delivery@info.unlp.edu.ar", "123456", "delivery", "Delivery", dob2);
-//        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
-//        Order o2 = this.service.addProduct(o1.getObjectId(), 1L, p1);
-//        Order o3 = this.service.deliverOrder(o2.getObjectId(), u2);
-//        assertFalse(this.service.canCancel(o3.getObjectId()));
-//        assertThrows(DBliveryException.class, () -> this.service.cancelOrder(o3.getObjectId()),"The order can't be cancelled");
-//        Order o4 = this.service.createOrder(orderDate,"Av. Corrientes 1405 2° B", Float.valueOf(-54.45F), Float.valueOf(-62.22F),u1);
-//        Order o5 = this.service.cancelOrder(o4.getObjectId());
-//        assertEquals(this.service.getActualStatus(o5.getObjectId()).getStatus(),"Cancelled");
-//        assertEquals(2,o5.getStatus().size());
-//    }
+    @Test
+    public void testCancelOrder() throws Exception {
+        Calendar cal = Calendar.getInstance();
+        Date orderDate = cal.getTime();
+        Calendar cal2 = Calendar.getInstance();
+        cal2.set(Calendar.YEAR, 1982);
+        cal2.set(Calendar.MONTH, Calendar.MAY);
+        cal2.set(Calendar.DAY_OF_MONTH, 17);
+        Date dob = cal.getTime();
+        User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
+        Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
+        Order o1 = this.service.createOrder(orderDate,"Av. Corrientes 1405 2° B", Float.valueOf(-54.45F), Float.valueOf(-62.22F),u1);
+        assertTrue(this.service.canCancel(o1.getObjectId()));
+        cal2.set(Calendar.YEAR, 1988);
+        cal2.set(Calendar.MONTH, Calendar.JUNE);
+        cal2.set(Calendar.DAY_OF_MONTH, 23);
+        Date dob2 = cal.getTime();
+        User u2 = this.service.createUser("delivery@info.unlp.edu.ar", "123456", "delivery", "Delivery", dob2);
+        Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
+        Order o2 = this.service.addProduct(o1.getObjectId(), 1L, p1);
+        Order o3 = this.service.deliverOrder(o2.getObjectId(), u2);
+        assertFalse(this.service.canCancel(o3.getObjectId()));
+        assertThrows(DBliveryException.class, () -> this.service.cancelOrder(o3.getObjectId()),"The order can't be cancelled");
+        Order o4 = this.service.createOrder(orderDate,"Av. Corrientes 1405 2° B", Float.valueOf(-54.45F), Float.valueOf(-62.22F),u1);
+        Order o5 = this.service.cancelOrder(o4.getObjectId());
+        assertEquals(this.service.getActualStatus(o5.getObjectId()).getStatus(),"Cancelled");
+        assertEquals(2,o5.getStatus().size());
+    }
 
 //    @Test
 //    public void testFinishOrder() throws DBliveryException {

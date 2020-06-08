@@ -56,8 +56,9 @@ public class Order implements PersistentObject{
 		return amount;
 	}
 	
-	public List<OrderStatus> getStatus() {
+	public /*String*/ List<OrderStatus> getStatus() {
 		return this.status;
+		//return this.getActualStatus().getStatus(); // Cambios que irian si debe devolver String
 	}
 	
 	public void changeActualStatus(OrderStatus status) {

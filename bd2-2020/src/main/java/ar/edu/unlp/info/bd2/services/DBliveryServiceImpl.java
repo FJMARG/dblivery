@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
+import ar.edu.unlp.info.bd2.model.Cancelled;
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.OrderStatus;
 import ar.edu.unlp.info.bd2.model.Pending;
@@ -141,8 +142,18 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Order cancelOrder(ObjectId order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		if( !orderDB.get().canCancel() )
+			throw new DBliveryException("The order can't be cancelled");
+	
+		orderDB.get().changeActualStatus(new OrderStatus(new Cancelled()));
+		repository.updateOn("orders", Order.class, orderDB.get());
+		
+		orderDB = this.getOrderById(order);
+		return orderDB.isPresent() ? orderDB.get() : null;
 	}
 
 	@Override
@@ -165,8 +176,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public boolean canCancel(ObjectId order) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return false;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		return orderDB.get().canCancel();
 	}
 
 	@Override
@@ -186,8 +200,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public OrderStatus getActualStatus(ObjectId order) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		return orderDB.get().getActualStatus();
 	}
 
 	@Override
