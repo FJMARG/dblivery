@@ -3,10 +3,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
+
+import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
 
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
 
@@ -21,9 +23,11 @@ public class Order implements PersistentObject{
 
 	private List<ProductOrder> products;
 	
-	private double coordX;
+	private Point position;
 	
-	private double coordY;
+	//private double coordX;
+	
+	//private double coordY;
 	
 	private String address;
 	
@@ -42,8 +46,10 @@ public class Order implements PersistentObject{
 		super();
 		this.status = new ArrayList<OrderStatus>();
 		this.client = client;
-		this.coordX = coordX;
-		this.coordY = coordY;
+		Position pos = new Position(coordX, coordY);
+		this.position = new Point(pos);
+		//this.coordX = coordX;
+		//this.coordY = coordY;
 		this.address = address;
 		this.date = date;
 		this.products = new ArrayList<ProductOrder>();
@@ -56,9 +62,8 @@ public class Order implements PersistentObject{
 		return amount;
 	}
 	
-	public /*String*/ List<OrderStatus> getStatus() {
+	public List<OrderStatus> getStatus() {
 		return this.status;
-		//return this.getActualStatus().getStatus(); // Cambios que irian si debe devolver String
 	}
 	
 	public void changeActualStatus(OrderStatus status) {
@@ -107,7 +112,7 @@ public class Order implements PersistentObject{
 		this.products = products;
 	}
 	
-	public double getCoordX() {
+	/*public double getCoordX() {
 		return coordX;
 	}
 	
@@ -121,7 +126,7 @@ public class Order implements PersistentObject{
 	
 	public void setCoordY(double coordY) {
 		this.coordY = coordY;
-	}
+	}*/
 	
 	public String getAddress() {
 		return address;
