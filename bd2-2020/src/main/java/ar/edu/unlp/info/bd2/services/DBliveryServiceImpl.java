@@ -20,7 +20,7 @@ import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.DBliveryException;
 import ar.edu.unlp.info.bd2.repositories.DBliveryMongoRepository;
 
-public class DBliveryServiceImpl implements DBliveryService {
+public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsService {
 
 	private DBliveryMongoRepository repository;
 	
@@ -38,8 +38,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date) {
-		// TODO Auto-generated method stub
-		return null;
+		Product product = new Product(name, price, supplier, weight, date);
+		repository.insertProduct(product);
+		return product;
 	}
 
 	@Override
@@ -137,8 +138,23 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Order deliverOrder(ObjectId order, User deliveryUser, Date date) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		Optional<User> userDB = this.getUserById(deliveryUser.getObjectId());
+		if (userDB.isEmpty())
+			throw new DBliveryException("El usuario no existe");
+		
+		if( !orderDB.get().canDeliver() )
+			throw new DBliveryException("The order can't be delivered");
+	
+    	repository.saveAssociation(orderDB.get(), deliveryUser, "orders_deliveryUsers");
+		orderDB.get().changeActualStatus(new OrderStatus(date, new Sent()));
+		repository.updateOn("orders", Order.class, orderDB.get());
+		
+		orderDB = this.getOrderById(order);
+		return orderDB.isPresent() ? orderDB.get() : null;
 	}
 
 	@Override
@@ -159,8 +175,18 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Order cancelOrder(ObjectId order, Date date) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		if( !orderDB.get().canCancel() )
+			throw new DBliveryException("The order can't be cancelled");
+	
+		orderDB.get().changeActualStatus(new OrderStatus(date, new Cancelled()));
+		repository.updateOn("orders", Order.class, orderDB.get());
+		
+		orderDB = this.getOrderById(order);
+		return orderDB.isPresent() ? orderDB.get() : null;
 	}
 
 	@Override
@@ -181,8 +207,18 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Order finishOrder(ObjectId order, Date date) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Order> orderDB = this.getOrderById(order);
+		if (orderDB.isEmpty())
+			throw new DBliveryException("La orden no existe");
+		
+		if( !orderDB.get().canFinish() )
+			throw new DBliveryException("The order can't be finished");
+		
+		orderDB.get().changeActualStatus(new OrderStatus(date, new Delivered()));
+		repository.updateOn("orders", Order.class, orderDB.get());
+		
+		orderDB = this.getOrderById(order);
+		return orderDB.isPresent() ? orderDB.get() : null;
 	}
 
 	@Override
@@ -222,6 +258,75 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public List<Product> getProductsByName(String name) {
 		List<Product> products = this.repository.getProductsByName(name);
 		return products;
+	}
+
+	@Override
+	public List<Order> getAllOrdersMadeByUser(String username) throws DBliveryException {
+		Optional<User> userOpt = this.getUserByUsername(username);
+		if(userOpt.isEmpty())
+			throw new DBliveryException("");
+		User user = userOpt.get();
+		return (List<Order>)repository.getObjectsAssociatedWith(user.getObjectId(), Order.class, "orders_clients", "orders");
+	}
+
+	@Override
+	public List<Supplier> getTopNSuppliersInSentOrders(int n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getPendingOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getSentOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getDeliveredOrdersForUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Product getBestSellingProduct() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Product> getProductsOnePrice() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Product> getSoldProductsOn(Date day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Product getMaxWeigth() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getOrderNearPlazaMoreno() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

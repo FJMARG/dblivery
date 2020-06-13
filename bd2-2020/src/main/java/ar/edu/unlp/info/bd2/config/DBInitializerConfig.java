@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DBInitializerConfig {
 
-//    @Bean
-//    public DBInitializer createDBInitializer() {
-//        return new DBInitializer();
-//    }
+    @Bean
+    public DBInitializer createDBInitializer() {
+        return new DBInitializer();
+    }
 
 }
