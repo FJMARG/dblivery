@@ -16,8 +16,10 @@ import java.util.stream.StreamSupport;
 
 import org.bson.BsonDocument;
 import org.bson.BsonElement;
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.joda.time.chrono.LimitChronology;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mongodb.client.AggregateIterable;
@@ -140,6 +142,11 @@ public class DBliveryMongoRepository {
     	this.getDb().getCollection("prices", Price.class).insertOne(product.getActualPrice());
     	this.saveAssociation(product, product.getActualPrice(), "products_prices");
     	return product;
+    }
+    public Product getProductMaxWeigth() {
+    	String query = "{ weight:-1 }";
+    	Document doc = Document.parse(query);
+    	return this.getDb().getCollection("products", Product.class).find().sort(doc).limit(1).first();
     }
 
 }
