@@ -23,6 +23,7 @@ import org.joda.time.chrono.LimitChronology;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -116,6 +117,14 @@ public class DBliveryMongoRepository {
     public void insertOrder(Order order) {
     	this.getDb().getCollection("orders", Order.class).insertOne(order);
     	this.saveAssociation(order, order.getClient(), "orders_clients");
+    }
+    
+    public List<Order> getOrdersWithActualStatus(String status){
+    	String query = "{ 'actualStatus.status': '"+status+"' }";
+    	Document doc = Document.parse(query);
+    	FindIterable<Order> f = this.getDb().getCollection("orders", Order.class).find(doc);
+    	Stream<Order> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(f.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
     }
     
 //    for products   
