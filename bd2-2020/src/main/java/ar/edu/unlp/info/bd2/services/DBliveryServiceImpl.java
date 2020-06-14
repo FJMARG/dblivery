@@ -282,8 +282,7 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 
 	@Override
 	public List<Order> getSentOrders() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.getOrdersWithActualStatus("Sent");
 	}
 
 	@Override
