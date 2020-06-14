@@ -8,6 +8,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Spliterators;
 import java.util.stream.Collectors;
@@ -70,7 +71,10 @@ public class DBliveryMongoRepository {
     }
     
     public <T extends PersistentObject> List<T> getObjectsAssociatedWith(
-            ObjectId objectId, Class<T> objectClass, String association, String destCollection) {
+            ObjectId objectId, 
+            Class<T> objectClass, 
+            String association, 
+            String destCollection) {
         AggregateIterable<T> iterable =
                 this.getDb()
                         .getCollection(association, objectClass)
@@ -113,6 +117,21 @@ public class DBliveryMongoRepository {
     	return user;
     }
     
+    public List<Order> getDeliveredOrdersForUser( User user ){
+    	AggregateIterable<Order> iterable =
+                this.getDb()
+                        .getCollection("orders_clients", Order.class)
+                        .aggregate(
+                                Arrays.asList(
+                                        match(eq("destination", user.getObjectId())),
+                                        lookup("orders", "source", "_id", "_matches"),                    
+                                        unwind("$_matches"),
+                                        replaceRoot("$_matches")));
+        Stream<Order> stream =
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
+    }
+    
 //  for order
     public void insertOrder(Order order) {
     	this.getDb().getCollection("orders", Order.class).insertOne(order);
@@ -124,6 +143,12 @@ public class DBliveryMongoRepository {
     	Document doc = Document.parse(query);
     	FindIterable<Order> f = this.getDb().getCollection("orders", Order.class).find(doc);
     	Stream<Order> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(f.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
+    }
+    
+    public List<Order> getDeliveredOrdersInPeriod( Date startDate, Date endDate ){
+    	FindIterable<Order> orders = (FindIterable<Order>) this.getDb().getCollection("orders", Order.class).find(eq("status.status", "Delivered"));
+    	Stream<Order> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(orders.iterator(), 0), false);
         return stream.collect(Collectors.toList());
     }
     

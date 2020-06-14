@@ -287,13 +287,13 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 
 	@Override
 	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.getDeliveredOrdersInPeriod(startDate, endDate);
 	}
 
 	@Override
 	public List<Order> getDeliveredOrdersForUser(String username) {
-		// TODO Auto-generated method stub
+//		Optional<User> userOpt = this.getUserByUsername(username);	
+//		return repository.getDeliveredOrdersForUser(userOpt);
 		return null;
 	}
 
