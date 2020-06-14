@@ -70,15 +70,14 @@ public class DBliveryStatisticsTestCase {
         Product product = this.service.getMaxWeigth();
         assertEquals("Milanesa con rúcula",product.getName());
     }
-//
-//
+
 //    @Test
 //    public void testGetTopNSuppliers() {
 //        List<Supplier> suppliers = this.service.getTopNSuppliersInSentOrders(4);
 //        assertEquals(4,suppliers.size());
 //        this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
 //    }
-//
+
     @Test
     public void testGetPendingOrders() {
         List<Order> orders = this.service.getPendingOrders();
@@ -90,18 +89,18 @@ public class DBliveryStatisticsTestCase {
         List<Order> orders = this.service.getSentOrders();
         assertEquals(65,orders.size());
     }
-//
+
     @Test
     public void testGetDeliveredOrdersInPeriod() throws ParseException {
         List<Order> orders = this.service.getDeliveredOrdersInPeriod(sdf.parse("1/1/2013"),sdf.parse("31/12/2013"));
         assertEquals(18,orders.size());
     }
-//
-//    @Test
-//    public void testGetDeliveredOrdersForUser() {
-//        List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
-//        assertEquals(3,orders.size());
-//    }
+
+    @Test
+    public void testGetDeliveredOrdersForUser() {
+        List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
+        assertEquals(3,orders.size());
+    }
 //
 //    @Test
 //    public void testGetBestSellingProduct() {
@@ -129,8 +128,6 @@ public class DBliveryStatisticsTestCase {
 //        assertEquals(3,orders.size());
 //    }
 
-
-
     private <T> void assertListEquality(List<T> list1, List<T> list2) {
         if (list1.size() != list2.size()) {
             Assert.fail("Lists have different size");
@@ -142,6 +139,4 @@ public class DBliveryStatisticsTestCase {
             }
         }
     }
-
-
 }

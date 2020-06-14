@@ -1,11 +1,15 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import static com.mongodb.client.model.Aggregates.lookup;
+import static com.mongodb.client.model.Aggregates.limit;
+import static com.mongodb.client.model.Aggregates.addFields;
 import static com.mongodb.client.model.Aggregates.match;
 import static com.mongodb.client.model.Aggregates.replaceRoot;
+import static com.mongodb.client.model.Aggregates.sort;
 import static com.mongodb.client.model.Aggregates.unwind;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.regex;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Sorts.descending;
+import com.mongodb.client.model.Field;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -15,12 +19,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.bson.BsonDocument;
-import org.bson.BsonElement;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import org.joda.time.chrono.LimitChronology;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mongodb.client.AggregateIterable;
@@ -32,6 +33,7 @@ import com.mongodb.client.model.Filters;
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.Price;
 import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.mongo.Association;
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
@@ -125,8 +127,9 @@ public class DBliveryMongoRepository {
                                 Arrays.asList(
                                         match(eq("destination", user.getObjectId())),
                                         lookup("orders", "source", "_id", "_matches"),                    
-                                        unwind("$_matches"),
-                                        replaceRoot("$_matches")));
+                                        unwind("$_matches"),                     
+                                        replaceRoot("$_matches"),
+                                        match(eq("actualStatus.status", "Delivered"))));
         Stream<Order> stream =
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
         return stream.collect(Collectors.toList());
@@ -146,9 +149,15 @@ public class DBliveryMongoRepository {
         return stream.collect(Collectors.toList());
     }
     
-    public List<Order> getDeliveredOrdersInPeriod( Date startDate, Date endDate ){
-    	FindIterable<Order> orders = (FindIterable<Order>) this.getDb().getCollection("orders", Order.class).find(eq("status.status", "Delivered"));
-    	Stream<Order> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(orders.iterator(), 0), false);
+	public List<Order> getDeliveredOrdersInPeriod( Date startDate, Date endDate ){
+    	AggregateIterable<Order> iterable = this.getDb().getCollection("orders", Order.class)
+    			.aggregate(Arrays.asList(
+    					match(eq("actualStatus.status", "Delivered")),
+    					match(gte("actualStatus.date", startDate )),
+    					match(lte("actualStatus.date", endDate ))
+    					));
+    	
+    	Stream<Order> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
         return stream.collect(Collectors.toList());
     }
     
@@ -182,5 +191,22 @@ public class DBliveryMongoRepository {
     	Document doc = Document.parse(query);
     	return this.getDb().getCollection("products", Product.class).find().sort(doc).limit(1).first();
     }
+    
+    //Está mal pensado, queda codigo de referencia
+    
+//	public List<Order> getTopNSentOrders(int n) {
+//		AggregateIterable<Order> iterable =
+//                this.getDb()
+//                        .getCollection("orders", Order.class)
+//                        .aggregate(
+//                                Arrays.asList(
+//                                        match(eq("actualStatus.status", "Sent")),
+//                                        addFields(new Field<Document>("arrSize", new Document("$size", "$products"))),
+//                                        sort(descending("arrSize")),
+//                                        limit(n)));
+//        Stream<Order> stream =
+//                StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+//        return stream.collect(Collectors.toList());
+//	}
 
 }

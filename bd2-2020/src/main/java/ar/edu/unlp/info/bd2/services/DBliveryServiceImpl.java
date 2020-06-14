@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -271,7 +272,7 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 
 	@Override
 	public List<Supplier> getTopNSuppliersInSentOrders(int n) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
@@ -292,9 +293,8 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 
 	@Override
 	public List<Order> getDeliveredOrdersForUser(String username) {
-//		Optional<User> userOpt = this.getUserByUsername(username);	
-//		return repository.getDeliveredOrdersForUser(userOpt);
-		return null;
+		Optional<User> userOpt = this.getUserByUsername(username);	
+		return (List<Order>)repository.getDeliveredOrdersForUser(userOpt.get());
 	}
 
 	@Override
