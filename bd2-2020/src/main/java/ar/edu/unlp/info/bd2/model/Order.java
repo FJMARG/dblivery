@@ -79,10 +79,6 @@ public class Order implements PersistentObject{
 		
 	}
 	
-	public void setPosition(Point position) {
-		this.position = position;
-	}
-	
 	public void setStatus(List<OrderStatus> status) {
 		this.status = status;
 	}
@@ -184,6 +180,15 @@ public class Order implements PersistentObject{
 		return this.getActualStatus().getStatusObject().canFinish(this);
 	}
 
+
+	public Point getPosition() {
+		return position;
+	}
+	
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+	
 	@Override
 	public ObjectId getObjectId() {
 		return objectId;
@@ -193,12 +198,5 @@ public class Order implements PersistentObject{
 	public void setObjectId(ObjectId objectId) {
 		this.objectId = objectId;
 	}
-
-	public Point getPosition() {
-		return position;
-	}
-
-	
-	
 
 }

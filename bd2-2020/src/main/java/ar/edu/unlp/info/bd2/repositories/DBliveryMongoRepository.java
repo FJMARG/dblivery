@@ -164,7 +164,7 @@ public class DBliveryMongoRepository {
     }
 	
 	public List<Order> getOrdersNear(String point){
-		String query = "{$geoNear: {near: { type: 'Point', coordinates: "+point+"}, distanceField: 'location.coordinates', maxDistance: 400 }}";
+		String query = "{$geoNear: {near: { type: 'Point', coordinates: "+point+"}, distanceField: 'coordinates', maxDistance: 400 }}";
     	Document doc = Document.parse(query);
     	List<Document> l = new ArrayList<Document>();
     	l.add(doc);
