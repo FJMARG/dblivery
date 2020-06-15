@@ -28,7 +28,7 @@ public class Order implements PersistentObject{
 	//private double coordX;
 	
 	//private double coordY;
-	
+
 	private String address;
 	
 	private Float amount;
@@ -77,6 +77,10 @@ public class Order implements PersistentObject{
 			}
 		}
 		
+	}
+	
+	public void setPosition(Point position) {
+		this.position = position;
 	}
 	
 	public void setStatus(List<OrderStatus> status) {
@@ -188,6 +192,10 @@ public class Order implements PersistentObject{
 	@Override
 	public void setObjectId(ObjectId objectId) {
 		this.objectId = objectId;
+	}
+
+	public Point getPosition() {
+		return position;
 	}
 
 	
