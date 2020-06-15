@@ -122,11 +122,11 @@ public class DBliveryStatisticsTestCase {
 //    }
 //
 //
-//    @Test
-//    public void testGetOrderNearPlazaMoreno() {
-//        List<Order> orders = this.service.getOrderNearPlazaMoreno();
-//        assertEquals(3,orders.size());
-//    }
+    @Test
+    public void testGetOrderNearPlazaMoreno() {
+        List<Order> orders = this.service.getOrderNearPlazaMoreno();
+        assertEquals(3,orders.size());
+    }
 
     private <T> void assertListEquality(List<T> list1, List<T> list2) {
         if (list1.size() != list2.size()) {

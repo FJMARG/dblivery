@@ -11,8 +11,10 @@ import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.descending;
 import com.mongodb.client.model.Field;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Spliterators;
 import java.util.stream.Collectors;
@@ -160,6 +162,16 @@ public class DBliveryMongoRepository {
     	Stream<Order> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
         return stream.collect(Collectors.toList());
     }
+	
+	public List<Order> getOrdersNear(String point){
+		String query = "{$geoNear: {near: { type: 'Point', coordinates: "+point+"}, distanceField: 'location.coordinates', maxDistance: 400 }}";
+    	Document doc = Document.parse(query);
+    	List<Document> l = new ArrayList<Document>();
+    	l.add(doc);
+    	AggregateIterable<Order> iterable = this.getDb().getCollection("orders", Order.class).aggregate(l);
+    	Stream<Order> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
+	}
     
 //    for products   
     public void insertProduct(Product product) {

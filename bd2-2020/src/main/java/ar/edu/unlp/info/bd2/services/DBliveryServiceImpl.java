@@ -322,8 +322,8 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 
 	@Override
 	public List<Order> getOrderNearPlazaMoreno() {
-		// TODO Auto-generated method stub
-		return null;
+		String point = "[-34.921236,-57.954571]";
+		return this.repository.getOrdersNear(point);
 	}
 
 	
