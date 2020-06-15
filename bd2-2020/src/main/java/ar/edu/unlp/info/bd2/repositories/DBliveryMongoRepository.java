@@ -9,6 +9,7 @@ import static com.mongodb.client.model.Aggregates.unwind;
 import static com.mongodb.client.model.Aggregates.group;
 import static com.mongodb.client.model.Aggregates.sort;
 import static com.mongodb.client.model.Sorts.descending;
+import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Accumulators.sum;
 import static com.mongodb.client.model.Projections.exclude;
 import static com.mongodb.client.model.Filters.*;
@@ -37,6 +38,7 @@ import com.mongodb.client.model.Filters;
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.Price;
 import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.mongo.Association;
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
@@ -181,7 +183,6 @@ public class DBliveryMongoRepository {
     	this.getDb().getCollection("prices", Price.class).insertOne(product.getActualPrice());
     	this.getDb().getCollection("products", Product.class).insertOne(product);
     	this.saveAssociation(product, product.getActualPrice(), "products_prices");
-    	this.saveAssociation(product.getSupplier(), product, "suppliers_products");
     }
     
     public List<Product> getProductsByName( String name ) {
@@ -315,5 +316,26 @@ public class DBliveryMongoRepository {
     	Stream<Product> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
         return stream.collect(Collectors.toList()).get(0);
     }
+
+	public List<Supplier> getTopNSuppliersInSentOrders(int n) {
+		AggregateIterable<Supplier> iterable = this.getDb().getCollection("orders", Supplier.class)
+    			.aggregate(Arrays.asList(
+    					match(eq("actualStatus.status", "Sent")),
+						unwind("$products"),
+						replaceRoot("$products"),
+						group(
+							"$product.supplier", 
+							Arrays.asList(
+								sum("totalQuantity", "$quantity")
+							)
+						),
+						sort(descending("totalQuantity")),
+//						sort(ascending("_id.name")),
+						limit(n),
+						replaceRoot("$_id")
+    					));
+    	Stream<Supplier> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
+	}
 
 }

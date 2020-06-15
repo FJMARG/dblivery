@@ -71,12 +71,12 @@ public class DBliveryStatisticsTestCase {
         assertEquals("Milanesa con rúcula",product.getName());
     }
 
-//    @Test
-//    public void testGetTopNSuppliers() {
-//        List<Supplier> suppliers = this.service.getTopNSuppliersInSentOrders(4);
-//        assertEquals(4,suppliers.size());
-//        this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
-//    }
+    @Test
+    public void testGetTopNSuppliers() {
+        List<Supplier> suppliers = this.service.getTopNSuppliersInSentOrders(4);
+        assertEquals(4,suppliers.size());
+        this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
+    }
 
     @Test
     public void testGetPendingOrders() {

@@ -38,7 +38,6 @@ public class Product implements PersistentObject{
 
 	private Price actualPrice;
 
-	@BsonIgnore
 	private Supplier supplier;
 	
 	private Float weight;

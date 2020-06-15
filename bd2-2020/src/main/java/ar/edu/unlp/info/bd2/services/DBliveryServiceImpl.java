@@ -272,8 +272,7 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 
 	@Override
 	public List<Supplier> getTopNSuppliersInSentOrders(int n) {
-
-		return null;
+		return repository.getTopNSuppliersInSentOrders(n);
 	}
 
 	@Override
