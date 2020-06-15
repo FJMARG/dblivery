@@ -101,27 +101,27 @@ public class DBliveryStatisticsTestCase {
         List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
         assertEquals(3,orders.size());
     }
-//
-//    @Test
-//    public void testGetBestSellingProduct() {
-//        Product product = this.service.getBestSellingProduct();
-//        assertEquals("Pizza napolitana",product.getName());
-//    }
-//    //
+
+    @Test
+    public void testGetBestSellingProduct() {
+        Product product = this.service.getBestSellingProduct();
+        assertEquals("Pizza napolitana",product.getName());
+    }
+
     @Test
     public void testGetProductsOnePrice() {
         List<Product> products = this.service.getProductsOnePrice();
         assertEquals(27, products.size());
     }
-//
+
 //    @Test
 //    public void testGetSoldProductsOn() throws ParseException {
 //        List<Product> products = this.service.getSoldProductsOn(sdf.parse("28/2/2010"));
 //        assertEquals(4, products.size());
 //        this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Filet de merluza a la romana","Bife de chorizo grillado","Milanesa americana","Ensalada de hojas verdes y queso"));
 //    }
-//
-//
+
+
     @Test
     public void testGetOrderNearPlazaMoreno() {
         List<Order> orders = this.service.getOrderNearPlazaMoreno();

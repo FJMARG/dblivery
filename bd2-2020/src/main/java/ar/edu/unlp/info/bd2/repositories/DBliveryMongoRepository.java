@@ -1,20 +1,22 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import static com.mongodb.client.model.Aggregates.lookup;
-import static com.mongodb.client.model.Aggregates.limit;
-import static com.mongodb.client.model.Aggregates.addFields;
 import static com.mongodb.client.model.Aggregates.match;
 import static com.mongodb.client.model.Aggregates.replaceRoot;
-import static com.mongodb.client.model.Aggregates.sort;
+import static com.mongodb.client.model.Aggregates.project;
+import static com.mongodb.client.model.Aggregates.limit;
 import static com.mongodb.client.model.Aggregates.unwind;
-import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Aggregates.group;
+import static com.mongodb.client.model.Aggregates.sort;
 import static com.mongodb.client.model.Sorts.descending;
-import com.mongodb.client.model.Field;
+import static com.mongodb.client.model.Accumulators.sum;
+import static com.mongodb.client.model.Projections.exclude;
+import static com.mongodb.client.model.Filters.*;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Spliterators;
 import java.util.stream.Collectors;
@@ -35,7 +37,6 @@ import com.mongodb.client.model.Filters;
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.Price;
 import ar.edu.unlp.info.bd2.model.Product;
-import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.mongo.Association;
 import ar.edu.unlp.info.bd2.mongo.PersistentObject;
@@ -154,9 +155,11 @@ public class DBliveryMongoRepository {
 	public List<Order> getDeliveredOrdersInPeriod( Date startDate, Date endDate ){
     	AggregateIterable<Order> iterable = this.getDb().getCollection("orders", Order.class)
     			.aggregate(Arrays.asList(
-    					match(eq("actualStatus.status", "Delivered")),
-    					match(gte("actualStatus.date", startDate )),
-    					match(lte("actualStatus.date", endDate ))
+    					match(
+							and(
+								eq("actualStatus.status", "Delivered"),
+								gte("actualStatus.date", startDate ), 
+								lte("actualStatus.date", endDate )))
     					));
     	
     	Stream<Order> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
@@ -198,6 +201,7 @@ public class DBliveryMongoRepository {
     	this.saveAssociation(product, product.getActualPrice(), "products_prices");
     	return product;
     }
+    
     public Product getProductMaxWeigth() {
     	String query = "{ weight:-1 }";
     	Document doc = Document.parse(query);
@@ -273,21 +277,43 @@ public class DBliveryMongoRepository {
         return stream.collect(Collectors.toList());
     }
     
-    //Está mal pensado, queda codigo de referencia
     
-//	public List<Order> getTopNSentOrders(int n) {
-//		AggregateIterable<Order> iterable =
-//                this.getDb()
-//                        .getCollection("orders", Order.class)
-//                        .aggregate(
-//                                Arrays.asList(
-//                                        match(eq("actualStatus.status", "Sent")),
-//                                        addFields(new Field<Document>("arrSize", new Document("$size", "$products"))),
-//                                        sort(descending("arrSize")),
-//                                        limit(n)));
-//        Stream<Order> stream =
-//                StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
-//        return stream.collect(Collectors.toList());
-//	}
+    public List<Product> getSoldProductsOn( Date day ) {
+    	Date endDay = new Date(day.getYear(), day.getMonth(), day.getDate());
+    	endDay.setHours(24);
+    	
+		AggregateIterable<Product> iterable = this.getDb().getCollection("orders", Product.class)
+    			.aggregate(Arrays.asList(
+    					match(
+							and(
+								gte("date", day), 
+								lte("date", endDay )
+							)
+						),
+						unwind("$products"),
+						replaceRoot("$products.product")
+    					));
+    	Stream<Product> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
+	}
+	
+    public Product getBestSellingProduct() {
+    	AggregateIterable<Product> iterable = this.getDb().getCollection("orders", Product.class)
+    			.aggregate(Arrays.asList(
+						unwind("$products"),
+						replaceRoot("$products"),
+						group(
+							"$product", 
+							Arrays.asList(
+								sum("totalQuantity", "$quantity")
+							)
+						),
+						sort(descending("totalQuantity")),
+						limit(1),
+						replaceRoot("$_id")
+    					));
+    	Stream<Product> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+        return stream.collect(Collectors.toList()).get(0);
+    }
 
 }
