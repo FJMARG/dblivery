@@ -108,11 +108,11 @@ public class DBliveryStatisticsTestCase {
 //        assertEquals("Pizza napolitana",product.getName());
 //    }
 //    //
-//    @Test
-//    public void testGetProductsOnePrice() {
-//        List<Product> products = this.service.getProductsOnePrice();
-//        assertEquals(27, products.size());
-//    }
+    @Test
+    public void testGetProductsOnePrice() {
+        List<Product> products = this.service.getProductsOnePrice();
+        assertEquals(27, products.size());
+    }
 //
 //    @Test
 //    public void testGetSoldProductsOn() throws ParseException {

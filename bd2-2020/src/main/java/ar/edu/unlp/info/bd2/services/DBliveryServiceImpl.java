@@ -305,8 +305,7 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 
 	@Override
 	public List<Product> getProductsOnePrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repository.getProductsOnePrice();
 	}
 
 	@Override

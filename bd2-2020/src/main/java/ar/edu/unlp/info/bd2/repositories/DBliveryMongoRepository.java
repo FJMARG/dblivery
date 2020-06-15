@@ -204,6 +204,75 @@ public class DBliveryMongoRepository {
     	return this.getDb().getCollection("products", Product.class).find().sort(doc).limit(1).first();
     }
     
+    public List<Product> getProductsOnePrice(){
+    	String d1 = "{ \n" + 
+    			"       $group: { \n" + 
+    			"           _id: \"$source\",\n" + 
+    			"           count: { $sum: 1 }\n" + 
+    			"       }\n" + 
+    			"   }";
+    	String d2 = "{\n" + 
+    			"       $match: {\n" + 
+    			"           count: { $eq: 1 }\n" + 
+    			"       }\n" + 
+    			"   }";
+    	String d3 = "{\n" + 
+    			"       $lookup:{\n" + 
+    			"           from: \"products\",\n" + 
+    			"           localField: \"_id\",\n" + 
+    			"           foreignField: \"_id\",\n" + 
+    			"           as: \"p\"\n" + 
+    			"     }\n" + 
+    			"    }";
+    	String d4 = "{\n" + 
+    			"        $unwind:'$p'\n" + 
+    			"    }";
+    	String d5 = "{\n" + 
+    			"        \"$group\": {\n" + 
+    			"            \"_id\": \"$p._id\",\n" + 
+    			"            \"p\": {\n" + 
+    			"                \"$push\": {\n" + 
+    			"                    \"_id\": \"$p._id\",\n" + 
+    			"                    \"actualPrice\": \"$p.actualPrice\",\n" + 
+    			"                    \"name\": \"$p.name\",\n" + 
+    			"                    \"price\": \"$p.price\",\n" + 
+    			"                    \"weight\": \"$p.weight\"\n" + 
+    			"                }\n" + 
+    			"            }\n" + 
+    			"        }\n" + 
+    			"    }";
+    	String d6 = "{\n" + 
+    			"        \"$unwind\": \"$p\"\n" + 
+    			"    }";
+    	String d7 = "{\n" + 
+    			"        \"$project\": {\n" + 
+    			"            \"_id\": \"$p._id\",\n" + 
+    			"            \"actualPrice\": \"$p.actualPrice\",\n" + 
+    			"            \"name\": \"$p.name\",\n" + 
+    			"            \"price\": \"$p.price\",\n" + 
+    			"            \"weight\": \"$p.weight\"\n" + 
+    			"       }\n" + 
+    			"    }";
+    	Document doc1 = Document.parse(d1);
+    	Document doc2 = Document.parse(d2);
+    	Document doc3 = Document.parse(d3);
+    	Document doc4 = Document.parse(d4);
+    	Document doc5 = Document.parse(d5);
+    	Document doc6 = Document.parse(d6);
+    	Document doc7 = Document.parse(d7);
+    	List<Document> l = new ArrayList<Document>();
+    	l.add(doc1);
+    	l.add(doc2);
+    	l.add(doc3);
+    	l.add(doc4);
+    	l.add(doc5);
+    	l.add(doc6);
+    	l.add(doc7);
+    	AggregateIterable<Product> iterable = this.getDb().getCollection("products_prices", Product.class).aggregate(l);
+    	Stream<Product> stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
+    }
+    
     //Está mal pensado, queda codigo de referencia
     
 //	public List<Order> getTopNSentOrders(int n) {
