@@ -280,15 +280,11 @@ public class DBliveryMongoRepository {
     
     
     public List<Product> getSoldProductsOn( Date day ) {
-    	Date endDay = new Date(day.getYear(), day.getMonth(), day.getDate());
-    	endDay.setHours(24);
-    	
 		AggregateIterable<Product> iterable = this.getDb().getCollection("orders", Product.class)
     			.aggregate(Arrays.asList(
     					match(
 							and(
-								gte("date", day), 
-								lte("date", endDay )
+								eq("date", day)
 							)
 						),
 						unwind("$products"),

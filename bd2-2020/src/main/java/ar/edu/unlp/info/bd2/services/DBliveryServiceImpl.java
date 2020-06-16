@@ -98,7 +98,7 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 
 	@Override
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
-		Order order = new Order(client, coordX, coordY, address, new Date());
+		Order order = new Order(client, coordX, coordY, address, dateOfOrder);
 		order.changeActualStatus(new OrderStatus(new Pending()));
 		repository.insertOrder(order);
 		return order;
@@ -309,7 +309,6 @@ public class DBliveryServiceImpl implements DBliveryService, DBliveryStatisticsS
 	@Override
 	public List<Product> getSoldProductsOn(Date day) {
 		return repository.getSoldProductsOn(day);
-
 	}
 
 	@Override
