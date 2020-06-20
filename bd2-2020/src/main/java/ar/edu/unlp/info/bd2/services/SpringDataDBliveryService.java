@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unlp.info.bd2.model.Cancelled;
@@ -52,50 +54,48 @@ public class SpringDataDBliveryService implements DBliveryService, DBliveryStati
 	
 	@Override
 	public Product getMaxWeigth() {
-		// TODO Auto-generated method stub
-		return null;
+		return productRepository.getMaxWeight(PageRequest.of(0, 1));
 	}
 
 	@Override
 	public List<Order> getAllOrdersMadeByUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> userOpt = this.getUserByUsername(username);
+		if(userOpt.isEmpty())
+			return null;
+		return orderRepository.findByUser(userOpt.get());
 	}
 
 	@Override
 	public List<Order> getPendingOrders() {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepository.getPendingOrders();
 	}
 
 	@Override
 	public List<Order> getSentOrders() {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepository.getSentOrders();
 	}
 
 	@Override
 	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepository.getDeliveredOrdersInPeriod(startDate, endDate);
 	}
 
 	@Override
 	public List<Order> getDeliveredOrdersForUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> userOpt = this.getUserByUsername(username);
+		if(userOpt.isEmpty())
+			return null;
+		return orderRepository.getDeliveredOrdersForUser(userOpt.get());
 	}
 
 	@Override
 	public List<Product> getProductsOnePrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return productRepository.getProductsOnePrice();
 	}
 
 	@Override
 	public List<Product> getSoldProductsOn(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		return productRepository.getSoldProductsOn(day);
 	}
 
 	@Override
