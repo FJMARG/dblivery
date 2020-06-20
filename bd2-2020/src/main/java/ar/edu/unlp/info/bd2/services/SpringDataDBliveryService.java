@@ -4,15 +4,30 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.OrderStatus;
 import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.Supplier;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.DBliveryException;
+import ar.edu.unlp.info.bd2.repositories.ProductRepository;
+import ar.edu.unlp.info.bd2.repositories.SupplierRepository;
+import ar.edu.unlp.info.bd2.repositories.UserRepository;
 
 public class SpringDataDBliveryService implements DBliveryService, DBliveryStatisticsService {
-
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private SupplierRepository supplierRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
 	@Override
 	public Product getMaxWeigth() {
 		// TODO Auto-generated method stub
@@ -62,27 +77,28 @@ public class SpringDataDBliveryService implements DBliveryService, DBliveryStati
 	}
 
 	@Override
+	@Transactional
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
-		// TODO Auto-generated method stub
-		return null;
+		Product newProduct = new Product(name, price, supplier, weight, new Date());
+		return productRepository.save(newProduct);
 	}
 
 	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date) {
-		// TODO Auto-generated method stub
-		return null;
+		Product newProduct = new Product(name, price, supplier, weight, date);
+		return productRepository.save(newProduct);
 	}
 
 	@Override
 	public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
-		// TODO Auto-generated method stub
-		return null;
+		Supplier newSupplier = new Supplier(name, cuil, address, coordX, coordY);
+		return supplierRepository.save(newSupplier);
 	}
 
 	@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
-		// TODO Auto-generated method stub
-		return null;
+		User newUser = new User(email, password, username, name, dateOfBirth);
+		return userRepository.save(newUser);
 	}
 
 	@Override
@@ -93,20 +109,17 @@ public class SpringDataDBliveryService implements DBliveryService, DBliveryStati
 
 	@Override
 	public Optional<User> getUserById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findById(id);
 	}
 
 	@Override
 	public Optional<User> getUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findByEmail(email);
 	}
 
 	@Override
 	public Optional<User> getUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findByUsername(username);
 	}
 
 	@Override
