@@ -84,7 +84,7 @@ public class Order {
 		return amount;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
