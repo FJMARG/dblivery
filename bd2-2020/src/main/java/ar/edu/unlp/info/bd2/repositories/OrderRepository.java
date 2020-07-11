@@ -13,8 +13,7 @@ import ar.edu.unlp.info.bd2.model.User;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-	@Query("FROM Order o WHERE o.client = :user")
-	public List<Order> findByUser(@Param("user") User user);
+	public List<Order> findByClient(User user);
 	
 	@Query("SELECT o FROM Order AS o " +
 			"JOIN o.currentStatus AS os " +

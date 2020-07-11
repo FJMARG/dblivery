@@ -62,7 +62,7 @@ public class SpringDataDBliveryService implements DBliveryService, DBliveryStati
 		Optional<User> userOpt = this.getUserByUsername(username);
 		if(userOpt.isEmpty())
 			return null;
-		return orderRepository.findByUser(userOpt.get());
+		return orderRepository.findByClient(userOpt.get());
 	}
 
 	@Override
